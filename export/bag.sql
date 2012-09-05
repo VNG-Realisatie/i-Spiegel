@@ -107,8 +107,27 @@ CREATE MATERIALIZED VIEW bag_huidige_vbo
   AND bra_adres.adresnr                 = bgr_verblijfsobjectadres.adresnr
   AND bgr_verblijfsobject.vobjnr        = bgr_verblijfsobjectadres.vobjnr
   AND bgr_verblijfsobject.vobjvolgnr    = bgr_verblijfsobjectadres.vobjvolgnr
-  AND bra_adresgeoinformatie.adresnr    (+)= bra_adres.adresnr  -- right outer join, so we also have "nevenadressen"
+  AND bra_adresgeoinformatie.adresnr    (+)= bra_adres.adresnr  -- outer join, so we also have "nevenadressen"
   AND bra_adresgeoinformatie.adrvolgnr  (+)= bra_adres.adrvolgnr;
+  
+DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = 'bag_huidige_vbo';
+INSERT INTO USER_SDO_GEOM_METADATA (
+  TABLE_NAME, COLUMN_NAME, DIMINFO, SRID
+)
+VALUES (
+  'bag_huidige_vbo', 'LIGGING',
+  MDSYS.SDO_DIM_ARRAY (
+    MDSYS.SDO_DIM_ELEMENT('X', -7000.000000000, 300000.000000000, 5.0E-5),
+    MDSYS.SDO_DIM_ELEMENT('Y', 289000.000000000, 629000.000000000, 5.0E-5)
+  ),
+  NULL
+);
+DROP INDEX bag_huidige_vbo_gi;
+CREATE INDEX bag_huidige_vbo_gi
+ON bag_huidige_vbo(LIGGING)
+INDEXTYPE IS MDSYS.SPATIAL_INDEX
+PARAMETERS (' SDO_INDX_DIMS=2 LAYER_GTYPE="POINT"');
+  
 -------------------------------------------
 -- bag_huidige_ligplaats
 -------------------------------------------
@@ -170,7 +189,23 @@ AS SELECT
   AND bgr_ligplaatsgeoinformatie.ligplaatsnr = bgr_ligplaats.ligplaatsnr
   AND bgr_ligplaatsgeoinformatie.ligplaatsvolgnr = bgr_ligplaats.ligplaatsvolgnr
 
-
+DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = 'bag_huidige_ligplaats';
+INSERT INTO USER_SDO_GEOM_METADATA (
+  TABLE_NAME, COLUMN_NAME, DIMINFO, SRID
+)
+VALUES (
+  'bag_huidige_ligplaats', 'LIGGING',
+  MDSYS.SDO_DIM_ARRAY (
+    MDSYS.SDO_DIM_ELEMENT('X', -7000.000000000, 300000.000000000, 5.0E-5),
+    MDSYS.SDO_DIM_ELEMENT('Y', 289000.000000000, 629000.000000000, 5.0E-5)
+  ),
+  NULL
+);
+DROP INDEX bag_huidige_ligplaats_gi;
+CREATE INDEX bag_huidige_ligplaats_gi
+ON bag_huidige_ligplaats(LIGGING)
+INDEXTYPE IS MDSYS.SPATIAL_INDEX
+PARAMETERS (' SDO_INDX_DIMS=2 LAYER_GTYPE="POINT"');
 -------------------------------------------
 -- bag_huidige_standplaats
 ------------------------------------------- 
@@ -231,6 +266,24 @@ AND bgr_standplaats.standplaatsnr     = bgr_standplaatsadres.standplaatsnr
 AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr 
 AND bgr_standplaatsgeoinformatie.standplaatsnr = bgr_standplaats.standplaatsnr
 AND bgr_standplaatsgeoinformatie.standplaatsvolgnr = bgr_standplaats.standplaatsvolgnr;
+
+DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = 'bag_huidige_standplaats';
+INSERT INTO USER_SDO_GEOM_METADATA (
+  TABLE_NAME, COLUMN_NAME, DIMINFO, SRID
+)
+VALUES (
+  'bag_huidige_standplaats', 'LIGGING',
+  MDSYS.SDO_DIM_ARRAY (
+    MDSYS.SDO_DIM_ELEMENT('X', -7000.000000000, 300000.000000000, 5.0E-5),
+    MDSYS.SDO_DIM_ELEMENT('Y', 289000.000000000, 629000.000000000, 5.0E-5)
+  ),
+  NULL
+);
+DROP INDEX bag_huidige_standplaats_gi;
+CREATE INDEX bag_huidige_standplaats_gi
+ON bag_huidige_standplaats(LIGGING)
+INDEXTYPE IS MDSYS.SPATIAL_INDEX
+PARAMETERS (' SDO_INDX_DIMS=2 LAYER_GTYPE="POINT"');
 -------------------------------------------
 -- bag_huidige_adres
 ------------------------------------------- 
@@ -273,7 +326,7 @@ END;
 DROP MATERIALIZED VIEW bag_huidige_adres;
 CREATE MATERIALIZED VIEW bag_huidige_adres
 AS 
-  SELECT 
+  SELECT
     'verblijfsobject' AS adrestype, 
     bag_huidige_vbo.ruimtenaam AS ruimtenaam,
     bag_huidige_vbo.ruimtenaam_boco AS ruimtenaam_boco,    
@@ -285,9 +338,9 @@ AS
     bag_huidige_vbo.adresid AS adresid,  
     bag_huidige_vbo.verblijfsobjectid AS objectid,
     bag_huidige_vbo.woonplaatsnaam AS woonplaatsnaam
-    --,bag_huidige_vbo.ligging
+--    ,bag_huidige_vbo.ligging AS ligging    
   FROM bag_huidige_vbo
---  ORDER BY t_geometry(bag_huidige_vbo.ligging, 5.0E-5)
+--    ORDER BY t_geometry(bag_huidige_vbo.ligging, 5.0E-5)
 UNION
   SELECT
     'ligplaats', 
@@ -301,8 +354,9 @@ UNION
     bag_huidige_ligplaats.adresid,  
     bag_huidige_ligplaats.ligplaatsid,
     bag_huidige_ligplaats.woonplaatsnaam
+--    ,bag_huidige_ligplaats.ligging
   FROM bag_huidige_ligplaats
---ORDER BY t_geometry(bag_huidige_ligplaats.ligging, 5.0E-5)
+--    ORDER BY t_geometry(bag_huidige_ligplaats.ligging, 5.0E-5)  
 UNION
   SELECT
     'standplaats', 
@@ -316,6 +370,7 @@ UNION
     bag_huidige_standplaats.postc_a,
     bag_huidige_standplaats.adresid,  
     bag_huidige_standplaats.standplaatsid,
-    bag_huidige_standplaats.woonplaatsnaam    
+    bag_huidige_standplaats.woonplaatsnaam
+--    ,bag_huidige_standplaats.ligging
   FROM bag_huidige_standplaats
---  ORDER BY t_geometry(bag_huidige_standplaats.ligging, 5.0E-5)
+--    ORDER BY t_geometry(bag_huidige_standplaats.ligging, 5.0E-5) 
