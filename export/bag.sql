@@ -329,7 +329,8 @@ AS
   SELECT
     'verblijfsobject' AS adrestype, 
     bag_huidige_vbo.ruimtenaam AS ruimtenaam,
-    bag_huidige_vbo.ruimtenaam_boco AS ruimtenaam_boco,    
+    bag_huidige_vbo.ruimtenaam_boco AS ruimtenaam_boco, 
+    soundex	(bag_huidige_vbo.ruimtenaam) AS ruimtesoundex,
     bag_huidige_vbo.huisnr AS huisnr,
     bag_huidige_vbo.huislt AS huislt,
     bag_huidige_vbo.toevoeging AS toevoeging,
@@ -346,6 +347,7 @@ UNION
     'ligplaats', 
     bag_huidige_ligplaats.ruimtenaam,
     bag_huidige_ligplaats.ruimtenaam_boco,
+    soundex	(bag_huidige_ligplaats.ruimtenaam),
     bag_huidige_ligplaats.huisnr,
     bag_huidige_ligplaats.huislt,
     bag_huidige_ligplaats.toevoeging,
@@ -363,6 +365,7 @@ UNION
     -- bag_huidige_standplaats.*
     bag_huidige_standplaats.ruimtenaam,
     bag_huidige_standplaats.ruimtenaam_boco,
+    soundex	(bag_huidige_standplaats.ruimtenaam),
     bag_huidige_standplaats.huisnr,
     bag_huidige_standplaats.huislt,
     bag_huidige_standplaats.toevoeging,
