@@ -47,28 +47,28 @@ AS
                 REPLACE(
                   REPLACE(
                     STRAAT,
-                    'â',
+                    'Ã¢',
                     'a'
                   ),
-                  'à',
+                  'Ã ',
                   'a'
                 ),
-                'é',
+                'Ã©',
                 'e'
               ),
-              'ê',
+              'Ãª',
               'e'
             ),
-            'ë',
+            'Ã«',
             'e'
           ),
-          'ô',
+          'Ã´',
           'o'
         ),
-        'û',
+        'Ã»',
         'u'
       ),
-      'ú',
+      'Ãº',
       'u'
     )
     AS STRAAT_SIMPEL,
@@ -79,4 +79,16 @@ AS
     "IDENT_TGO",
     "IDENT_NA",
     "IDENT_OBR"
-  FROM WOZ_HUIDIGE_ADRES
+  FROM WOZ_HUIDIGE_ADRES;
+  
+CREATE OR REPLACE FORCE VIEW ISPIEGEL_PREVENT_ADRES
+AS
+SELECT
+    street_name,
+    house_nr,
+    house_char,
+    house_nr_extra,
+    house_nr_to_by,
+    Postalcode,
+    place_name
+  FROM PREVENT_HUIDIGE_ADRES;
