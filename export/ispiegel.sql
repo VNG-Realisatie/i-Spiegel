@@ -96,18 +96,11 @@ AS
     "IDENT_OBR"
   FROM WOZ_HUIDIGE_ADRES;
   
-CREATE OR REPLACE FORCE VIEW ISPIEGEL_PREVENT_ADRES
-AS
-SELECT
-    street_name,
-    house_nr,
-    house_char,
-    house_nr_extra,
-    house_nr_to_by,
-    Postalcode,
-    place_name
-  FROM PREVENT_HUIDIGE_ADRES;
-  
-CREATE  VIEW ISPIEGEL_KVK_ADRES AS
+DROP VIEW ISPIEGEL_KVK_ADRES;
+CREATE VIEW ISPIEGEL_KVK_ADRES AS
 SELECT *  
 FROM KVK.kvk_nw
+WHERE UPPER(woonplaats) IN (
+  SELECT DISTINCT(UPPER(woonplaatsnaam))
+  FROM ispiegel_bag_adres
+)
