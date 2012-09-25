@@ -107,3 +107,7 @@ SELECT
     Postalcode,
     place_name
   FROM PREVENT_HUIDIGE_ADRES;
+  
+CREATE  VIEW ISPIEGEL_KVK_ADRES AS
+SELECT *  
+FROM KVK.kvk_nw
