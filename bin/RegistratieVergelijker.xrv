@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- comment logging for output to commandline -->
+  <logging>
+    <database-provider>System.Data.OleDb</database-provider>
+    <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\eduard\Desktop\i-spiegel\source\RegistratieVergelijker\reporting.mdb;</database-connection>
+  </logging>
+  <sources>
+    <source id="bag">
+      <database-provider>System.Data.OleDb</database-provider>
+      <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source="C:\Users\eduard\Desktop\i-spiegel\source\RegistratieVergelijker\";Extended Properties="Text;HDR=Yes;FMT=Delimited"</database-connection>
+      <database-query>SELECT * FROM BAG_ADRES.csv</database-query>
+    </source>
+    <source id="gba">
+      <database-provider>System.Data.OleDb</database-provider>
+      <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source="C:\Users\eduard\Desktop\i-spiegel\source\RegistratieVergelijker\";Extended Properties="Text;HDR=Yes;FMT=Delimited"</database-connection>
+      <database-query>SELECT * FROM GBA_ADRES.csv</database-query>
+    </source>
+  </sources>
+  <compare reference="bag" analysis="gba" primary="postcode-huisnummer">
+    <match id="postcode-huisnummer">
+      <field name="postcode" reference-field="POSTCODE" analysis-field="POSTCODE" />
+      <field name="huisnummer" reference-field="HUISNR" analysis-field="RHS" />
+      <field name="huisletter" reference-field="HUISLT" analysis-field="NHSR_LT" />
+      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="KHSR_TV" />
+    </match>
+    <match id="openbare-ruimte">
+      <field name="naam openbare ruimte" reference-field="RUIMTENAAM" analysis-field="NOPR" />
+    </match>
+    <match id="bagobjecten">
+      <field name="adressseerbaar object id" reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="NID_VBO" />
+      <field name="nummeraanduiding id" reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="NID_NAD" />
+    </match>
+  </compare>
+</registratie-vergelijker>
+
