@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <sources>
+    <source id="bag">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-query>
+        SELECT 
+			ADRESTYPE,
+			RUIMTENAAM,
+			HUISNR,
+			HUISLT,
+			TOEVOEGING,
+			POSTC_N || POSTC_A AS POSTCODE,
+			ADRESID AS BAG_NUMMERAANDUIDING_ID,
+			OBJECTID AS BAG_VERBLIJFSOBJECT_ID,
+			WOONPLAATSNAAM
+        FROM bag_huidige_adres
+      </database-query>
+    </source>
+    <source id="woz">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-query>
+		SELECT 
+			POSTKODE,
+			HUISNR,
+			HUISLT,
+			HUISTV,
+			HUISAD,
+			STRAAT,
+			REPLACE(
+			  REPLACE(    
+				REPLACE(
+				  REPLACE(
+					REPLACE(
+					  REPLACE(
+						REPLACE(
+						  REPLACE(
+							STRAAT,
+							&apos;&#226;&apos;,
+							&apos;a&apos;
+						  ),
+						  &apos;&#224;&apos;,
+						  &apos;a&apos;
+						),
+						&apos;&#233;&apos;,
+						&apos;e&apos;
+					  ),
+					  &apos;&#234;&apos;,
+					  &apos;e&apos;
+					),
+					&apos;&#235;&apos;,
+					&apos;e&apos;
+				  ),
+				  &apos;&#244;&apos;,
+				  &apos;o&apos;
+				),
+				&apos;&#251;&apos;,
+				&apos;u&apos;
+			  ),
+			  &apos;&#250;&apos;,
+			  &apos;u&apos;
+			)
+			AS STRAAT_SIMPEL,
+			WOONPLAATS,
+			LANDNAAM,
+			IDENT_PBT,
+			IDENT_WPL,
+			IDENT_TGO,
+			IDENT_NA,
+			IDENT_OBR
+		FROM  VG.PBSPBT@PGVG PBSPBT
+		WHERE gemkd_gem = 1900
+		AND DATUM_EINDE IS NULL
+      </database-query>
+    </source>
+  </sources>
+  <compare reference="bag" analysis="woz" primary="postcode-huisnummer">
+    <match id="postcode-huisnummer">
+      <field reference-field="POSTCODE" analysis-field="POSTKODE" />
+      <field reference-field="HUISNR" analysis-field="HUISNR" />
+      <field reference-field="HUISLT" analysis-field="HUISLT" />
+      <field reference-field="TOEVOEGING" analysis-field="HUISTV" />
+    </match>
+    <match id="openbare-ruimte">
+      <field reference-field="RUIMTENAAM" analysis-field="STRAAT" />
+    </match>
+    <match id="bagobjecten">
+      <field reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="IDENT_TGO" />
+      <field reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="IDENT_NA" />
+    </match>
+  </compare>
+</registratie-vergelijker>

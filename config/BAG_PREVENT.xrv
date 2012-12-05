@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <sources>
+    <source id="bag">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-query>
+        SELECT 
+			ADRESTYPE,
+			UPPER(RUIMTENAAM) AS RUIMTENAAM,
+			HUISNR,
+			HUISLT,
+			TOEVOEGING,
+			POSTC_N || POSTC_A AS POSTCODE,
+			ADRESID AS BAG_NUMMERAANDUIDING_ID,
+			OBJECTID AS BAG_VERBLIJFSOBJECT_ID,
+			WOONPLAATSNAAM
+        FROM bag_huidige_adres
+      </database-query>
+    </source>
+    <source id="prevent">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=g;</database-connection>
+      <database-query>
+		SELECT *
+		FROM PREVENT.ADDRESS@PREV ADDRESS
+		JOIN PREVENT.PLACE_STREET@PREV PLACE_STREET
+		ON ADDRESS.PLACE_STREET_ID = PLACE_STREET.ID_PLACE_STREET
+      </database-query>
+    </source>
+  </sources>
+  <compare reference="bag" analysis="prevent" primary="postcode-huisnummer">
+    <match id="postcode-huisnummer">
+      <field reference-field="POSTCODE" analysis-field="POSTALCODE" />
+      <field reference-field="HUISNR" analysis-field="HOUSE_NR" />
+      <field reference-field="HUISLT" analysis-field="HOUSE_CHAR" />
+      <field reference-field="TOEVOEGING" analysis-field="HOUSE_NR_EXTRA" />
+    </match>
+    <match id="openbare-ruimte">
+      <field reference-field="RUIMTENAAM" analysis-field="STREET_NAME" />
+    </match>
+    <match id="woonplaats">
+      <field reference-field="WOONPLAATSNAAM" analysis-field="PLACE_NAME" />
+    </match>
+  </compare>
+</registratie-vergelijker>

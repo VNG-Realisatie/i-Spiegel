@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <sources>
+    <source id="bag">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-query>
+        SELECT 
+			ADRESTYPE,
+			RUIMTENAAM,
+			HUISNR,
+			HUISLT,
+			TOEVOEGING,
+			POSTC_N || POSTC_A AS POSTCODE,
+			ADRESID AS BAG_NUMMERAANDUIDING_ID,
+			OBJECTID AS BAG_VERBLIJFSOBJECT_ID,
+			WOONPLAATSNAAM
+        FROM bag_huidige_adres
+      </database-query>
+    </source>
+    <source id="gba">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-query>
+        SELECT
+			NOPR,
+			RHS,
+			NHSR_LT,
+			KHSR_TV,
+			KPST_NUM || KPST_ALF AS POSTKODE,
+			NID_NAD,
+			NID_VBO
+        FROM GBA_HUIDIGE_ADRES
+      </database-query>
+    </source>
+  </sources>
+  <compare reference="bag" analysis="gba" primary="postcode-huisnummer">
+    <match id="postcode-huisnummer">
+      <field reference-field="POSTCODE" analysis-field="POSTKODE" />
+      <field reference-field="HUISNR" analysis-field="RHS" />
+      <field reference-field="HUISLT" analysis-field="NHSR_LT" />
+      <field reference-field="TOEVOEGING" analysis-field="KHSR_TV" />
+    </match>
+    <match id="openbare-ruimte">
+      <field reference-field="RUIMTENAAM" analysis-field="NOPR" />
+    </match>
+    <match id="bagobjecten">
+      <field reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="NID_VBO" />
+      <field reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="NID_NAD" />
+    </match>
+  </compare>
+</registratie-vergelijker>
