@@ -109,38 +109,29 @@
 		AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
       </database-query>
     </source>
-    <source id="woz">
+    <source id="vergunning">
       <database-provider>System.Data.OracleClient</database-provider>
       <database-connection>Data Source=gegevensbeheer;User Id=;Password=;</database-connection>
       <database-query>
-		SELECT DISTINCT			
-		  VGWOZ."STRAAT" AS openbareruimtenaam,
-		  VGWOZ."HUISNR" AS huisnr, 
-		  VGWOZ."HUISLT" AS huislt, 
-		  VGWOZ."TOEV" AS huistv,
-		  VGWOZ."POSTCODE" AS postcode,
-		  PBSPBT."WOONPLAATS" AS woonplaatsnaam  
-		FROM "VG"."VGWOZ"@PGVG VGWOZ 
-		LEFT OUTER JOIN "VG"."PBSPBT"@PGVG PBSPBT 
-		ON VGWOZ."POSTCODE"=PBSPBT."POSTKODE" 
-		AND VGWOZ."HUISNR"=PBSPBT."HUISNR" 
-		AND VGWOZ."STRAAT"=PBSPBT."STRAAT"
-		WHERE VGWOZ."DATUM_EINDE" IS NULL
+		SELECT DISTINCT
+		  VGVOB."STRAAT" AS openbareruimtenaam,
+		  VGVOB."HUISNR"  AS huisnummer, 
+		  VGVOB."HUISLT" AS huisletter,
+		  VGVOB."TOEV" AS huisnummertoevoeging,
+		  VGVOB."POSTCODE" AS postcode
+		FROM "VG"."VGVOB"@PGVG VGVOB
       </database-query>
     </source>
   </sources>
-  <compare reference="bag" analysis="woz" primary="postcode-huisnummer">
+  <compare reference="bag" analysis="vergunning" primary="postcode-huisnummer">
     <match id="postcode-huisnummer">
       <field name="postcode" reference-field="POSTCODE" analysis-field="postcode" />
-      <field name="huisnummer" reference-field="HUISNR" analysis-field="huisnr" />
-      <field name="huisletter" reference-field="HUISLT" analysis-field="huislt" />
-      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="huistv" />
+      <field name="huisnummer" reference-field="HUISNR" analysis-field="huisnummer" />
+      <field name="huisletter" reference-field="HUISLT" analysis-field="huisletter" />
+      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="huisnummertoevoeging" />
     </match>
     <match id="openbare-ruimte">
       <field name="openbareruimtenaam" reference-field="RUIMTENAAM" analysis-field="openbareruimtenaam" />
     </match>
-    <match id="woonplaats">
-      <field name="woonplaatsnaam" reference-field="WOONPLAATSNAAM" analysis-field="woonplaatsnaam" />
-    </match>		
   </compare>
 </registratie-vergelijker>

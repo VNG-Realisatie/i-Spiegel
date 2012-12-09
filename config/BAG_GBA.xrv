@@ -3,50 +3,146 @@
   <sources>
     <source id="bag">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-connection>Data Source=;User Id=;Password=;</database-connection>
       <database-query>
-        SELECT 
-			ADRESTYPE,
-			RUIMTENAAM,
-			HUISNR,
-			HUISLT,
-			TOEVOEGING,
-			POSTC_N || POSTC_A AS POSTCODE,
-			ADRESID AS BAG_NUMMERAANDUIDING_ID,
-			OBJECTID AS BAG_VERBLIJFSOBJECT_ID,
-			WOONPLAATSNAAM
-        FROM bag_huidige_adres
-      </database-query>
+		-- verblijfsobjecten --
+		SELECT
+		  'verblijfsobject'       AS ADRESTYPE,
+		  bra_ruimte.ruimtenaam   AS RUIMTENAAM,
+		  bra_ruimte.ruimtenaam_boco AS RUIMTENAAM_BOCO,
+		  UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_UBOCO,
+		  bra_adres.huisnr        AS HUISNR,
+		  bra_adres.huislt        AS HUISLT,
+		  bra_adres.toevoeging    AS TOEVOEGING,
+		  bra_adres.postc_n || bra_adres.postc_a AS POSTCODE,
+		  bra_woonplaats.woonplaatsnaam          AS WOONPLAATSNAAM,    
+		  bra_adres.adresid       AS BAG_NUMMERAANDUIDING_ID,
+		  bgr_verblijfsobject.verblijfsobjectid   AS BAG_VERBLIJFSOBJECT_ID
+		FROM 
+		  "BAGOWNER"."BRA_ADRES"@PBAG       bra_adres,
+		  "BAGOWNER"."BRA_RUIMTE"@PBAG      bra_ruimte,
+		  "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats,
+		  "BAGOWNER"."BGR_VERBLIJFSOBJECTADRES"@PBAG bgr_verblijfsobjectadres,
+		  "BAGOWNER"."BGR_VERBLIJFSOBJECT"@PBAG bgr_verblijfsobject
+		WHERE bra_adres.ddeinde               IS NULL
+		AND bra_adres.indactief               = 'J'
+		AND bra_ruimte.ddeinde                IS NULL
+		AND bra_ruimte.indactief              = 'J'
+		AND bra_woonplaats.ddeinde            IS NULL
+		AND bra_woonplaats.indactief          = 'J'
+		AND bra_adres.indauthentiek           = 'J'
+		AND bgr_verblijfsobject.ddeinde       IS NULL
+		AND bgr_verblijfsobject.indactief     = 'J'
+		AND bgr_verblijfsobject.indauthentiek = 'J' 
+		AND bra_adres.ruimtenr                = bra_ruimte.ruimtenr
+		AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
+		AND bra_adres.adresnr                 = bgr_verblijfsobjectadres.adresnr
+		AND bgr_verblijfsobject.vobjnr        = bgr_verblijfsobjectadres.vobjnr
+		AND bgr_verblijfsobject.vobjvolgnr    = bgr_verblijfsobjectadres.vobjvolgnr
+		-- ligplaatsen --
+		UNION SELECT 
+		  'ligplaats',
+		  bra_ruimte.ruimtenaam,
+		  bra_ruimte.ruimtenaam_boco,
+		  UPPER(bra_ruimte.ruimtenaam_boco),
+		  bra_adres.huisnr,
+		  bra_adres.huislt,
+		  bra_adres.toevoeging,
+		  bra_adres.postc_n || bra_adres.postc_a, 
+		  bra_woonplaats.woonplaatsnaam,
+		  bra_adres.adresid,
+		  bgr_ligplaats.ligplaatsid
+		FROM
+		  "BAGOWNER"."BRA_ADRES"@PBAG       bra_adres,
+		  "BAGOWNER"."BRA_RUIMTE"@PBAG      bra_ruimte,  
+		  "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats,
+		  "BAGOWNER"."BGR_LIGPLAATSADRES"@PBAG bgr_ligplaatsadres,
+		  "BAGOWNER"."BGR_LIGPLAATS"@PBAG bgr_ligplaats
+		WHERE bra_adres.ddeinde        IS NULL
+		AND bra_adres.indactief           = 'J'
+		AND bra_ruimte.ddeinde           IS NULL
+		AND bra_ruimte.indactief          = 'J'
+		AND bra_woonplaats.ddeinde       IS NULL
+		AND bra_woonplaats.indactief      = 'J'
+		AND bra_adres.indauthentiek       = 'J'
+		AND bgr_ligplaats.ddeinde        IS NULL
+		AND bgr_ligplaats.indactief       = 'J'
+		AND bgr_ligplaats.indauthentiek   = 'J'
+		AND bra_adres.ruimtenr            = bra_ruimte.ruimtenr
+		AND bra_ruimte.woonplaatsnr       = bra_woonplaats.woonplaatsnr
+		AND bra_adres.adresnr             = bgr_ligplaatsadres.adresnr
+		AND bgr_ligplaats.ligplaatsnr     = bgr_ligplaatsadres.ligplaatsnr
+		AND bgr_ligplaats.ligplaatsvolgnr = bgr_ligplaatsadres.ligplaatsvolgnr
+		-- ligplaatsen --
+		UNION SELECT 
+		  'standplaats',
+		  bra_ruimte.ruimtenaam,
+		  bra_ruimte.ruimtenaam_boco,
+		  UPPER(bra_ruimte.ruimtenaam_boco),
+		  bra_adres.huisnr,
+		  bra_adres.huislt,
+		  bra_adres.toevoeging,
+		  bra_adres.postc_n || bra_adres.postc_a,
+		  bra_woonplaats.woonplaatsnaam,
+		  bra_adres.adresid,
+		  bgr_standplaats.standplaatsid
+		FROM
+		  "BAGOWNER"."BRA_ADRES"@PBAG       bra_adres,
+		  "BAGOWNER"."BRA_RUIMTE"@PBAG      bra_ruimte,  
+		  "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats,
+		  "BAGOWNER"."BGR_STANDPLAATSADRES"@PBAG bgr_standplaatsadres,
+		  "BAGOWNER"."BGR_STANDPLAATS"@PBAG bgr_standplaats    
+		WHERE bra_adres.ddeinde            IS NULL
+		AND bra_adres.indactief               = 'J'
+		AND bra_ruimte.ddeinde               IS NULL
+		AND bra_ruimte.indactief              = 'J'
+		AND bra_woonplaats.ddeinde           IS NULL
+		AND bra_woonplaats.indactief          = 'J'
+		AND bra_adres.indauthentiek           = 'J'
+		AND bgr_standplaats.ddeinde          IS NULL
+		AND bgr_standplaats.indactief         = 'J'
+		AND bgr_standplaats.indauthentiek     = 'J'
+		AND bra_adres.ruimtenr                = bra_ruimte.ruimtenr
+		AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
+		AND bra_adres.adresnr                 = bgr_standplaatsadres.adresnr
+		AND bgr_standplaats.standplaatsnr     = bgr_standplaatsadres.standplaatsnr
+		AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
+		</database-query>
     </source>
     <source id="gba">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-connection>Data Source=;User Id=;Password=;</database-connection>
       <database-query>
-        SELECT
-			NOPR,
-			RHS,
-			NHSR_LT,
-			KHSR_TV,
-			KPST_NUM || KPST_ALF AS POSTKODE,
-			NID_NAD,
-			NID_VBO
-        FROM GBA_HUIDIGE_ADRES
+		  SELECT 
+			gba_tgbaadr.nopr,
+			gba_tgbaadr.rhs,
+			gba_tgbaadr.nhsr_lt,
+			gba_tgbaadr.khsr_tv,    
+			gba_tgbaadr.kpst_num || gba_tgbaadr.kpst_alf AS postkode,
+			gba_tgbaadr.nwpl_nm,
+			gba_tgbaadr.nid_nad,
+			gba_tgbaadr.nid_vbo
+		  FROM "PRODPIV"."GBA_TGBAADR"@PPIV gba_tgbaadr
+		  WHERE gba_tgbaadr.dadr_end IS NULL
       </database-query>
     </source>
   </sources>
   <compare reference="bag" analysis="gba" primary="postcode-huisnummer">
     <match id="postcode-huisnummer">
-      <field reference-field="POSTCODE" analysis-field="POSTKODE" />
-      <field reference-field="HUISNR" analysis-field="RHS" />
-      <field reference-field="HUISLT" analysis-field="NHSR_LT" />
-      <field reference-field="TOEVOEGING" analysis-field="KHSR_TV" />
+      <field name="postcode" reference-field="POSTCODE" analysis-field="postkode" />
+      <field name="huisnummer" reference-field="HUISNR" analysis-field="rhs" />
+      <field name="huisletter" reference-field="HUISLT" analysis-field="nhsr_lt" />
+      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="khsr_tv" />
     </match>
     <match id="openbare-ruimte">
-      <field reference-field="RUIMTENAAM" analysis-field="NOPR" />
+      <field name="openbareruimtenaam" reference-field="RUIMTENAAM" analysis-field="nopr" />
     </match>
+    <match id="woonplaats">
+      <field name="woonplaatsnaam" reference-field="WOONPLAATSNAAM" analysis-field="nwpl_nm" />
+    </match>	
     <match id="bagobjecten">
-      <field reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="NID_VBO" />
-      <field reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="NID_NAD" />
+      <field name="adressseerbaarobjectid" reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="nid_vbo" />
+      <field name="nummeraanduidingid" reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="nid_nad" />
     </match>
   </compare>
 </registratie-vergelijker>

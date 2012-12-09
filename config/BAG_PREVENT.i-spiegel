@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<I-Spiegel-Batch-Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <User-Settings>
+        <Name>Eduard Yeb Witteveen</Name>
+        <Municipality>1900</Municipality>
+        <Email>e.witteveen@gemeenteswf.nl</Email>
+        <Function>Uitvoerend</Function>
+    </User-Settings>
+    <Import-Settings>
+        <SearchMethod>ObjectAddress</SearchMethod>
+        <Indicator>DatakwaliteitReiningingsrechtenEnAfvalstoffenheffingBAG</Indicator>
+        <ReferenceType>BAG</ReferenceType>
+        <AnalysisType>ReinigingsrechtenEnAfvalstoffenheffing</AnalysisType>
+        <CaseSensitiveMatching>false</CaseSensitiveMatching>
+        <AdditionalMatching>false</AdditionalMatching>
+        <ReferenceFilePath>C:\applications\vergelijker\BAG_PREVENT\bag.csv</ReferenceFilePath>
+        <ReferenceFileSeparator>;</ReferenceFileSeparator>
+        <ReferenceDatePicker>3-12-2012 0:00:00</ReferenceDatePicker>
+        <ReferenceSourceAppProvider>https://code.google.com/p/i-spiegel/</ReferenceSourceAppProvider>
+        <ReferenceSourceAppName>https://code.google.com/p/i-spiegel/</ReferenceSourceAppName>
+        <AnalysisFilePath>C:\applications\vergelijker\BAG_PREVENT\prevent.csv</AnalysisFilePath>
+        <AnalysisFileSeparator>;</AnalysisFileSeparator>
+        <AnalysisDatePicker>3-12-2012 0:00:00</AnalysisDatePicker>
+        <AnalysisSourceAppProvider>https://code.google.com/p/i-spiegel/</AnalysisSourceAppProvider>
+        <AnalysisSourceAppName>https://code.google.com/p/i-spiegel/</AnalysisSourceAppName>
+    </Import-Settings>
+    <Reference-Column-Settings>
+        <Columns>
+            <Column>0,PostalCode</Column>
+            <Column>1,HouseNumber</Column>
+            <Column>2,HouseNumberCharacter</Column>
+            <Column>3,HouseNumberAppendix</Column>
+            <Column>4,PublicSpaceName</Column>
+            <Column>5,Municipality</Column>
+        </Columns>
+    </Reference-Column-Settings>
+    <Anlaysis-Column-Settings>
+        <Columns>
+            <Column>0,PostalCode</Column>
+            <Column>1,HouseNumber</Column>
+            <Column>2,HouseNumberCharacter</Column>
+            <Column>3,HouseNumberAppendix</Column>
+            <Column>4,PublicSpaceName</Column>
+            <Column>5,Municipality</Column>
+        </Columns>
+    </Anlaysis-Column-Settings>
+</I-Spiegel-Batch-Settings>

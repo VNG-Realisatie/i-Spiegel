@@ -109,38 +109,77 @@
 		AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
       </database-query>
     </source>
-    <source id="woz">
+    <source id="pbs">
       <database-provider>System.Data.OracleClient</database-provider>
       <database-connection>Data Source=gegevensbeheer;User Id=;Password=;</database-connection>
       <database-query>
-		SELECT DISTINCT			
-		  VGWOZ."STRAAT" AS openbareruimtenaam,
-		  VGWOZ."HUISNR" AS huisnr, 
-		  VGWOZ."HUISLT" AS huislt, 
-		  VGWOZ."TOEV" AS huistv,
-		  VGWOZ."POSTCODE" AS postcode,
-		  PBSPBT."WOONPLAATS" AS woonplaatsnaam  
-		FROM "VG"."VGWOZ"@PGVG VGWOZ 
-		LEFT OUTER JOIN "VG"."PBSPBT"@PGVG PBSPBT 
-		ON VGWOZ."POSTCODE"=PBSPBT."POSTKODE" 
-		AND VGWOZ."HUISNR"=PBSPBT."HUISNR" 
-		AND VGWOZ."STRAAT"=PBSPBT."STRAAT"
-		WHERE VGWOZ."DATUM_EINDE" IS NULL
+		SELECT 
+			POSTKODE,
+			HUISNR,
+			HUISLT,
+			HUISTV,
+			HUISAD,
+			STRAAT,
+			REPLACE(
+			  REPLACE(    
+				REPLACE(
+				  REPLACE(
+					REPLACE(
+					  REPLACE(
+						REPLACE(
+						  REPLACE(
+							STRAAT,
+							&apos;&#226;&apos;,
+							&apos;a&apos;
+						  ),
+						  &apos;&#224;&apos;,
+						  &apos;a&apos;
+						),
+						&apos;&#233;&apos;,
+						&apos;e&apos;
+					  ),
+					  &apos;&#234;&apos;,
+					  &apos;e&apos;
+					),
+					&apos;&#235;&apos;,
+					&apos;e&apos;
+				  ),
+				  &apos;&#244;&apos;,
+				  &apos;o&apos;
+				),
+				&apos;&#251;&apos;,
+				&apos;u&apos;
+			  ),
+			  &apos;&#250;&apos;,
+			  &apos;u&apos;
+			)
+			AS STRAAT_SIMPEL,
+			WOONPLAATS,
+			LANDNAAM,
+			IDENT_PBT,
+			IDENT_WPL,
+			IDENT_TGO,
+			IDENT_NA,
+			IDENT_OBR
+		FROM  VG.PBSPBT@PGVG PBSPBT
+		WHERE gemkd_gem = 1900
+		AND DATUM_EINDE IS NULL
       </database-query>
     </source>
   </sources>
-  <compare reference="bag" analysis="woz" primary="postcode-huisnummer">
+  <compare reference="bag" analysis="pbs" primary="postcode-huisnummer">
     <match id="postcode-huisnummer">
-      <field name="postcode" reference-field="POSTCODE" analysis-field="postcode" />
-      <field name="huisnummer" reference-field="HUISNR" analysis-field="huisnr" />
-      <field name="huisletter" reference-field="HUISLT" analysis-field="huislt" />
-      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="huistv" />
+      <field name="postcode" reference-field="POSTCODE" analysis-field="POSTKODE" />
+      <field name="huisnummer" reference-field="HUISNR" analysis-field="HUISNR" />
+      <field name="huisletter" reference-field="HUISLT" analysis-field="HUISLT" />
+      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="HUISTV" />
     </match>
     <match id="openbare-ruimte">
-      <field name="openbareruimtenaam" reference-field="RUIMTENAAM" analysis-field="openbareruimtenaam" />
+      <field name="openbareruimtenaam" reference-field="RUIMTENAAM_BOCO" analysis-field="STRAAT_SIMPEL" />
     </match>
-    <match id="woonplaats">
-      <field name="woonplaatsnaam" reference-field="WOONPLAATSNAAM" analysis-field="woonplaatsnaam" />
-    </match>		
+    <match id="bagobjecten">
+      <field  name="adressseerbaarobjectid" reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="IDENT_TGO" />
+      <field  name="nummeraanduidingid" reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="IDENT_NA" />
+    </match>
   </compare>
 </registratie-vergelijker>
