@@ -109,9 +109,11 @@ namespace RegistratieVergelijker
                 // export into csv, so we can use i-spiegel
                 #region export csv
                 {
-                    DirectoryInfo exportdirectory = new DirectoryInfo(exportname);
-
+                    DirectoryInfo exportdirectory = new DirectoryInfo("data");
                     if (!exportdirectory.Exists) exportdirectory.Create();
+                    exportdirectory = new DirectoryInfo("data\\" + exportname);
+                    if (!exportdirectory.Exists) exportdirectory.Create(); 
+
                     List<string> n = new List<string>();
                     List<string> r = new List<string>();
                     List<string> a = new List<string>();

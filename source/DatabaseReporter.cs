@@ -58,7 +58,7 @@ namespace RegistratieVergelijker
             command.CommandText = "SELECT MAX(registratievergelijkingid) FROM registratievergelijking ";
             command.Connection.Open();
             object result = command.ExecuteScalar();
-            long registratievergelijkingid = DBNull.Value == result ? 0 : (int) result;
+            long registratievergelijkingid = DBNull.Value == result ? 0 : Convert.ToUInt32(result);
             registratievergelijkingid++;
             command.Connection.Close();
 

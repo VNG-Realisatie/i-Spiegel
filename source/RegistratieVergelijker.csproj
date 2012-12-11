@@ -90,8 +90,6 @@
     <Compile Include="RegistratieSource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="20121030_GBA_ADRES.csv" />
-    <None Include="20121031_BAG_ADRES.csv" />
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
