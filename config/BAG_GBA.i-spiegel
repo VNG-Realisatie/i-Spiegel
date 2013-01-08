@@ -13,12 +13,12 @@
         <AnalysisType>GBA</AnalysisType>
         <CaseSensitiveMatching>false</CaseSensitiveMatching>
         <AdditionalMatching>false</AdditionalMatching>
-        <ReferenceFilePath>C:\applications\vergelijker\BAG_GBA\bag.csv</ReferenceFilePath>
+        <ReferenceFilePath>C:\tools\data\BAG_GBA\bag.csv</ReferenceFilePath>
         <ReferenceFileSeparator>;</ReferenceFileSeparator>
         <ReferenceDatePicker>3-11-2012 0:00:00</ReferenceDatePicker>
         <ReferenceSourceAppProvider>https://code.google.com/p/i-spiegel/</ReferenceSourceAppProvider>
         <ReferenceSourceAppName>https://code.google.com/p/i-spiegel/</ReferenceSourceAppName>
-        <AnalysisFilePath>C:\applications\vergelijker\BAG_GBA\gba.csv</AnalysisFilePath>
+        <AnalysisFilePath>C:\tools\data\BAG_GBA\gba.csv</AnalysisFilePath>
         <AnalysisFileSeparator>;</AnalysisFileSeparator>
         <AnalysisDatePicker>3-11-2012 0:00:00</AnalysisDatePicker>
         <AnalysisSourceAppProvider>https://code.google.com/p/i-spiegel/</AnalysisSourceAppProvider>

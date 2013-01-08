@@ -6,7 +6,7 @@
     <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
   </logging>
   <sources>
-    <source id="bag">
+    <source id="bag">      
       <database-provider>System.Data.OracleClient</database-provider>
       <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
       <database-query>
@@ -20,9 +20,11 @@ SELECT
   bra_adres.huisnr        AS HUISNR,
   bra_adres.huislt        AS HUISLT,
   bra_adres.toevoeging    AS TOEVOEGING,
+  bra_adres.huislt || bra_adres.toevoeging AS SAMENGESTELDETOEVOEGING,
   bra_adres.postc_n || bra_adres.postc_a AS POSTCODE,
   htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
   bra_woonplaats.woonplaatsnaam  AS WOONPLAATSNAAM_SIMPEL,
+  UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,  
   bra_adres.adresid       AS BAG_NUMMERAANDUIDING_ID,
   bgr_verblijfsobject.verblijfsobjectid   AS BAG_VERBLIJFSOBJECT_ID
 FROM 
@@ -56,9 +58,11 @@ UNION SELECT
   bra_adres.huisnr,
   bra_adres.huislt,
   bra_adres.toevoeging,
+  bra_adres.huislt || bra_adres.toevoeging AS SAMENGESTELDETOEVOEGING,  
   bra_adres.postc_n || bra_adres.postc_a, 
   htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
   bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
+  UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,    
   bra_adres.adresid,
   bgr_ligplaats.ligplaatsid
 FROM
@@ -92,9 +96,11 @@ UNION SELECT
   bra_adres.huisnr,
   bra_adres.huislt,
   bra_adres.toevoeging,
+  bra_adres.huislt || bra_adres.toevoeging AS SAMENGESTELDETOEVOEGING,  
   bra_adres.postc_n || bra_adres.postc_a,
   htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
   bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
+  UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,    
   bra_adres.adresid,
   bgr_standplaats.standplaatsid
 FROM
@@ -118,53 +124,55 @@ AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
 AND bra_adres.adresnr                 = bgr_standplaatsadres.adresnr
 AND bgr_standplaats.standplaatsnr     = bgr_standplaatsadres.standplaatsnr
 AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
-		</database-query>
+
+      </database-query>
     </source>
-    <source id="gba">
+    <source id="kvk">
       <database-provider>System.Data.OracleClient</database-provider>
       <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
       <database-query>
-SELECT 
-  T1."BSN",
-  T1."GEBOORTEDATUM", 
-  T1."VOORLETTERS", 
-  T1."VOORVOEGSEL", 
-  T1."GESLACHTSNAAM", 
-  T1."GEMEENTEKODE", 
-  T1."STRAATNAAM", 
-  T2."NAAM_OPENBARE_RUIMTE", 
-  T1."HUISNUMMER", 
-  T1."HUISLETTER", 
-  T1."TOEVOEGING_HUISNUMMER", 
-  T1."AANDUIDING_HUISNUMMER", 
-  T1."OMSCHRIJVING_LOKATIE", 
-  T1."POSTKODE_NUMERIEK" || T1."POSTKODE_ALFANUMERIEK" AS POSTCODE, 
-  T2."GEMEENTEDEEL" AS WOONPLAATS,
-  T2."IDENT_VERBLIJFPLAATS", 
-  T2."IDENT_NUMMERAANDUIDING"
-FROM
-  "PRODPIV"."GBA_VSELAKTP"@PPIV T1,
-  "PRODPIV"."GBA_VSELADRS"@PPIV T2
-WHERE T1."SYSTEEMNUMMER_ADRES" = T2."SYSTEEMNUMMER_ADRES"
+		SELECT DISTINCT *
+		FROM (
+		  SELECT
+			Straatnaam,
+			Huisnummer,
+			toevoeging,
+			postkode,
+			woonplaats
+		  FROM KVK.kvk_nw
+		  UNION
+		  SELECT
+			Straatnaam_cor,
+			Huisnummer_cor,
+			toevoeging_cor,
+			postkode_cor,
+			woonplaats_cor
+		  FROM KVK.kvk_nw
+		)
+		WHERE Woonplaats IN 
+		(
+		  SELECT bra_woonplaats.woonplaatsnaam
+		  FROM "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats
+		  WHERE bra_woonplaats.gemeentenr = 200018
+		  AND bra_woonplaats.ddeinde IS NULL
+		)
+		AND NOT STRAATNAAM LIKE('Postbus')		
       </database-query>
     </source>
   </sources>
-  <compare reference="bag" analysis="gba" primary="postcode-huisnummer">
+  <compare reference="bag" analysis="kvk" primary="postcode-huisnummer">
     <match id="postcode-huisnummer">
-      <field name="postcode" reference-field="POSTCODE" analysis-field="POSTCODE" />
-      <field name="huisnummer" reference-field="HUISNR" analysis-field="HUISNUMMER" />
-      <field name="huisletter" reference-field="HUISLT" analysis-field="HUISLETTER" />
-      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="TOEVOEGING_HUISNUMMER" />
+      <field name="postcode" reference-field="POSTCODE" analysis-field="postkode" />
+      <field name="huisnummer" reference-field="HUISNR" analysis-field="Huisnummer" />
+      <!-- <field name="huisletter" reference-field="HUISLT" analysis-field="toevoeging" /> -->
+	  <!-- <field name="huisletter" reference-field="TOEVOEGING" analysis-field="toevoeging" /> -->
+	  <field name="huisnummertoevoeging" reference-field="SAMENGESTELDETOEVOEGING" analysis-field="toevoeging" />
     </match>
     <match id="openbare-ruimte">
-      <field name="openbareruimtenaam" reference-field="RUIMTENAAM" analysis-field="NAAM_OPENBARE_RUIMTE" />
+      <field name="Straatnaam" reference-field="RUIMTENAAM_SIMPEL" analysis-field="Straatnaam" />
     </match>
     <match id="woonplaats">
-      <field name="woonplaatsnaam" reference-field="WOONPLAATSNAAM" analysis-field="WOONPLAATS" />
-    </match>	
-    <match id="bagobjecten">
-      <field name="adressseerbaarobjectid" reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="IDENT_VERBLIJFPLAATS" />
-      <field name="nummeraanduidingid" reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="IDENT_NUMMERAANDUIDING" />
+      <field name="woonplaatsnaam" reference-field="WOONPLAATSNAAM" analysis-field="woonplaats" />
     </match>
   </compare>
 </registratie-vergelijker>

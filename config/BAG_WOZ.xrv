@@ -1,132 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- comment logging for output to commandline -->
+  <logging>
+    <database-provider>System.Data.OracleClient</database-provider>
+    <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+  </logging>
   <sources>
     <source id="bag">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=;Password=;</database-connection>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
       <database-query>
-		-- verblijfsobjecten --
-		SELECT
-		  'verblijfsobject'       AS ADRESTYPE,
-		  bra_ruimte.ruimtenaam   AS RUIMTENAAM,
-		  bra_ruimte.ruimtenaam_boco AS RUIMTENAAM_BOCO,
-		  UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_UBOCO,
-		  bra_adres.huisnr        AS HUISNR,
-		  bra_adres.huislt        AS HUISLT,
-		  bra_adres.toevoeging    AS TOEVOEGING,
-		  bra_adres.postc_n || bra_adres.postc_a AS POSTCODE,
-		  bra_woonplaats.woonplaatsnaam          AS WOONPLAATSNAAM,    
-		  bra_adres.adresid       AS BAG_NUMMERAANDUIDING_ID,
-		  bgr_verblijfsobject.verblijfsobjectid   AS BAG_VERBLIJFSOBJECT_ID
-		FROM 
-		  "BAGOWNER"."BRA_ADRES"@PBAG       bra_adres,
-		  "BAGOWNER"."BRA_RUIMTE"@PBAG      bra_ruimte,
-		  "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats,
-		  "BAGOWNER"."BGR_VERBLIJFSOBJECTADRES"@PBAG bgr_verblijfsobjectadres,
-		  "BAGOWNER"."BGR_VERBLIJFSOBJECT"@PBAG bgr_verblijfsobject
-		WHERE bra_adres.ddeinde               IS NULL
-		AND bra_adres.indactief               = 'J'
-		AND bra_ruimte.ddeinde                IS NULL
-		AND bra_ruimte.indactief              = 'J'
-		AND bra_woonplaats.ddeinde            IS NULL
-		AND bra_woonplaats.indactief          = 'J'
-		AND bra_adres.indauthentiek           = 'J'
-		AND bgr_verblijfsobject.ddeinde       IS NULL
-		AND bgr_verblijfsobject.indactief     = 'J'
-		AND bgr_verblijfsobject.indauthentiek = 'J' 
-		AND bra_adres.ruimtenr                = bra_ruimte.ruimtenr
-		AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
-		AND bra_adres.adresnr                 = bgr_verblijfsobjectadres.adresnr
-		AND bgr_verblijfsobject.vobjnr        = bgr_verblijfsobjectadres.vobjnr
-		AND bgr_verblijfsobject.vobjvolgnr    = bgr_verblijfsobjectadres.vobjvolgnr
-		-- ligplaatsen --
-		UNION SELECT 
-		  'ligplaats',
-		  bra_ruimte.ruimtenaam,
-		  bra_ruimte.ruimtenaam_boco,
-		  UPPER(bra_ruimte.ruimtenaam_boco),
-		  bra_adres.huisnr,
-		  bra_adres.huislt,
-		  bra_adres.toevoeging,
-		  bra_adres.postc_n || bra_adres.postc_a, 
-		  bra_woonplaats.woonplaatsnaam,
-		  bra_adres.adresid,
-		  bgr_ligplaats.ligplaatsid
-		FROM
-		  "BAGOWNER"."BRA_ADRES"@PBAG       bra_adres,
-		  "BAGOWNER"."BRA_RUIMTE"@PBAG      bra_ruimte,  
-		  "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats,
-		  "BAGOWNER"."BGR_LIGPLAATSADRES"@PBAG bgr_ligplaatsadres,
-		  "BAGOWNER"."BGR_LIGPLAATS"@PBAG bgr_ligplaats
-		WHERE bra_adres.ddeinde        IS NULL
-		AND bra_adres.indactief           = 'J'
-		AND bra_ruimte.ddeinde           IS NULL
-		AND bra_ruimte.indactief          = 'J'
-		AND bra_woonplaats.ddeinde       IS NULL
-		AND bra_woonplaats.indactief      = 'J'
-		AND bra_adres.indauthentiek       = 'J'
-		AND bgr_ligplaats.ddeinde        IS NULL
-		AND bgr_ligplaats.indactief       = 'J'
-		AND bgr_ligplaats.indauthentiek   = 'J'
-		AND bra_adres.ruimtenr            = bra_ruimte.ruimtenr
-		AND bra_ruimte.woonplaatsnr       = bra_woonplaats.woonplaatsnr
-		AND bra_adres.adresnr             = bgr_ligplaatsadres.adresnr
-		AND bgr_ligplaats.ligplaatsnr     = bgr_ligplaatsadres.ligplaatsnr
-		AND bgr_ligplaats.ligplaatsvolgnr = bgr_ligplaatsadres.ligplaatsvolgnr
-		-- ligplaatsen --
-		UNION SELECT 
-		  'standplaats',
-		  bra_ruimte.ruimtenaam,
-		  bra_ruimte.ruimtenaam_boco,
-		  UPPER(bra_ruimte.ruimtenaam_boco),
-		  bra_adres.huisnr,
-		  bra_adres.huislt,
-		  bra_adres.toevoeging,
-		  bra_adres.postc_n || bra_adres.postc_a,
-		  bra_woonplaats.woonplaatsnaam,
-		  bra_adres.adresid,
-		  bgr_standplaats.standplaatsid
-		FROM
-		  "BAGOWNER"."BRA_ADRES"@PBAG       bra_adres,
-		  "BAGOWNER"."BRA_RUIMTE"@PBAG      bra_ruimte,  
-		  "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats,
-		  "BAGOWNER"."BGR_STANDPLAATSADRES"@PBAG bgr_standplaatsadres,
-		  "BAGOWNER"."BGR_STANDPLAATS"@PBAG bgr_standplaats    
-		WHERE bra_adres.ddeinde            IS NULL
-		AND bra_adres.indactief               = 'J'
-		AND bra_ruimte.ddeinde               IS NULL
-		AND bra_ruimte.indactief              = 'J'
-		AND bra_woonplaats.ddeinde           IS NULL
-		AND bra_woonplaats.indactief          = 'J'
-		AND bra_adres.indauthentiek           = 'J'
-		AND bgr_standplaats.ddeinde          IS NULL
-		AND bgr_standplaats.indactief         = 'J'
-		AND bgr_standplaats.indauthentiek     = 'J'
-		AND bra_adres.ruimtenr                = bra_ruimte.ruimtenr
-		AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
-		AND bra_adres.adresnr                 = bgr_standplaatsadres.adresnr
-		AND bgr_standplaats.standplaatsnr     = bgr_standplaatsadres.standplaatsnr
-		AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
+-- verblijfsobjecten --
+SELECT
+  'verblijfsobject' AS ADRESTYPE,
+  htmlunescape(bra_ruimte.ruimtenaam_d) AS RUIMTENAAM,
+  bra_ruimte.ruimtenaam AS RUIMTENAAM_SIMPEL,
+  htmlunescape(bra_ruimte.ruimtenaam_boco_d) AS RUIMTENAAM_BOCO,
+  UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_USIMPEL,
+  bra_adres.huisnr        AS HUISNR,
+  bra_adres.huislt        AS HUISLT,
+  bra_adres.toevoeging    AS TOEVOEGING,
+  bra_adres.postc_n || bra_adres.postc_a AS POSTCODE,
+  htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
+  bra_woonplaats.woonplaatsnaam  AS WOONPLAATSNAAM_SIMPEL,
+  bra_adres.adresid       AS BAG_NUMMERAANDUIDING_ID,
+  bgr_verblijfsobject.verblijfsobjectid   AS BAG_VERBLIJFSOBJECT_ID
+FROM 
+  "BAGOWNER"."BRA_ADRES"@PBAG       bra_adres,
+  "BAGOWNER"."BRA_RUIMTE"@PBAG      bra_ruimte,
+  "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats,
+  "BAGOWNER"."BGR_VERBLIJFSOBJECTADRES"@PBAG bgr_verblijfsobjectadres,
+  "BAGOWNER"."BGR_VERBLIJFSOBJECT"@PBAG bgr_verblijfsobject
+WHERE bra_adres.ddeinde               IS NULL
+AND bra_adres.indactief               = 'J'
+AND bra_ruimte.ddeinde                IS NULL
+AND bra_ruimte.indactief              = 'J'
+AND bra_woonplaats.ddeinde            IS NULL
+AND bra_woonplaats.indactief          = 'J'
+AND bra_adres.indauthentiek           = 'J'
+AND bgr_verblijfsobject.ddeinde       IS NULL
+AND bgr_verblijfsobject.indactief     = 'J'
+AND bgr_verblijfsobject.indauthentiek = 'J' 
+AND bra_adres.ruimtenr                = bra_ruimte.ruimtenr
+AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
+AND bra_adres.adresnr                 = bgr_verblijfsobjectadres.adresnr
+AND bgr_verblijfsobject.vobjnr        = bgr_verblijfsobjectadres.vobjnr
+AND bgr_verblijfsobject.vobjvolgnr    = bgr_verblijfsobjectadres.vobjvolgnr
+-- ligplaatsen --
+UNION SELECT 
+  'ligplaats',
+  htmlunescape(bra_ruimte.ruimtenaam_d) AS RUIMTENAAM,
+  bra_ruimte.ruimtenaam AS RUIMTENAAM_SIMPEL,
+  htmlunescape(bra_ruimte.ruimtenaam_boco_d) AS RUIMTENAAM_BOCO,
+  UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_USIMPEL,
+  bra_adres.huisnr,
+  bra_adres.huislt,
+  bra_adres.toevoeging,
+  bra_adres.postc_n || bra_adres.postc_a, 
+  htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
+  bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
+  bra_adres.adresid,
+  bgr_ligplaats.ligplaatsid
+FROM
+  "BAGOWNER"."BRA_ADRES"@PBAG       bra_adres,
+  "BAGOWNER"."BRA_RUIMTE"@PBAG      bra_ruimte,  
+  "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats,
+  "BAGOWNER"."BGR_LIGPLAATSADRES"@PBAG bgr_ligplaatsadres,
+  "BAGOWNER"."BGR_LIGPLAATS"@PBAG bgr_ligplaats
+WHERE bra_adres.ddeinde        IS NULL
+AND bra_adres.indactief           = 'J'
+AND bra_ruimte.ddeinde           IS NULL
+AND bra_ruimte.indactief          = 'J'
+AND bra_woonplaats.ddeinde       IS NULL
+AND bra_woonplaats.indactief      = 'J'
+AND bra_adres.indauthentiek       = 'J'
+AND bgr_ligplaats.ddeinde        IS NULL
+AND bgr_ligplaats.indactief       = 'J'
+AND bgr_ligplaats.indauthentiek   = 'J'
+AND bra_adres.ruimtenr            = bra_ruimte.ruimtenr
+AND bra_ruimte.woonplaatsnr       = bra_woonplaats.woonplaatsnr
+AND bra_adres.adresnr             = bgr_ligplaatsadres.adresnr
+AND bgr_ligplaats.ligplaatsnr     = bgr_ligplaatsadres.ligplaatsnr
+AND bgr_ligplaats.ligplaatsvolgnr = bgr_ligplaatsadres.ligplaatsvolgnr
+-- ligplaatsen --
+UNION SELECT 
+  'standplaats',
+  htmlunescape(bra_ruimte.ruimtenaam_d) AS RUIMTENAAM,
+  bra_ruimte.ruimtenaam AS RUIMTENAAM_SIMPEL,
+  htmlunescape(bra_ruimte.ruimtenaam_boco_d) AS RUIMTENAAM_BOCO,
+  UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_USIMPEL,  
+  bra_adres.huisnr,
+  bra_adres.huislt,
+  bra_adres.toevoeging,
+  bra_adres.postc_n || bra_adres.postc_a,
+  htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
+  bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
+  bra_adres.adresid,
+  bgr_standplaats.standplaatsid
+FROM
+  "BAGOWNER"."BRA_ADRES"@PBAG       bra_adres,
+  "BAGOWNER"."BRA_RUIMTE"@PBAG      bra_ruimte,  
+  "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats,
+  "BAGOWNER"."BGR_STANDPLAATSADRES"@PBAG bgr_standplaatsadres,
+  "BAGOWNER"."BGR_STANDPLAATS"@PBAG bgr_standplaats    
+WHERE bra_adres.ddeinde            IS NULL
+AND bra_adres.indactief               = 'J'
+AND bra_ruimte.ddeinde               IS NULL
+AND bra_ruimte.indactief              = 'J'
+AND bra_woonplaats.ddeinde           IS NULL
+AND bra_woonplaats.indactief          = 'J'
+AND bra_adres.indauthentiek           = 'J'
+AND bgr_standplaats.ddeinde          IS NULL
+AND bgr_standplaats.indactief         = 'J'
+AND bgr_standplaats.indauthentiek     = 'J'
+AND bra_adres.ruimtenr                = bra_ruimte.ruimtenr
+AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
+AND bra_adres.adresnr                 = bgr_standplaatsadres.adresnr
+AND bgr_standplaats.standplaatsnr     = bgr_standplaatsadres.standplaatsnr
+AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr		</database-query>
+    </source>
+    <source id="gba">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-query>
+		  SELECT 
+			gba_tgbaadr.nopr,
+			gba_tgbaadr.rhs,
+			gba_tgbaadr.nhsr_lt,
+			gba_tgbaadr.khsr_tv,    
+			gba_tgbaadr.kpst_num || gba_tgbaadr.kpst_alf AS postkode,
+			gba_tgbaadr.nwpl_nm,
+			gba_tgbaadr.nid_nad,
+			gba_tgbaadr.nid_vbo
+		  FROM "PRODPIV"."GBA_TGBAADR"@PPIV gba_tgbaadr
+		  WHERE gba_tgbaadr.dadr_end IS NULL		  
       </database-query>
     </source>
     <source id="woz">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=;Password=;</database-connection>
-      <database-query>
-		SELECT DISTINCT			
-		  VGWOZ."STRAAT" AS openbareruimtenaam,
-		  VGWOZ."HUISNR" AS huisnr, 
-		  VGWOZ."HUISLT" AS huislt, 
-		  VGWOZ."TOEV" AS huistv,
-		  VGWOZ."POSTCODE" AS postcode,
-		  PBSPBT."WOONPLAATS" AS woonplaatsnaam  
-		FROM "VG"."VGWOZ"@PGVG VGWOZ 
-		LEFT OUTER JOIN "VG"."PBSPBT"@PGVG PBSPBT 
-		ON VGWOZ."POSTCODE"=PBSPBT."POSTKODE" 
-		AND VGWOZ."HUISNR"=PBSPBT."HUISNR" 
-		AND VGWOZ."STRAAT"=PBSPBT."STRAAT"
-		WHERE VGWOZ."DATUM_EINDE" IS NULL
-      </database-query>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+		<database-query>
+SELECT DISTINCT
+  T1."IDENT" AS wozobjectid,
+  T1."STRAAT"  AS openbareruimtenaam,
+  T1."HUISNR" AS huisnr,
+  T1."HUISLT" AS huislt, 
+  T1."TOEV" AS huistv,
+  T1."AAND",
+  T1."POSTCODE" AS postcode,
+  T2."WOONPLAATS" AS woonplaatsnaam ,
+  T1."LOKATIE"
+FROM "VG"."VGWOZ"@PGVG T1 
+LEFT OUTER JOIN "VG"."PBSPBT"@PGVG T2 
+  ON T1."POSTCODE"=T2."POSTKODE" 
+  AND T1."HUISNR"=T2."HUISNR" 
+  AND T1."STRAAT"=T2."STRAAT"
+WHERE T1."DATUM_EINDE" IS NULL
+-- order by "c1" asc
+		</database-query>	  
     </source>
   </sources>
   <compare reference="bag" analysis="woz" primary="postcode-huisnummer">

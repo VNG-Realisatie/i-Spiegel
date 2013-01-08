@@ -13,12 +13,12 @@
         <AnalysisType>VergunningenEnHandhavingssysteem</AnalysisType>
         <CaseSensitiveMatching>false</CaseSensitiveMatching>
         <AdditionalMatching>false</AdditionalMatching>
-        <ReferenceFilePath>C:\applications\vergelijker\BAG_VERGUNNING\bag.csv</ReferenceFilePath>
+        <ReferenceFilePath>C:\tools\data\BAG_VERGUNNING\bag.csv</ReferenceFilePath>
         <ReferenceFileSeparator>;</ReferenceFileSeparator>
         <ReferenceDatePicker>4-12-2012 0:00:00</ReferenceDatePicker>
         <ReferenceSourceAppProvider>https://code.google.com/p/i-spiegel/</ReferenceSourceAppProvider>
         <ReferenceSourceAppName>https://code.google.com/p/i-spiegel/</ReferenceSourceAppName>
-        <AnalysisFilePath>C:\applications\vergelijker\BAG_VERGUNNING\vergunning.csv</AnalysisFilePath>
+        <AnalysisFilePath>C:\tools\data\BAG_VERGUNNING\vergunning.csv</AnalysisFilePath>
         <AnalysisFileSeparator>;</AnalysisFileSeparator>
         <AnalysisDatePicker>4-12-2012 0:00:00</AnalysisDatePicker>
         <AnalysisSourceAppProvider>https://code.google.com/p/i-spiegel/</AnalysisSourceAppProvider>

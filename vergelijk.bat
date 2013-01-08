@@ -22,5 +22,12 @@ REM === EN I-SPIEGEL BESTAND KLAARZETTEN
 start i-spiegel\i-SpiegelBatch.exe config\BAG_PREVENT.i-spiegel
 
 REM === BAG KVK VERGELIJKING ===
-bin\RegistratieVergelijker.exe config\BAG_KVK.xrv > BAG_KVK.LOG
-pause
+bin\RegistratieVergelijker.exe config\BAG_KVK.xrv > log\BAG_KVK.LOG
+
+
+
+
+REM === BAG KEY2PARKEREN VERGELIJKING ===
+bin\RegistratieVergelijker.exe config\GBA_K2P.xrv > log\GBA_K2P.LOG
+bin\RegistratieVergelijker.exe config\DDS_NNP_K2P.xrv > log\DDS_NNP_K2P.LOG
+bin\RegistratieVergelijker.exe config\DDS_NP_K2P.xrv > log\DDS_NP_K2P.LOG

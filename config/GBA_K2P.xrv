@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- comment logging for output to commandline -->
+  <logging>
+    <database-provider>System.Data.OracleClient</database-provider>
+    <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+  </logging>
+  <sources>
+    <source id="gba">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <!-- <database-connection>Data Source=tpiv1900;User Id=testpiv;Password=T19swF00;</database-connection> -->
+	  <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-query>
+SELECT 
+  T1."BSN",
+  T1."GEBOORTEDATUM", 
+  T1."VOORLETTERS", 
+  T1."VOORVOEGSEL", 
+  T1."GESLACHTSNAAM", 
+  T1."GEMEENTEKODE", 
+  T1."STRAATNAAM", 
+  T1."HUISNUMMER", 
+  T1."HUISLETTER", 
+  T1."TOEVOEGING_HUISNUMMER", 
+  T1."AANDUIDING_HUISNUMMER", 
+  T1."OMSCHRIJVING_LOKATIE", 
+  T1."POSTKODE_NUMERIEK" || T1."POSTKODE_ALFANUMERIEK" AS POSTCODE, 
+  T2."GEMEENTEDEEL" AS WOONPLAATS,
+  T2."IDENT_VERBLIJFPLAATS", 
+  T2."IDENT_NUMMERAANDUIDING"
+FROM
+  "PRODPIV"."GBA_VSELAKTP"@PPIV T1,
+  "PRODPIV"."GBA_VSELADRS"@PPIV T2
+WHERE T1."SYSTEEMNUMMER_ADRES" = T2."SYSTEEMNUMMER_ADRES" 
+		</database-query>
+    </source>
+    <source id="k2p">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=ppar1900;User Id=prodpar;Password=;</database-connection>
+<!--	  
+      <database-query>
+SELECT DISTINCT
+  T1."KODE_PRODUCTSOORT",
+  T1."OMSCH_PRODUCTSOORT",
+  T1."OPGEMAAKTE_DATUM_AANVRAAG",
+  T1."OPGEMAAKTE_EINDDATUM_PRODUKT",
+  T2."BEDRAG_TARIEF",
+  T2."BEDRAG_LEGES",
+  T2."TOTAALBEDRAG",
+  T1."PRODUCTNUMMER",
+  T3."SUBJECTNUMMER",
+  T3."OPGEMAAKTE_NAAM",
+  T1."KENTEKEN_1",
+  T1."KENTEKEN_2",
+  T1."KENTEKEN_3",
+  T1."KENTEKENTEKST",
+  T4."STRAATNAAM",
+  T4."HUISNUMMER",
+  T4."HUISNUMMER_LETTER",
+  T4."HUISNUMMER_TOEVOEGING",
+  T4."HUISNUMMER_AANDUIDING",
+  T4."POSTCODE_NUMMER" || T4."POSTCODE_LETTER" AS POSTCODE,
+  T4."GEMEENTEKODE",
+  T4."GEMEENTENAAM",
+  T4."WOONPLAATS",
+  T5."KODE_ADRESSOORT",
+  T3."GEBOORTEDATUM",
+  T3."BURGERSERVICENUMMER",
+  T5."OMS_ADRESSOORT"
+FROM "PVS_VIMP_KWITANTIE" T2, "ADR_VIMP_ADRES" T4, "PVS_VIMP_VERGUNNING" T1 
+
+LEFT OUTER JOIN "PVS_VIMP_VERGUNNINGREGEL" T6 
+  on T1."KODE_GEBRUIKER"=T6."KODE_GEBRUIKER" 
+  and T1."PRODUCTNUMMER"=T6."PRODUCTNUMMER", "SUB_VIMP_SUBJECT" T3 
+
+LEFT OUTER JOIN "SUB_VIMP_SUBJECT_ADRES" T5 
+  on T3."KODE_GEBRUIKER"=T5."KODE_GEBRUIKER" 
+  and T3."SUBJECTNUMMER"=T5."SUBJECTNUMMER"
+
+where T2."KODE_GEBRUIKER"=T6."KODE_GEBRUIKER" 
+and T2."PRODUCTNUMMER"=T6."PRODUCTNUMMER" 
+and T2."REGELNUMMER_KWITANTIE"=T6."REGELNUMMER_KWITANTIE" 
+and T3."KODE_GEBRUIKER"=T1."KODE_GEBRUIKER" 
+and T3."SUBJECTNUMMER"=T1."SUBJECTNUMMER" 
+and T5."KODE_GEBRUIKER"=T4."KODE_GEBRUIKER" 
+and T5."SYSTEEMNUMMER_ADRES"=T4."SYSTEEMNUMMER_ADRES"
+AND T4."EINDDATUM" is null
+- gba alleen
+AND T3."INDICATIE_NAT_PERSOON" = 'J'
+AND T4."GEMEENTEKODE" = 1900
+- voor vrijdag
+-AND (T1."KODE_GEBIED"=22 or T1."KODE_GEBIED"=1)
+      </database-query>
+-->
+      <database-query>
+SELECT   
+  pvs_tvergunning.kgbr,
+  pvs_tvergunning.rvergunning,
+  pvs_tvergunning.nbestuurder,
+------------------------------
+  sub_tnpers.rsofi,
+  sub_tnpers.nvoor,
+  sub_tnpers.nvoorlt,
+  sub_tnpers.nvoorvg,
+  sub_tnpers.ngsl,
+  sub_tnpers.dgeb,
+  sub_tnpers.itype,
+------------------------------
+  adr_tadres.nstr,
+  adr_tadres.rhs,
+  adr_tadres.nhsrlt,
+  adr_tadres.khsrtv,
+  adr_tadres.kpstnum || adr_tadres.kpstalf AS postcode,
+  adr_tadres.nwpl,
+  adr_tadres.nwplbag,
+  adr_tadres.oidnnummeraand,
+  adr_tadres.identtgo
+------------------------------
+FROM pvs_tvergunning
+JOIN sub_tnpers
+  ON sub_tnpers.rsbj = pvs_tvergunning.rsbj
+  -- AND sub_tnpers.deinde IS NULL
+JOIN sub_tsbjadr
+  ON sub_tsbjadr.rsbj = pvs_tvergunning.rsbj
+  AND sub_tsbjadr.deinde IS NULL
+JOIN adr_tadres
+  ON adr_tadres.rsysadr = sub_tsbjadr.rsysadr
+  AND adr_tadres.deinde IS NULL
+WHERE adr_tadres.KGEM = 1900
+AND NOT NSTR LIKE 'Postbus'
+      </database-query>
+    </source>
+  </sources>
+  <compare reference="gba" analysis="k2p" primary="bsn">
+    <match id="bsn">
+      <field name="burgerservicenummer" reference-field="BSN" analysis-field="rsofi" />
+    </match>
+    <match id="postcode-huisnummer">
+	  <field name="postcode" reference-field="POSTCODE" analysis-field="postcode" />
+	
+      <field name="huisnummer" reference-field="HUISNUMMER" analysis-field="rhs" />
+	  <field name="huisletter" reference-field="HUISLETTER" analysis-field="nhsrlt" />
+	  <field name="huisnummertoevoeging" reference-field="TOEVOEGING_HUISNUMMER" analysis-field="khsrtv" />
+	  <!-- <field name="huisnummeraanduiding" reference-field="AANDUIDING_HUISNUMMER" analysis-field="HUISNUMMER_AANDUIDING" /> -->
+    </match>
+	
+    <match id="openbare-ruimte">
+      <field name="openbareruimtenaam" reference-field="STRAATNAAM" analysis-field="nstr" />
+    </match>
+	
+    <match id="woonplaats">
+      <field name="woonplaatsnaam" reference-field="WOONPLAATS" analysis-field="nwpl" />
+    </match>	
+  </compare>
+</registratie-vergelijker>
