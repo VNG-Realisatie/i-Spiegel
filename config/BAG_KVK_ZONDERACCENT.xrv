@@ -129,34 +129,42 @@ AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
     </source>
     <source id="kvk">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
       <database-query>
-		SELECT DISTINCT *
-		FROM (
-		  SELECT
-			Straatnaam,
-			Huisnummer,
-			toevoeging,
-			postkode,
-			woonplaats
-		  FROM KVK.kvk_nw
-		  UNION
-		  SELECT
-			Straatnaam_cor,
-			Huisnummer_cor,
-			toevoeging_cor,
-			postkode_cor,
-			woonplaats_cor
-		  FROM KVK.kvk_nw
-		)
-		WHERE Woonplaats IN 
-		(
-		  SELECT bra_woonplaats.woonplaatsnaam
-		  FROM "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats
-		  WHERE bra_woonplaats.gemeentenr = 200018
-		  AND bra_woonplaats.ddeinde IS NULL
-		)
-		AND NOT STRAATNAAM LIKE('Postbus')		
+SELECT DISTINCT kvkadres.*
+FROM (
+  SELECT
+    DOSSIERNUMMER, 
+    HANDELSNAAM,
+    Straatnaam,
+    Huisnummer,
+    toevoeging,
+    postkode,
+    woonplaats
+    FROM KVK.kvk_nw
+  UNION
+  SELECT
+    DOSSIERNUMMER, 
+    HANDELSNAAM,
+    Straatnaam_cor,
+    Huisnummer_cor,
+    toevoeging_cor,
+    postkode_cor,
+    woonplaats_cor
+    FROM KVK.kvk_nw
+) kvkadres
+LEFT JOIN "BAGOWNER"."BRA_WOONPLAATS"@PBAG  bra_woonplaats
+ON bra_woonplaats.woonplaatsnaam = kvkadres.woonplaats 
+WHERE /*
+  bra_woonplaats.woonplaatsnaam IS NULL 
+OR */
+(
+    bra_woonplaats.gemeentenr = 200018
+  AND
+    bra_woonplaats.ddeinde IS NULL
+  AND 
+    NOT kvkadres.STRAATNAAM LIKE('Postbus')
+)	
       </database-query>
     </source>
   </sources>

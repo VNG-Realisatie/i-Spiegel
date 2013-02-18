@@ -13,16 +13,20 @@
 -- verblijfsobjecten --
 SELECT
   'verblijfsobject' AS ADRESTYPE,
+/*  
   htmlunescape(bra_ruimte.ruimtenaam_d) AS RUIMTENAAM,
   bra_ruimte.ruimtenaam AS RUIMTENAAM_SIMPEL,
   htmlunescape(bra_ruimte.ruimtenaam_boco_d) AS RUIMTENAAM_BOCO,
+*/  
   UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_USIMPEL,
   bra_adres.huisnr        AS HUISNR,
   bra_adres.huislt        AS HUISLT,
   bra_adres.toevoeging    AS TOEVOEGING,
   bra_adres.postc_n || bra_adres.postc_a AS POSTCODE,
+/*  
   htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
   bra_woonplaats.woonplaatsnaam  AS WOONPLAATSNAAM_SIMPEL,
+*/  
   UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,  
   bra_adres.adresid       AS BAG_NUMMERAANDUIDING_ID,
   bgr_verblijfsobject.verblijfsobjectid   AS BAG_VERBLIJFSOBJECT_ID
@@ -50,16 +54,20 @@ AND bgr_verblijfsobject.vobjvolgnr    = bgr_verblijfsobjectadres.vobjvolgnr
 -- ligplaatsen --
 UNION SELECT 
   'ligplaats',
+/*  
   htmlunescape(bra_ruimte.ruimtenaam_d) AS RUIMTENAAM,
   bra_ruimte.ruimtenaam AS RUIMTENAAM_SIMPEL,
   htmlunescape(bra_ruimte.ruimtenaam_boco_d) AS RUIMTENAAM_BOCO,
+*/  
   UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_USIMPEL,
   bra_adres.huisnr,
   bra_adres.huislt,
   bra_adres.toevoeging,
-  bra_adres.postc_n || bra_adres.postc_a, 
+  bra_adres.postc_n || bra_adres.postc_a,
+/*  
   htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
   bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
+*/  
   UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,    
   bra_adres.adresid,
   bgr_ligplaats.ligplaatsid
@@ -87,16 +95,20 @@ AND bgr_ligplaats.ligplaatsvolgnr = bgr_ligplaatsadres.ligplaatsvolgnr
 -- ligplaatsen --
 UNION SELECT 
   'standplaats',
+/*  
   htmlunescape(bra_ruimte.ruimtenaam_d) AS RUIMTENAAM,
   bra_ruimte.ruimtenaam AS RUIMTENAAM_SIMPEL,
   htmlunescape(bra_ruimte.ruimtenaam_boco_d) AS RUIMTENAAM_BOCO,
+*/
   UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_USIMPEL,  
   bra_adres.huisnr,
   bra_adres.huislt,
   bra_adres.toevoeging,
   bra_adres.postc_n || bra_adres.postc_a,
+/*
   htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
   bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
+*/  
   UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,    
   bra_adres.adresid,
   bgr_standplaats.standplaatsid
@@ -138,6 +150,7 @@ AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
 			gba_tgbaadr.nid_vbo
 		  FROM "PRODPIV"."GBA_TGBAADR"@PPIV gba_tgbaadr
 		  WHERE gba_tgbaadr.dadr_end IS NULL
+		  AND NOT (gba_tgbaadr.rhs = 1 AND gba_tgbaadr.nhsr_lt = 'Z') -- hele straat 
       </database-query>
     </source>
     <source id="prevent">

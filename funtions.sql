@@ -1,5 +1,4 @@
-create or replace 
-FUNCTION HTMLUNESCAPE
+CREATE OR REPLACE FUNCTION HTMLUNESCAPE
 (
   INCOMING IN VARCHAR2  
 ) RETURN VARCHAR2 AS 
@@ -23,3 +22,4 @@ BEGIN
         ,'&#0224;', 'à')        
       ,'&#0239;', 'ï');
 END HTMLUNESCAPE;
+

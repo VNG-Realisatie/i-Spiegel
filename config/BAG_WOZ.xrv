@@ -119,23 +119,6 @@ AND bra_adres.adresnr                 = bgr_standplaatsadres.adresnr
 AND bgr_standplaats.standplaatsnr     = bgr_standplaatsadres.standplaatsnr
 AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr		</database-query>
     </source>
-    <source id="gba">
-      <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
-      <database-query>
-		  SELECT 
-			gba_tgbaadr.nopr,
-			gba_tgbaadr.rhs,
-			gba_tgbaadr.nhsr_lt,
-			gba_tgbaadr.khsr_tv,    
-			gba_tgbaadr.kpst_num || gba_tgbaadr.kpst_alf AS postkode,
-			gba_tgbaadr.nwpl_nm,
-			gba_tgbaadr.nid_nad,
-			gba_tgbaadr.nid_vbo
-		  FROM "PRODPIV"."GBA_TGBAADR"@PPIV gba_tgbaadr
-		  WHERE gba_tgbaadr.dadr_end IS NULL		  
-      </database-query>
-    </source>
     <source id="woz">
       <database-provider>System.Data.OracleClient</database-provider>
       <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>

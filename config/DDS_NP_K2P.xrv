@@ -31,7 +31,7 @@ ON DDS_PRS_OPSLAG.adrnrcor = DDS_ADR_OPSLAG.adrnr
     </source>
     <source id="k2p">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=ppar1900;User Id=prodpar;Password=;</database-connection>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
       <database-query>
 SELECT   
   pvs_tvergunning.kgbr,
@@ -56,14 +56,14 @@ SELECT
   adr_tadres.oidnnummeraand,
   adr_tadres.identtgo
 ------------------------------
-FROM pvs_tvergunning
-JOIN sub_tnpers
+FROM PRODPAR.pvs_tvergunning@PPAR pvs_tvergunning
+JOIN PRODPAR.sub_tnpers@PPAR sub_tnpers
   ON sub_tnpers.rsbj = pvs_tvergunning.rsbj
   -- AND sub_tnpers.deinde IS NULL
-JOIN sub_tsbjadr
+JOIN PRODPAR.sub_tsbjadr@PPAR sub_tsbjadr
   ON sub_tsbjadr.rsbj = pvs_tvergunning.rsbj
   AND sub_tsbjadr.deinde IS NULL
-JOIN adr_tadres
+JOIN PRODPAR.adr_tadres@PPAR adr_tadres
   ON adr_tadres.rsysadr = sub_tsbjadr.rsysadr
   AND adr_tadres.deinde IS NULL
 WHERE NOT adr_tadres.KGEM = 1900
