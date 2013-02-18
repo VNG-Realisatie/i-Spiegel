@@ -8,7 +8,6 @@
   <sources>
     <source id="gba">
       <database-provider>System.Data.OracleClient</database-provider>
-      <!-- <database-connection>Data Source=tpiv1900;User Id=testpiv;Password=T19swF00;</database-connection> -->
 	  <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
       <database-query>
 SELECT 

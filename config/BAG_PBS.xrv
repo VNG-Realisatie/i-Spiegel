@@ -122,7 +122,7 @@ AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
     </source>
     <source id="pbs">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
       <database-query>
 		SELECT 
 			POSTKODE,
