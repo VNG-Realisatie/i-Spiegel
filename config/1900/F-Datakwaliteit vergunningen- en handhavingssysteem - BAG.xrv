@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- comment logging for output to commandline -->
+  <logging>
+    <database-provider>System.Data.OracleClient</database-provider>
+    <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+  </logging>
+  <sources>
+    <source id="bag">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-query queryfile="C:\tools\config\1900\R7.1.sql" />
+    </source>
+    <source id="vergunningen">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-query queryfile="C:\tools\config\1900\OF.sql" />
+    </source>
+  </sources>
+  <compare reference="bag" analysis="vergunningen" primary="postcode-huisnummer">
+    <match id="postcode-huisnummer">
+      <field name="postcode" reference-field="POSTCODE" analysis-field="postcode" />
+      <field name="huisnummer" reference-field="HUISNR" analysis-field="huisnummer" />
+      <field name="huisletter" reference-field="HUISLT" analysis-field="huisletter" />
+      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="huisnummertoevoeging" />
+    </match>
+    <match id="openbare-ruimte">
+      <field name="openbareruimtenaam" reference-field="RUIMTENAAM" analysis-field="openbareruimtenaam" />
+    </match>
+  </compare>
+</registratie-vergelijker>

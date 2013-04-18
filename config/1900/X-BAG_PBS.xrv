@@ -3,12 +3,12 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+    <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
   </logging>
   <sources>
     <source id="bag">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query>
 -- verblijfsobjecten --
 SELECT
@@ -118,53 +118,45 @@ AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
 AND bra_adres.adresnr                 = bgr_standplaatsadres.adresnr
 AND bgr_standplaats.standplaatsnr     = bgr_standplaatsadres.standplaatsnr
 AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
-		</database-query>
+      </database-query>
     </source>
-    <source id="gba">
+    <source id="pbs">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
+      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query>
-SELECT 
-  T1."BSN",
-  T1."GEBOORTEDATUM", 
-  T1."VOORLETTERS", 
-  T1."VOORVOEGSEL", 
-  T1."GESLACHTSNAAM", 
-  T1."GEMEENTEKODE", 
-  T1."STRAATNAAM", 
-  T2."NAAM_OPENBARE_RUIMTE", 
-  T1."HUISNUMMER", 
-  T1."HUISLETTER", 
-  T1."TOEVOEGING_HUISNUMMER", 
-  T1."AANDUIDING_HUISNUMMER", 
-  T1."OMSCHRIJVING_LOKATIE", 
-  T1."POSTKODE_NUMERIEK" || T1."POSTKODE_ALFANUMERIEK" AS POSTCODE, 
-  T2."GEMEENTEDEEL" AS WOONPLAATS,
-  T2."IDENT_VERBLIJFPLAATS", 
-  T2."IDENT_NUMMERAANDUIDING"
-FROM
-  "PRODPIV"."GBA_VSELAKTP"@PPIV T1,
-  "PRODPIV"."GBA_VSELADRS"@PPIV T2
-WHERE T1."SYSTEEMNUMMER_ADRES" = T2."SYSTEEMNUMMER_ADRES"
+		SELECT 
+			POSTKODE,
+			HUISNR,
+			HUISLT,
+			HUISTV,
+			HUISAD,
+			STRAAT,
+			WOONPLAATS,
+			LANDNAAM,
+			IDENT_PBT,
+			IDENT_WPL,
+			IDENT_TGO,
+			IDENT_NA,
+			IDENT_OBR
+		FROM  VG.PBSPBT@PGVG PBSPBT
+		WHERE gemkd_gem = 1900
+		AND DATUM_EINDE IS NULL
       </database-query>
     </source>
   </sources>
-  <compare reference="bag" analysis="gba" primary="postcode-huisnummer">
+  <compare reference="bag" analysis="pbs" primary="postcode-huisnummer">
     <match id="postcode-huisnummer">
-      <field name="postcode" reference-field="POSTCODE" analysis-field="POSTCODE" />
-      <field name="huisnummer" reference-field="HUISNR" analysis-field="HUISNUMMER" />
-      <field name="huisletter" reference-field="HUISLT" analysis-field="HUISLETTER" />
-      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="TOEVOEGING_HUISNUMMER" />
+      <field name="postcode" reference-field="POSTCODE" analysis-field="POSTKODE" />
+      <field name="huisnummer" reference-field="HUISNR" analysis-field="HUISNR" />
+      <field name="huisletter" reference-field="HUISLT" analysis-field="HUISLT" />
+      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="HUISTV" />
     </match>
     <match id="openbare-ruimte">
-      <field name="openbareruimtenaam" reference-field="RUIMTENAAM" analysis-field="NAAM_OPENBARE_RUIMTE" />
+      <field name="openbareruimtenaam" reference-field="RUIMTENAAM" analysis-field="STRAAT" />
     </match>
-    <match id="woonplaats">
-      <field name="woonplaatsnaam" reference-field="WOONPLAATSNAAM" analysis-field="WOONPLAATS" />
-    </match>	
     <match id="bagobjecten">
-      <field name="adressseerbaarobjectid" reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="IDENT_VERBLIJFPLAATS" />
-      <field name="nummeraanduidingid" reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="IDENT_NUMMERAANDUIDING" />
+      <field  name="adressseerbaarobjectid" reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="IDENT_TGO" />
+      <field  name="nummeraanduidingid" reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="IDENT_NA" />
     </match>
   </compare>
 </registratie-vergelijker>

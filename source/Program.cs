@@ -31,6 +31,7 @@ namespace RegistratieVergelijker
                 }
                 XPathNavigator configuration;
                 {
+                    System.Console.Out.WriteLine("configurationfile: " + configurationfile.FullName);
                     XPathDocument document = new XPathDocument(configurationfile.FullName);
                     configuration = document.CreateNavigator();
                 }
@@ -79,7 +80,8 @@ namespace RegistratieVergelijker
                 #region matching
                 foreach (XPathNavigator field in configuration.Select("//field"))
                 {
-                    if (!reference.table.Columns.Contains(field.SelectSingleNode("@reference-field").Value))
+                    XPathNavigator referencefield = field.SelectSingleNode("@reference-field");
+                    if (referencefield != null && !reference.table.Columns.Contains(referencefield.Value))
                     {
                         System.Console.Error.WriteLine("reference-column:" + field.SelectSingleNode("@reference-field").Value + " not found in:");
                         foreach (var name in reference.table.Columns) System.Console.Error.WriteLine("\t" + name.ToString());
@@ -91,7 +93,8 @@ namespace RegistratieVergelijker
 
                         throw new InvalidDataException("reference-column:" + field.SelectSingleNode("@reference-field").Value + " not found ");
                     }
-                    if (!analysis.table.Columns.Contains(field.SelectSingleNode("@analysis-field").Value))
+                    XPathNavigator analysisfield = field.SelectSingleNode("@analysis-field");
+                    if (analysisfield != null && !analysis.table.Columns.Contains(analysisfield.Value))
                     {
                         System.Console.Error.WriteLine("analysis-column:" + field.SelectSingleNode("@analysis-field").Value + " not found in:");
                         foreach (var name in analysis.table.Columns) System.Console.Error.WriteLine("\t" + name.ToString());
@@ -106,6 +109,7 @@ namespace RegistratieVergelijker
                 }
                 System.Console.WriteLine("[check] field references correct");
                 #endregion
+
                 // export into csv, so we can use i-spiegel
                 #region export csv
                 {
@@ -120,15 +124,27 @@ namespace RegistratieVergelijker
                     foreach (XPathNavigator field in compareconfig.Select("//field"))
                     {
                         n.Add(field.SelectSingleNode("@name").Value);
-                        r.Add(field.SelectSingleNode("@reference-field").Value);
-                        a.Add(field.SelectSingleNode("@analysis-field").Value);
+                        if (field.SelectSingleNode("@reference-field") != null)
+                        {
+                            r.Add(field.SelectSingleNode("@reference-field").Value);
+                        }
+                        else
+                        {
+                            r.Add(null);
+                        }
+                        if (field.SelectSingleNode("@analysis-field") != null)
+                        {
+                            a.Add(field.SelectSingleNode("@analysis-field").Value);
+                        }
+                        else {
+                            a.Add(null);
+                        }
                     }
                     System.Console.WriteLine("[export] exporting the data");
                     reference.Export(r, n, exportdirectory, compareconfig.SelectSingleNode("@reference").Value);
                     analysis.Export(a, n, exportdirectory, compareconfig.SelectSingleNode("@analysis").Value);
                 }
                 #endregion
-
 
                 // matches
                 #region build matchers

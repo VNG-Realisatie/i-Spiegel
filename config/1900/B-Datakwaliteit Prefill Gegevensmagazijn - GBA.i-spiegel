@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<I-Spiegel-Batch-Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <User-Settings>
+        <Name>Eduard Yeb Witteveen</Name>
+        <Municipality>1900</Municipality>
+        <Email>e.witteveen@gemeenteswf.nl</Email>
+        <Function>Uitvoerend</Function>
+    </User-Settings>
+    <Import-Settings>
+        <SearchMethod>PersonRelated</SearchMethod>
+        <Indicator>DatakwaliteitPrefillGegevensmagazijnGBA</Indicator>
+        <ReferenceType>GBA</ReferenceType>
+        <AnalysisType>Gegevensmagazijn</AnalysisType>
+        <CaseSensitiveMatching>false</CaseSensitiveMatching>
+        <AdditionalMatching>false</AdditionalMatching>
+        <ReferenceFilePath>C:\tools\data\B-Datakwaliteit Prefill Gegevensmagazijn - GBA\gba.csv</ReferenceFilePath>
+        <ReferenceFileSeparator>;</ReferenceFileSeparator>
+        <ReferenceDatePicker>4-3-2013 0:00:00</ReferenceDatePicker>
+        <ReferenceSourceAppProvider>123</ReferenceSourceAppProvider>
+        <ReferenceSourceAppName>123</ReferenceSourceAppName>
+        <AnalysisFilePath>C:\tools\data\B-Datakwaliteit Prefill Gegevensmagazijn - GBA\gegevensmagzijn.csv</AnalysisFilePath>
+        <AnalysisFileSeparator>;</AnalysisFileSeparator>
+        <AnalysisDatePicker>4-3-2013 0:00:00</AnalysisDatePicker>
+        <AnalysisSourceAppProvider>123</AnalysisSourceAppProvider>
+        <AnalysisSourceAppName>123</AnalysisSourceAppName>
+    </Import-Settings>
+    <Reference-Column-Settings>
+        <Columns>
+            <Column>0,LastName</Column>
+            <Column>1,LastNamePrefix</Column>
+            <Column>2,DateOfBirth</Column>
+            <Column>3,PlaceOfBirth</Column>
+            <Column>4,PostalCode</Column>
+            <Column>5,HouseNumber</Column>
+            <Column>6,HouseNumberCharacter</Column>
+            <Column>7,HouseNumberAppendix</Column>
+            <Column>8,Gender</Column>
+            <Column>9,ANumber</Column>
+            <Column>10,BSN</Column>
+        </Columns>
+    </Reference-Column-Settings>
+    <Anlaysis-Column-Settings>
+        <Columns>
+            <Column>0,LastName</Column>
+            <Column>1,LastNamePrefix</Column>
+            <Column>2,DateOfBirth</Column>
+            <Column>3,PlaceOfBirth</Column>
+            <Column>4,PostalCode</Column>
+            <Column>5,HouseNumber</Column>
+            <Column>6,HouseNumberCharacter</Column>
+            <Column>7,HouseNumberAppendix</Column>
+            <Column>8,Gender</Column>
+            <Column>10,BSN</Column>
+            <Column>11,ANumber</Column>
+        </Columns>
+    </Anlaysis-Column-Settings>
+</I-Spiegel-Batch-Settings>

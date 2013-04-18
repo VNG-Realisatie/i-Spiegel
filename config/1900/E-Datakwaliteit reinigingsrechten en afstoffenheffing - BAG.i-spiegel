@@ -8,21 +8,21 @@
     </User-Settings>
     <Import-Settings>
         <SearchMethod>ObjectAddress</SearchMethod>
-        <Indicator>DatakwaliteitBAGWOZ</Indicator>
+        <Indicator>DatakwaliteitReiningingsrechtenEnAfvalstoffenheffingBAG</Indicator>
         <ReferenceType>BAG</ReferenceType>
-        <AnalysisType>WOZ</AnalysisType>
+        <AnalysisType>ReinigingsrechtenEnAfvalstoffenheffing</AnalysisType>
         <CaseSensitiveMatching>false</CaseSensitiveMatching>
         <AdditionalMatching>false</AdditionalMatching>
-        <ReferenceFilePath>C:\tools\data\BAG_WOZ\bag.csv</ReferenceFilePath>
+        <ReferenceFilePath>C:\tools\data\E-Datakwaliteit reinigingsrechten en afstoffenheffing - BAG\bag.csv</ReferenceFilePath>
         <ReferenceFileSeparator>;</ReferenceFileSeparator>
-        <ReferenceDatePicker>4-12-2012 0:00:00</ReferenceDatePicker>
-        <ReferenceSourceAppProvider>https://code.google.com/p/i-spiegel/</ReferenceSourceAppProvider>
-        <ReferenceSourceAppName>https://code.google.com/p/i-spiegel/</ReferenceSourceAppName>
-        <AnalysisFilePath>C:\tools\data\BAG_WOZ\woz.csv</AnalysisFilePath>
+        <ReferenceDatePicker>4-3-2013 0:00:00</ReferenceDatePicker>
+        <ReferenceSourceAppProvider>123</ReferenceSourceAppProvider>
+        <ReferenceSourceAppName>123</ReferenceSourceAppName>
+        <AnalysisFilePath>C:\tools\data\E-Datakwaliteit reinigingsrechten en afstoffenheffing - BAG\reiniging.csv</AnalysisFilePath>
         <AnalysisFileSeparator>;</AnalysisFileSeparator>
-        <AnalysisDatePicker>4-12-2012 0:00:00</AnalysisDatePicker>
-        <AnalysisSourceAppProvider>https://code.google.com/p/i-spiegel/</AnalysisSourceAppProvider>
-        <AnalysisSourceAppName>https://code.google.com/p/i-spiegel/</AnalysisSourceAppName>
+        <AnalysisDatePicker>4-3-2013 0:00:00</AnalysisDatePicker>
+        <AnalysisSourceAppProvider>123</AnalysisSourceAppProvider>
+        <AnalysisSourceAppName>123</AnalysisSourceAppName>
     </Import-Settings>
     <Reference-Column-Settings>
         <Columns>

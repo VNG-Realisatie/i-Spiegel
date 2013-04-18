@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- comment logging for output to commandline -->
+  <logging>
+    <database-provider>System.Data.OracleClient</database-provider>
+    <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+  </logging>
+  <sources>
+    <source id="gba">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-query queryfile="C:\tools\config\1900\R2.sql" />
+    </source>
+    <source id="gws">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-query queryfile="C:\tools\config\1900\O2.sql" />
+    </source>
+  </sources>
+  <compare reference="gba" analysis="gws" primary="geslachtsnaam-geboortedatum-geboorteplaats">
+    <match id="geslachtsnaam-geboortedatum-geboorteplaats">
+      <field name="geslachtsnaam" reference-field="geslachtsnaam" analysis-field="geslachtsnaam" />
+      <field name="voorvoegsel-geslachtsnaam" reference-field="voorvoegsel" analysis-field="voorvoegsels" />
+	  <field name="geboortedatum" reference-field="geboortedatum" analysis-field="geboortedatum" />
+	  <field name="geboorteplaats" reference-field="geboorteplaats" analysis-field="geboorteplaats" />
+    </match>  
+    <match id="postcode-huisnummer">
+      <field name="postcode" reference-field="postcode" analysis-field="postcode" />
+      <field name="huisnummer" reference-field="huisnummer" analysis-field="huisnummer" />
+      <field name="huisletter" reference-field="huisletter" analysis-field="huisletter" />
+      <field name="huisnummertoevoeging" reference-field="huisnummertoevoeging" analysis-field="huisnr_toev" />
+    </match>
+    <match id="geslacht">
+      <field name="geslacht" reference-field="geslacht" analysis-field="geslacht" />
+    </match>	
+    <match id="openbare-ruimte">
+      <field name="openbareruimtenaam" reference-field="openbareruimtenaam" analysis-field="straat" />
+    </match>
+    <match id="bsn">
+      <field name="bsn" reference-field="bsn" analysis-field="bsn" />
+    </match>
+    <match id="a-nummer">
+      <field name="a-nummer" reference-field="anummer" analysis-field="a_nummer" />
+    </match>
+    <export>
+		<field name="datum_huwelijkssluiting" reference-field="DATUM_HUWELIJK" />
+		<field name="datum_huwelijksontbinding" reference-field="DATUM_HUWELIJKSONTBINDING" />
+		<field name="datum_aanvang_uitkering" analysis-field="datum_aanvang_uitkering" />	
+    </export>	
+  </compare>
+</registratie-vergelijker>

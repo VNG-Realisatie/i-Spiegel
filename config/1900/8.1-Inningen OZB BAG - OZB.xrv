@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- comment logging for output to commandline -->
+  <logging>
+    <database-provider>System.Data.OracleClient</database-provider>
+    <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+  </logging>
+  <sources>
+    <source id="bag">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-query queryfile="C:\tools\config\1900\R7.1.sql" />
+    </source>
+    <source id="debiteuren">
+      <database-provider>System.Data.OracleClient</database-provider>
+      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-query queryfile="C:\tools\config\1900\O8.1.sql" />
+    </source>
+  </sources>
+  <compare reference="bag" analysis="debiteuren" primary="nummeraanduidingid">
+    <match id="nummeraanduidingid">
+      <field name="nummeraanduidingid" reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="IDENT_NUMMERAANDUIDING" />
+    </match>
+	<match id="adressseerbaarobjectid">
+      <field name="adressseerbaarobjectid" reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="IDENT_VERBLIJFPLAATS" />
+    </match>
+    <match id="postcode-huisnummer">
+      <field name="postcode" reference-field="POSTCODE" analysis-field="POSTCODE" />
+      <field name="huisnummer" reference-field="HUISNR" analysis-field="HUISNUMMER" />
+      <field name="huisletter" reference-field="HUISLT" analysis-field="HUISLETTER" />
+      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="TOEVOEGING_HUISNUMMER" />
+    </match>
+    <match id="openbare-ruimte">
+      <field name="openbareruimtenaam" reference-field="RUIMTENAAM" analysis-field="NAAM_OPENBARE_RUIMTE" />
+    </match>
+    <match id="woonplaats">
+      <field name="woonplaatsnaam" reference-field="WOONPLAATSNAAM" analysis-field="WOONPLAATS" />
+    </match>		
+  </compare>
+</registratie-vergelijker>

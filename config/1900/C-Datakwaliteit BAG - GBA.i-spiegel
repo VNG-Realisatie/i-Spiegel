@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<I-Spiegel-Batch-Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <User-Settings>
+        <Name>Eduard Yeb Witteveen</Name>
+        <Municipality>1900</Municipality>
+        <Email>e.witteveen@gemeenteswf.nl</Email>
+        <Function>Uitvoerend</Function>
+    </User-Settings>
+    <Import-Settings>
+        <SearchMethod>ObjectAddress</SearchMethod>
+        <Indicator>DatakwaliteitBAGGBA</Indicator>
+        <ReferenceType>BAG</ReferenceType>
+        <AnalysisType>GBA</AnalysisType>
+        <CaseSensitiveMatching>false</CaseSensitiveMatching>
+        <AdditionalMatching>false</AdditionalMatching>
+        <ReferenceFilePath>C:\tools\data\C-Datakwaliteit BAG - GBA\bag.csv</ReferenceFilePath>
+        <ReferenceFileSeparator>;</ReferenceFileSeparator>
+        <ReferenceDatePicker>4-3-2013 0:00:00</ReferenceDatePicker>
+        <ReferenceSourceAppProvider>123</ReferenceSourceAppProvider>
+        <ReferenceSourceAppName>123</ReferenceSourceAppName>
+        <AnalysisFilePath>C:\tools\data\C-Datakwaliteit BAG - GBA\gba.csv</AnalysisFilePath>
+        <AnalysisFileSeparator>;</AnalysisFileSeparator>
+        <AnalysisDatePicker>4-3-2013 0:00:00</AnalysisDatePicker>
+        <AnalysisSourceAppProvider>123</AnalysisSourceAppProvider>
+        <AnalysisSourceAppName>123</AnalysisSourceAppName>
+    </Import-Settings>
+    <Reference-Column-Settings>
+        <Columns>
+            <Column>0,NumberId</Column>
+            <Column>1,AddressableObjectId</Column>
+            <Column>2,PostalCode</Column>
+            <Column>3,HouseNumber</Column>
+            <Column>4,HouseNumberCharacter</Column>
+            <Column>5,HouseNumberAppendix</Column>
+            <Column>6,PublicSpaceName</Column>
+            <Column>7,Municipality</Column>
+        </Columns>
+    </Reference-Column-Settings>
+    <Anlaysis-Column-Settings>
+        <Columns>
+            <Column>0,NumberId</Column>
+            <Column>1,AddressableObjectId</Column>
+            <Column>2,PostalCode</Column>
+            <Column>3,HouseNumber</Column>
+            <Column>4,HouseNumberCharacter</Column>
+            <Column>5,HouseNumberAppendix</Column>
+            <Column>6,PublicSpaceName</Column>
+            <Column>7,Municipality</Column>
+        </Columns>
+    </Anlaysis-Column-Settings>
+</I-Spiegel-Batch-Settings>

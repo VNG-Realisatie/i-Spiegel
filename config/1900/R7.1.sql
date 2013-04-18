@@ -1,15 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <!-- comment logging for output to commandline -->
-  <logging>
-    <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
-  </logging>
-  <sources>
-    <source id="bag">
-      <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
-      <database-query>
+/*
+R7.1:
+	BAG - actuele adresseerbare objecten
+
+	Contact: t.vanderlaan@gemeenteswf.nl
+	
+	Adresseerbaar object ID*	
+	Nummeraanduiding ID*	
+	Openbare ruimte ID*	
+	Naam openbare ruimte*	
+	Woonplaatsnaam*	
+	Postcode*	
+	Huisnummer*	
+	Huisletter*	
+	Huisnummertoevoeging*
+*/
 -- verblijfsobjecten --
 SELECT
   'verblijfsobject' AS ADRESTYPE,
@@ -23,6 +27,7 @@ SELECT
   bra_adres.postc_n || bra_adres.postc_a AS POSTCODE,
   htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
   bra_woonplaats.woonplaatsnaam  AS WOONPLAATSNAAM_SIMPEL,
+  UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,  
   bra_adres.adresid       AS BAG_NUMMERAANDUIDING_ID,
   bgr_verblijfsobject.verblijfsobjectid   AS BAG_VERBLIJFSOBJECT_ID
 FROM 
@@ -59,6 +64,7 @@ UNION SELECT
   bra_adres.postc_n || bra_adres.postc_a, 
   htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
   bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
+  UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,
   bra_adres.adresid,
   bgr_ligplaats.ligplaatsid
 FROM
@@ -95,6 +101,7 @@ UNION SELECT
   bra_adres.postc_n || bra_adres.postc_a,
   htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
   bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
+  UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,
   bra_adres.adresid,
   bgr_standplaats.standplaatsid
 FROM
@@ -117,44 +124,4 @@ AND bra_adres.ruimtenr                = bra_ruimte.ruimtenr
 AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
 AND bra_adres.adresnr                 = bgr_standplaatsadres.adresnr
 AND bgr_standplaats.standplaatsnr     = bgr_standplaatsadres.standplaatsnr
-AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr		</database-query>
-    </source>
-    <source id="woz">
-      <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=;</database-connection>
-		<database-query>
-SELECT DISTINCT
-  T1."IDENT" AS wozobjectid,
-  T1."STRAAT"  AS openbareruimtenaam,
-  T1."HUISNR" AS huisnr,
-  T1."HUISLT" AS huislt, 
-  T1."TOEV" AS huistv,
-  T1."AAND",
-  T1."POSTCODE" AS postcode,
-  T2."WOONPLAATS" AS woonplaatsnaam ,
-  T1."LOKATIE"
-FROM "VG"."VGWOZ"@PGVG T1 
-LEFT OUTER JOIN "VG"."PBSPBT"@PGVG T2 
-  ON T1."POSTCODE"=T2."POSTKODE" 
-  AND T1."HUISNR"=T2."HUISNR" 
-  AND T1."STRAAT"=T2."STRAAT"
-WHERE T1."DATUM_EINDE" IS NULL
--- order by "c1" asc
-		</database-query>	  
-    </source>
-  </sources>
-  <compare reference="bag" analysis="woz" primary="postcode-huisnummer">
-    <match id="postcode-huisnummer">
-      <field name="postcode" reference-field="POSTCODE" analysis-field="postcode" />
-      <field name="huisnummer" reference-field="HUISNR" analysis-field="huisnr" />
-      <field name="huisletter" reference-field="HUISLT" analysis-field="huislt" />
-      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="huistv" />
-    </match>
-    <match id="openbare-ruimte">
-      <field name="openbareruimtenaam" reference-field="RUIMTENAAM" analysis-field="openbareruimtenaam" />
-    </match>
-    <match id="woonplaats">
-      <field name="woonplaatsnaam" reference-field="WOONPLAATSNAAM" analysis-field="woonplaatsnaam" />
-    </match>		
-  </compare>
-</registratie-vergelijker>
+AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr

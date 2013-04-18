@@ -75,9 +75,18 @@ namespace RegistratieVergelijker
             DbConnection connection = factory.CreateConnection();
             connection.ConnectionString = config.SelectSingleNode("database-connection").Value;
 
+            String sql = config.SelectSingleNode("database-query").Value;
+            if(sql == null || sql.Trim().Length == 0) {
+                // maybe in a file?
+                String filename = config.SelectSingleNode("database-query/@queryfile").Value;
+                System.IO.FileInfo fi = new System.IO.FileInfo(filename);
+                System.Console.Out.WriteLine("\tquery from: " + fi.FullName);
+                sql = System.IO.File.ReadAllText(fi.FullName);
+            }
+
             DbCommand selectCommand = factory.CreateCommand();
             selectCommand.Connection = connection;
-            selectCommand.CommandText = config.SelectSingleNode("database-query").Value;
+            selectCommand.CommandText = sql;
 
             DbDataAdapter adapter = factory.CreateDataAdapter();
             adapter.SelectCommand = selectCommand;
@@ -127,9 +136,13 @@ namespace RegistratieVergelijker
             filename = System.IO.Path.Combine(exportdirectory.FullName, filename + ".csv");
             System.IO.StreamWriter writer = new System.IO.StreamWriter(filename, false);
 
+
             // fieldnames
             foreach(String fieldname in names) {
-                writer.Write("\"" + fieldname + "\";");
+                if (fields[names.IndexOf(fieldname)] != null)
+                {
+                    writer.Write("\"" + fieldname + "\";");
+                }
             }
             writer.Write(writer.NewLine);
 
@@ -138,7 +151,10 @@ namespace RegistratieVergelijker
             {
                 foreach (String fieldname in fields)
                 {
-                    writer.Write("\"" + row[fieldname].ToString().Replace("\"","\"\"") + "\";");
+                    if (fieldname != null)
+                    {
+                        writer.Write("\"" + row[fieldname].ToString().Replace("\"", "\"\"") + "\";");
+                    }
                 }
                 writer.Write(writer.NewLine);
             }

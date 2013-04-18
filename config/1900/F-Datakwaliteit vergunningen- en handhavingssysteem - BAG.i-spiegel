@@ -13,16 +13,16 @@
         <AnalysisType>VergunningenEnHandhavingssysteem</AnalysisType>
         <CaseSensitiveMatching>false</CaseSensitiveMatching>
         <AdditionalMatching>false</AdditionalMatching>
-        <ReferenceFilePath>C:\tools\data\BAG_VERGUNNING\bag.csv</ReferenceFilePath>
+        <ReferenceFilePath>C:\tools\data\F-Datakwaliteit vergunningen- en handhavingssysteem - BAG\bag.csv</ReferenceFilePath>
         <ReferenceFileSeparator>;</ReferenceFileSeparator>
-        <ReferenceDatePicker>4-12-2012 0:00:00</ReferenceDatePicker>
-        <ReferenceSourceAppProvider>https://code.google.com/p/i-spiegel/</ReferenceSourceAppProvider>
-        <ReferenceSourceAppName>https://code.google.com/p/i-spiegel/</ReferenceSourceAppName>
-        <AnalysisFilePath>C:\tools\data\BAG_VERGUNNING\vergunning.csv</AnalysisFilePath>
+        <ReferenceDatePicker>4-3-2013 0:00:00</ReferenceDatePicker>
+        <ReferenceSourceAppProvider>123</ReferenceSourceAppProvider>
+        <ReferenceSourceAppName>123</ReferenceSourceAppName>
+        <AnalysisFilePath>C:\tools\data\F-Datakwaliteit vergunningen- en handhavingssysteem - BAG\vergunningen.csv</AnalysisFilePath>
         <AnalysisFileSeparator>;</AnalysisFileSeparator>
-        <AnalysisDatePicker>4-12-2012 0:00:00</AnalysisDatePicker>
-        <AnalysisSourceAppProvider>https://code.google.com/p/i-spiegel/</AnalysisSourceAppProvider>
-        <AnalysisSourceAppName>https://code.google.com/p/i-spiegel/</AnalysisSourceAppName>
+        <AnalysisDatePicker>4-3-2013 0:00:00</AnalysisDatePicker>
+        <AnalysisSourceAppProvider>123</AnalysisSourceAppProvider>
+        <AnalysisSourceAppName>123</AnalysisSourceAppName>
     </Import-Settings>
     <Reference-Column-Settings>
         <Columns>
