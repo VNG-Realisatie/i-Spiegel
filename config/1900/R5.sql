@@ -20,3 +20,13 @@ R5:
 	Datum ingang status VOW*
 
 */
+SELECT gba_vselarcp.ADMINISTRATIENUMMER,
+  gba_vselarcp.BSN,
+  gba_vselarcp.VOORVOEGSEL,
+  gba_vselarcp.GESLACHTSNAAM,
+  gba_vselarcp.GEBOORTEDATUM,
+  gba_vselarcp.GEBOORTEPLAATSNAAM,
+  gba_vselarcp.KODE_GESLACHT,
+  gba_vselarcp.DATUM_VERTREK_UIT_NEDERLAND
+FROM gba_vselarcp@PPIV
+WHERE gba_vselarcp.KODE_LAND_WAARNAAR_VERTROKKEN = 0
