@@ -1,30 +1,37 @@
-REM === BAG GBA VERGELIJKING ===
-bin\RegistratieVergelijker.exe config\BAG_GBA.xrv > log\BAG_GBA.LOG
-REM === EN I-SPIEGEL BESTAND KLAARZETTEN
-start i-spiegel\i-SpiegelBatch.exe config\BAG_GBA.i-spiegel
+REM =========== Verwijder de oude data bestanden ===========
+cd %~dp0
+rmdir /s /q data
+mkdir data
 
-REM === BAG PBS VERGELIJKING ===
-bin\RegistratieVergelijker.exe config\BAG_PBS.xrv > log\BAG_PBS.LOG
+REM =========== I-Spiegel vergelijkingen ===========
+bin\RegistratieVergelijker.exe "config\1900\1.1-Buitengemeentelijke verhuizingen bijstand.xrv"
+bin\RegistratieVergelijker.exe "config\1900\2-Verschil in burgelijke staat.xrv"
+bin\RegistratieVergelijker.exe "config\1900\3-Geen kwijtschelding aangevraagd.xrv"
+bin\RegistratieVergelijker.exe "config\1900\4-Uitkeringen op briefadres.xrv"
+bin\RegistratieVergelijker.exe "config\1900\5.1-VOW - Bijstand.xrv"
+bin\RegistratieVergelijker.exe "config\1900\6-Aanslagen naar overleden grondbezitters.xrv"
+bin\RegistratieVergelijker.exe "config\1900\7.1-Oninbare vorderingen door niet bestaande adressen.xrv"
+bin\RegistratieVergelijker.exe "config\1900\8.1-Inningen OZB BAG - OZB.xrv"
+bin\RegistratieVergelijker.exe "config\1900\A-Datakwaliteit GBA - WOZ.xrv"
+bin\RegistratieVergelijker.exe "config\1900\B-Datakwaliteit Prefill Gegevensmagazijn - GBA.xrv"
+bin\RegistratieVergelijker.exe "config\1900\C-Datakwaliteit BAG - GBA.xrv"
+bin\RegistratieVergelijker.exe "config\1900\D-Datakwaliteit BAG - WOZ.xrv"
+bin\RegistratieVergelijker.exe "config\1900\E-Datakwaliteit reinigingsrechten en afstoffenheffing - BAG.xrv"
+bin\RegistratieVergelijker.exe "config\1900\F-Datakwaliteit vergunningen- en handhavingssysteem - BAG.xrv"
+bin\RegistratieVergelijker.exe "config\1900\G-Datakwaliteit NHR - OZB.xrv"
 
-REM === BAG WOZ VERGELIJKING ===
-bin\RegistratieVergelijker.exe config\BAG_WOZ.xrv > log\BAG_WOZ.LOG
-REM === EN I-SPIEGEL BESTAND KLAARZETTEN
-start i-spiegel\i-SpiegelBatch.exe config\BAG_WOZ.i-spiegel
+REM =========== NIET I-Spiegel vergelijkingen ===========
+bin\RegistratieVergelijker.exe "config\1900\X-BAG_KVK.xrv"
+bin\RegistratieVergelijker.exe "config\1900\X-BAG_PBS.xrv"
+bin\RegistratieVergelijker.exe "config\1900\X-GBA_DDS.xrv"
 
-REM === BAG VERGUNNING VERGELIJKING ===
-bin\RegistratieVergelijker.exe config\BAG_VERGUNNING.xrv > log\BAG_VERGUNNING.LOG
-REM === EN I-SPIEGEL BESTAND KLAARZETTEN
-start i-spiegel\i-SpiegelBatch.exe config\BAG_VERGUNNING.i-spiegel
 
-REM === BAG PREVENT VERGELIJKING ===
-bin\RegistratieVergelijker.exe config\BAG_PREVENT.xrv > log\BAG_PREVENT.LOG
-REM === EN I-SPIEGEL BESTAND KLAARZETTEN
-start i-spiegel\i-SpiegelBatch.exe config\BAG_PREVENT.i-spiegel
-
-REM === BAG KVK VERGELIJKING ===
-bin\RegistratieVergelijker.exe config\BAG_KVK_ZONDERACCENT.xrv > log\BAG_KVK_ZONDERACCENT.LOG
-
-REM === BAG KEY2PARKEREN VERGELIJKING ===
-bin\RegistratieVergelijker.exe config\GBA_K2P.xrv > log\GBA_K2P.LOG
-bin\RegistratieVergelijker.exe config\DDS_NNP_K2P.xrv > log\DDS_NNP_K2P.LOG
-bin\RegistratieVergelijker.exe config\DDS_NP_K2P.xrv > log\DDS_NP_K2P.LOG
+REM =========== De batchdingen klaarzetten ===========
+i-spiegel\i-SpiegelBatch.exe  "config\1900\1.1-Buitengemeentelijke verhuizingen bijstand.i-spiegel"
+i-spiegel\i-SpiegelBatch.exe  "config\1900\2-Verschil in burgelijke staat.i-spiegel"
+i-spiegel\i-SpiegelBatch.exe  "config\1900\4-Uitkeringen op briefadres.i-spiegel"
+i-spiegel\i-SpiegelBatch.exe  "config\1900\A-Datakwaliteit GBA - WOZ.i-spiegel"
+i-spiegel\i-SpiegelBatch.exe  "config\1900\C-Datakwaliteit BAG - GBA.i-spiegel"
+i-spiegel\i-SpiegelBatch.exe  "config\1900\D-Datakwaliteit BAG - WOZ.i-spiegel"
+i-spiegel\i-SpiegelBatch.exe  "config\1900\E-Datakwaliteit reinigingsrechten en afstoffenheffing - BAG.i-spiegel"
+i-spiegel\i-SpiegelBatch.exe  "config\1900\F-Datakwaliteit vergunningen- en handhavingssysteem - BAG.i-spiegel"
