@@ -3,17 +3,17 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
   </logging>
   <sources>
     <source id="ozb">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query queryfile="C:\tools\config\1900\R3.sql" />
     </source>
     <source id="gws">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query queryfile="C:\tools\config\1900\O1.1.sql" />
     </source>
   </sources>
@@ -28,13 +28,13 @@
       <field name="postcode" reference-field="postcode" analysis-field="postcode" />
       <field name="huisnummer" reference-field="huisnummer" analysis-field="huisnummer" />
       <field name="huisletter" reference-field="HUISNUMMER_LETTER" analysis-field="huisletter" />
-      <field name="huisnummertoevoeging" reference-field="huisnummertoevoeging" analysis-field="huisnr_toev" />
+      <field name="huisnummertoevoeging" reference-field="huisnummer_toevoeging" analysis-field="huisnr_toev" />
     </match>
     <match id="geslacht">
       <field name="geslacht" reference-field="geslacht" analysis-field="geslacht" />
     </match>	
     <match id="openbare-ruimte">
-      <field name="openbareruimtenaam" reference-field="openbareruimtenaam" analysis-field="straat" />
+      <field name="openbareruimtenaam" reference-field="straatnaam" analysis-field="straat" />
     </match>
     <match id="bsn">
       <field name="bsn" reference-field="bsn" analysis-field="bsn" />

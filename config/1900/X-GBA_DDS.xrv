@@ -3,12 +3,12 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
   </logging>
   <sources>
     <source id="gba">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query>
 /*
 R2:
@@ -53,7 +53,7 @@ WHERE GBA_VSELAKTP."SYSTEEMNUMMER_ADRES" = GBA_VSELADRS."SYSTEEMNUMMER_ADRES"
     </source>
     <source id="dds">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
 		<database-query>
 /*
 OB:

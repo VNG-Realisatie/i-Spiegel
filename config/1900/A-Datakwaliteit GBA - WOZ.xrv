@@ -3,18 +3,18 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
   </logging>
   <sources>
     <source id="gba">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query queryfile="C:\tools\config\1900\R2.sql" />
     </source>
     <source id="woz">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;</database-connection>
-      <database-query queryfile="C:\tools\config\1900\O2.sql" />
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-query queryfile="C:\tools\config\1900\OA.sql" />
     </source>
   </sources>
   <compare reference="gba" analysis="woz" primary="geslachtsnaam-geboortedatum-geboorteplaats">

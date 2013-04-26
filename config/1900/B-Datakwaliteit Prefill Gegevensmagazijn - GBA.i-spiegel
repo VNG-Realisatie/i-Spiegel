@@ -35,8 +35,8 @@
             <Column>6,HouseNumberCharacter</Column>
             <Column>7,HouseNumberAppendix</Column>
             <Column>8,Gender</Column>
-            <Column>9,ANumber</Column>
             <Column>10,BSN</Column>
+            <Column>11,ANumber</Column>
         </Columns>
     </Reference-Column-Settings>
     <Anlaysis-Column-Settings>
