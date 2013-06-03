@@ -3,12 +3,12 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
+    <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
   </logging>
   <sources>
     <source id="bag">      
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
       <database-query>
 -- verblijfsobjecten --
 SELECT
@@ -129,12 +129,13 @@ AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
     </source>
     <source id="kvk">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
       <database-query>
 		SELECT DISTINCT *
 		FROM (
 		  SELECT
 			Straatnaam,
+			UPPER(Straatnaam) AS u_straatnaam,
 			Huisnummer,
 			toevoeging,
 			postkode,
@@ -143,6 +144,7 @@ AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
 		  UNION
 		  SELECT
 			Straatnaam_cor,
+			UPPER(Straatnaam_cor) AS u_straatnaam,
 			Huisnummer_cor,
 			toevoeging_cor,
 			postkode_cor,
@@ -169,7 +171,8 @@ AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
 	  <field name="huisnummertoevoeging" reference-field="SAMENGESTELDETOEVOEGING" analysis-field="toevoeging" />
     </match>
     <match id="openbare-ruimte">
-      <field name="Straatnaam" reference-field="RUIMTENAAM" analysis-field="Straatnaam" />
+      <!-- <field name="Straatnaam" reference-field="RUIMTENAAM_USIMPEL" analysis-field="u_straatnaam" />	-->
+	  <field name="Straatnaam" reference-field="RUIMTENAAM" analysis-field="straatnaam" />
     </match>
     <match id="woonplaats">
       <field name="woonplaatsnaam" reference-field="WOONPLAATSNAAM" analysis-field="woonplaats" />

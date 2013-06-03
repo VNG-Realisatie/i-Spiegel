@@ -13,12 +13,12 @@
         <AnalysisType>Gegevensmagazijn</AnalysisType>
         <CaseSensitiveMatching>false</CaseSensitiveMatching>
         <AdditionalMatching>false</AdditionalMatching>
-        <ReferenceFilePath>C:\tools\data\B-Datakwaliteit Prefill Gegevensmagazijn - GBA\gba.csv</ReferenceFilePath>
+        <ReferenceFilePath>I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\data\B-Datakwaliteit Prefill Gegevensmagazijn - GBA\gba.csv</ReferenceFilePath>
         <ReferenceFileSeparator>;</ReferenceFileSeparator>
         <ReferenceDatePicker>4-3-2013 0:00:00</ReferenceDatePicker>
         <ReferenceSourceAppProvider>123</ReferenceSourceAppProvider>
         <ReferenceSourceAppName>123</ReferenceSourceAppName>
-        <AnalysisFilePath>C:\tools\data\B-Datakwaliteit Prefill Gegevensmagazijn - GBA\gegevensmagzijn.csv</AnalysisFilePath>
+        <AnalysisFilePath>I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\data\B-Datakwaliteit Prefill Gegevensmagazijn - GBA\gegevensmagzijn.csv</AnalysisFilePath>
         <AnalysisFileSeparator>;</AnalysisFileSeparator>
         <AnalysisDatePicker>4-3-2013 0:00:00</AnalysisDatePicker>
         <AnalysisSourceAppProvider>123</AnalysisSourceAppProvider>

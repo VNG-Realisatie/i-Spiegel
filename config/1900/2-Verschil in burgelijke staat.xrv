@@ -3,21 +3,21 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
+    <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
   </logging>
   <sources>
     <source id="gba">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
-      <database-query queryfile="C:\tools\config\1900\R2.sql" />
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\R2.sql" />
     </source>
     <source id="gws">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
-      <database-query queryfile="C:\tools\config\1900\O2.sql" />
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\O2.sql" />
     </source>
   </sources>
-  <compare reference="gba" analysis="gws" primary="geslachtsnaam-geboortedatum-geboorteplaats">
+  <compare reference="gba" analysis="gws" primary="bsn">
     <match id="geslachtsnaam-geboortedatum-geboorteplaats">
       <field name="geslachtsnaam" reference-field="geslachtsnaam" analysis-field="geslachtsnaam" />
       <field name="voorvoegsel-geslachtsnaam" reference-field="voorvoegsel" analysis-field="voorvoegsels" />

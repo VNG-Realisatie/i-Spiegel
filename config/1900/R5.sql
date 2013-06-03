@@ -27,6 +27,12 @@ SELECT gba_vselarcp.ADMINISTRATIENUMMER,
   gba_vselarcp.GEBOORTEDATUM,
   gba_vselarcp.GEBOORTEPLAATSNAAM,
   gba_vselarcp.KODE_GESLACHT,
-  gba_vselarcp.DATUM_VERTREK_UIT_NEDERLAND
+  gba_vselarcp.DATUM_VERTREK_UIT_NEDERLAND,
+  -- dummy waarden
+  'VOW heeft geen adres' AS postcode,
+   9999 AS huisnummer,
+   '' AS huisletter,
+   '' AS huisnummertoevoeging,
+   'VOW heeft geen adres' AS openbareruimtenaam
 FROM gba_vselarcp@PPIV
 WHERE gba_vselarcp.KODE_LAND_WAARNAAR_VERTROKKEN = 0

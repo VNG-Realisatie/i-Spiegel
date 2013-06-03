@@ -1,4 +1,6 @@
 /*
+!!!! exporteren met een ; als scheidingsteken (cvs/die eronder) !!!!
+
 K:
 	WOZ-deelobjecten
 	
@@ -23,24 +25,26 @@ K:
 	Huisnummertoevoeging*
 */
 SELECT
-  WAATON.IDENT_WOZ AS WOZ_OBJECTNUMMER,
-  WAATON.ONDERDEEL AS WOZ_DEELOBJECTNUMMER,
-  WAATAX.GEBRUIK_WOZ AS WOZ_GEBRUIKSCODE,
-  WAATON.SOORT_OBJECT AS DUWOZ_CODE,
-  WAATON.BOUWJAAR AS BOUWJAAR_DEELOBJECT,
-  WAATON.OPPERVLAKTE AS GEBRUIKSOPPERVLAKTE_DEELOBJECT,
-  WAATON.INHOUD AS BRUTO_INHOUD_DEELOBJECT,
-  BAGWOZ_KOPPEL.BAG_VBOID AS VBO_ID,
-  BAGWOZ_KOPPEL.BAG_PANDID AS PAND_ID,
-  BAG_ACTUELE_ADRESSEN.WOONPLAATSNAAM,
-  BAG_ACTUELE_ADRESSEN.BAG_NUMMERAANDUIDING_ID,
-  NULL AS BAG_OPENBARERUIMTE_ID,
-  BAG_ACTUELE_ADRESSEN.RUIMTENAAM AS OPENBARERUIMTENAAM,
-  BAG_ACTUELE_ADRESSEN.POSTCODE,
-  BAG_ACTUELE_ADRESSEN.HUISNR,
-  BAG_ACTUELE_ADRESSEN.HUISLT,
-  BAG_ACTUELE_ADRESSEN.TOEVOEGING
+  WAATON.IDENT_WOZ AS wozobjectnummer,
+  WAATON.ONDERDEEL AS nummerwozdeelobject,
+  WAATAX.GEBRUIK_WOZ AS wozgebruikscode,
+  WAATON.SOORT_OBJECT AS duwozcode,
+  WAATON.BOUWJAAR AS bouwjaardeelobject,
+  WAATON.OPPERVLAKTE AS gebruiksoppervlakte,
+  WAATON.INHOUD AS brutoinhouddeelobject,
+  BAGWOZ_KOPPEL.BAG_VBOID AS adresseerbaarobjectid,
+  BAGWOZ_KOPPEL.BAG_PANDID AS pandid,
+  BAG_ACTUELE_ADRESSEN.WOONPLAATSNAAM AS woonplaatsnaam,
+  BAG_ACTUELE_ADRESSEN.BAG_NUMMERAANDUIDING_ID AS nummeraanduidingid,
+  NULL AS openbareruimteid,
+  BAG_ACTUELE_ADRESSEN.RUIMTENAAM AS naamopenbareruimte,
+  BAG_ACTUELE_ADRESSEN.POSTCODE AS postcode,
+  BAG_ACTUELE_ADRESSEN.HUISNR AS huisnummer,
+  BAG_ACTUELE_ADRESSEN.HUISLT AS huisletter,
+  BAG_ACTUELE_ADRESSEN.TOEVOEGING AS huisnummertoevoeging
 FROM vg.WAATON@pgvg WAATON
+JOIN vg.VGWOZ@pgvg VGWOZ
+  ON VGWOZ.IDENT = WAATON.IDENT_WOZ
 LEFT JOIN vg.WAATAX@pgvg WAATAX
   ON WAATAX.IDENT_WOZ = WAATON.IDENT_WOZ
   AND WAATAX.VOLGNR = WAATON.VOLGNR_TAX
@@ -50,86 +54,13 @@ LEFT JOIN BAGWOZ_KOPPEL
 LEFT JOIN BAG_ACTUELE_ADRESSEN
   ON BAG_ACTUELE_ADRESSEN.BAG_VERBLIJFSOBJECT_ID = BAGWOZ_KOPPEL.BAG_VBOID  
 -- kan ook via WAATAX en peildatum
-WHERE WAATON.VOLGNR_TAX = (  
+WHERE VGWOZ.DATUM_EINDE IS NULL
+AND WAATON.VOLGNR_TAX = (  
   SELECT MAX(volgnummer.VOLGNR_TAX)
   FROM vg.WAATON@pgvg volgnummer
   WHERE volgnummer.IDENT_WOZ = WAATON.IDENT_WOZ
   AND volgnummer.ONDERDEEL = WAATON.ONDERDEEL
 )
+-- AND WAATON.ident_woz = 190000000165
 ORDER BY WAATON.IDENT_WOZ, WAATON.ONDERDEEL, WAATON.VOLGNR_TAX
-===============================================================
-/*
-SELECT
-            WOZ_OBJECTNUMMER,
-            WOZ_DEELOBJECTNUMMER,
-            WOZ_DEELOBJECTCODE,
-            BAG_PANDID,
-            BAG_VBOID,
-            bgr_pand.*
-            bgr_verblijfsobject.*
-FROM BAGWOZ_KOPPEL
-( 
-        JOIN "BAGOWNER"."BGR_PAND"@PBAG bgr_pand
-        ON CAST(bgr_pand.pandid AS DECIMAL)= CAST(BAGWOZ_KOPPEL.BAG_PANDID AS DECIMAL)
-        WHERE BAGWOZ_KOPPEL.BAG_PANDID IS NULL
-        AND bgr_pand.ddeinde       IS NULL
-        AND bgr_pand.indactief     = 'J'
-        AND bgr_pand.indauthentiek = 'J'
-        AND (
-          bgr_pand.pandstatuscode = '04' -- ingebruik (niet ingemeten)
-          OR bgr_pand.pandstatuscode = '05' -- ingebruik
-        )
-)
-(
-        JOIN "BAGOWNER"."BGR_VERBLIJFSOBJECT"@PBAG bgr_verblijfsobject
-        ON CAST(bgr_verblijfsobject.verblijfsobjectid AS DECIMAL)= CAST(BAGWOZ_koppel.BAG_VERBLIJFSOBJECTID AS DECIMAL)
-        --AND bgr_verblijfsobject.verblijfsobjectid IS NULL
-        WHERE BAGWOZ_koppel.BAG_VERBLIJFSOBJECTID IS NULL
-        AND bgr_verblijfsobject.ddeinde       IS NULL
-        AND bgr_verblijfsobject.indactief     = 'J'
-        AND bgr_verblijfsobject.indauthentiek = 'J'
-        AND (
-          bgr_verblijfsobject.vobjstatuscode = '03' --in gebruik  
-          OR bgr_verblijfsobject.vobjstatuscode = '02' --in gebruik (niet ingemeten)
-        )
-)
------------------------------------------------------------------------------------------
-SELECT 
-  * 
-FROM 
-  "BAGOWNER"."BGR_VERBLIJFSOBJECT"@PBAG bgr_vbo,
-  "BAGOWNER"."BGR_PAND"@PBAG bgr_pand
- WHERE      
-  bgr_vbo.ddeinde       IS NULL AND 
-  bgr_vbo.indactief     = 'J' AND 
-  bgr_vbo.indauthentiek = 'J' AND
-  (
-          bgr_vbo.vobjstatuscode = '03' --in gebruik  
-          OR bgr_vbo.vobjstatuscode = '02' --in gebruik (niet ingemeten)
-  )AND 
-  bgr_pand.ddeinde       IS NULL AND 
-  bgr_pand.indactief     = 'J' AND 
-  bgr_pand.indauthentiek = 'J' AND
-  (
-        bgr_pand.pandstatuscode = '04' -- ingebruik (niet ingemeten)
-        OR bgr_pand.pandstatuscode = '05' -- ingebruik
-  )
----------------------------------------------------------------------------------------
-Select * From vg.WAATON@pgvg;  
---------------------------------------------------------------------------------
-SELECT
-  woz.ident_woz,
-  woz.onderdeel,
-  woz.t_soort_object,
-  woz.soort_object,
-  woz.bouwjaar,
-  woz.inhoud,
-  woz.oppervlakte,
-  bag_vbo.verblijfsobjectid,
-  bag_pand.pandid 
-FROM 
-  BAGWOZ_KOPPEL,
-  vg.WAATON@pgvg woz,
-  BAGOWNER.BGR_PAND@PBAG bag_pand,
-  BAGOWNER.BGR_vbo@PBAG bag_vbo,
-*/
+

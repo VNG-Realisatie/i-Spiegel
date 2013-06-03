@@ -3,49 +3,45 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
+    <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
   </logging>
   <sources>
     <source id="gba">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
-      <database-query queryfile="C:\tools\config\1900\R2.sql" />
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\R2.sql" />
     </source>
     <source id="woz">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
-      <database-query queryfile="C:\tools\config\1900\OA.sql" />
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\OA.sql" />
     </source>
   </sources>
-  <compare reference="gba" analysis="woz" primary="geslachtsnaam-geboortedatum-geboorteplaats">
-    <match id="geslachtsnaam-geboortedatum-geboorteplaats">
-      <field name="geslachtsnaam" reference-field="geslachtsnaam" analysis-field="geslachtsnaam" />
-      <field name="voorvoegsel-geslachtsnaam" reference-field="voorvoegsel" analysis-field="voorvoegsels" />
-	  <field name="geboortedatum" reference-field="geboortedatum" analysis-field="geboortedatum" />
-	  <field name="geboorteplaats" reference-field="geboorteplaats" analysis-field="geboorteplaats" />
+  <compare reference="gba" analysis="woz" primary="bsn">
+    <match id="geslachtsnaam-geboortedatum">
+      <!-- <field name="geslachtsnaam" reference-field="geslachtsnaam" analysis-field="GEBNAAM" /> -->
+	  <field name="geslachtsnaam" reference-field="geslachtsnaam" analysis-field="NAAM_VERKORT" />
+      <field name="voorvoegsel-geslachtsnaam" reference-field="voorvoegsel" analysis-field="VVOEG_VVG" />
+    <field name="geboortedatum" reference-field="geboortedatum" analysis-field="geboortedatum" />
+    <!-- <field name="geboorteplaats" reference-field="geboorteplaats" analysis-field="geboorteplaats" /> -->
     </match>  
     <match id="postcode-huisnummer">
-      <field name="postcode" reference-field="postcode" analysis-field="postcode" />
-      <field name="huisnummer" reference-field="huisnummer" analysis-field="huisnummer" />
-      <field name="huisletter" reference-field="huisletter" analysis-field="huisletter" />
-      <field name="huisnummertoevoeging" reference-field="huisnummertoevoeging" analysis-field="huisnr_toev" />
+      <field name="postcode" reference-field="postcode" analysis-field="POSTKODE" />
+      <field name="huisnummer" reference-field="huisnummer" analysis-field="HUISNR" />
+      <field name="huisletter" reference-field="huisletter" analysis-field="HUISLT" />
+      <field name="huisnummertoevoeging" reference-field="huisnummertoevoeging" analysis-field="HUISTV" />
     </match>
     <match id="geslacht">
       <field name="geslacht" reference-field="geslacht" analysis-field="geslacht" />
-    </match>	
+    </match>  
     <match id="openbare-ruimte">
       <field name="openbareruimtenaam" reference-field="openbareruimtenaam" analysis-field="straat" />
     </match>
     <match id="bsn">
-      <field name="bsn" reference-field="bsn" analysis-field="bsn" />
+      <field name="bsn" reference-field="bsn" analysis-field="SOFI_NR" />
     </match>
     <match id="a-nummer">
       <field name="a-nummer" reference-field="anummer" analysis-field="a_nummer" />
     </match>
-    <export>
-		<field name="datum_huwelijkssluiting" reference-field="DATUM_HUWELIJK" />
-		<field name="datum_huwelijksontbinding" reference-field="DATUM_HUWELIJKSONTBINDING" />
-		<field name="datum_aanvang_uitkering" analysis-field="datum_aanvang_uitkering" />	
-    </export>	
   </compare>
 </registratie-vergelijker>

@@ -3,18 +3,18 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
+    <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
   </logging>
   <sources>
     <source id="ozb">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
-      <database-query queryfile="C:\tools\config\1900\R3.sql" />
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\R3.sql" />
     </source>
     <source id="gws">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
-      <database-query queryfile="C:\tools\config\1900\O1.1.sql" />
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\O1.1.sql" />
     </source>
   </sources>
   <compare reference="ozb" analysis="gws" primary="geslachtsnaam-geboortedatum-geboorteplaats">
@@ -37,7 +37,7 @@
       <field name="openbareruimtenaam" reference-field="straatnaam" analysis-field="straat" />
     </match>
     <match id="bsn">
-      <field name="bsn" reference-field="bsn" analysis-field="bsn" />
+      <field name="bsn" reference-field="BURGERSERVICENUMMER" analysis-field="bsn" />
     </match>
     <match id="a-nummer">
       <field name="a-nummer" reference-field="anummer" analysis-field="a_nummer" />
@@ -46,7 +46,7 @@
 		<!-- om de csv maar te kunnen generenen -->
 		<field name="datum_huwelijkssluiting" reference-field="geboortedatum" />
 		<field name="datum_aanvanguitkering"  analysis-field="datum_inschrijving_adres" />
-		<field name="maandelijksbedraguitkering" reference-field="bsn" analysis-field="maandelijks_bedrag_uitkering" />
+		<field name="maandelijksbedraguitkering" analysis-field="maandelijks_bedrag_uitkering" />
     </match>	
   </compare>
 </registratie-vergelijker>

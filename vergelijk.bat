@@ -3,6 +3,9 @@ cd %~dp0
 rmdir /s /q data
 mkdir data
 
+rmdir /s /q  i-spiegel\Uploadbestanden
+rmdir /s /q  i-spiegel\Detailresultaten
+
 REM =========== I-Spiegel vergelijkingen ===========
 bin\RegistratieVergelijker.exe "config\1900\1.1-Buitengemeentelijke verhuizingen bijstand.xrv"
 bin\RegistratieVergelijker.exe "config\1900\2-Verschil in burgelijke staat.xrv"

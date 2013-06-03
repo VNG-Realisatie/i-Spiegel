@@ -3,21 +3,21 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
+    <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
   </logging>
   <sources>
     <source id="gba">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
-      <database-query queryfile="C:\tools\config\1900\R5.sql" />
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\R5.sql" />
     </source>
     <source id="gws">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
-      <database-query queryfile="C:\tools\config\1900\O1.1.sql" />
+      <database-connection>Data Source=gegevensbeheer;User Id=gegevensbeheer;Password=gegeswf;</database-connection>
+      <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\O1.1.sql" />
     </source>
   </sources>
-  <compare reference="gba" analysis="gws" primary="geslachtsnaam-geboortedatum-geboorteplaats">
+  <compare reference="gba" analysis="gws" primary="bsn">
     <match id="geslachtsnaam-geboortedatum-geboorteplaats">
       <field name="geslachtsnaam" reference-field="geslachtsnaam" analysis-field="geslachtsnaam" />
       <field name="voorvoegsel-geslachtsnaam" reference-field="voorvoegsel" analysis-field="voorvoegsels" />
@@ -31,7 +31,7 @@
       <field name="huisnummertoevoeging" reference-field="huisnummertoevoeging" analysis-field="huisnr_toev" />
     </match>
     <match id="geslacht">
-      <field name="geslacht" reference-field="geslacht" analysis-field="geslacht" />
+      <field name="geslacht" reference-field="KODE_GESLACHT" analysis-field="geslacht" />
     </match>	
     <match id="openbare-ruimte">
       <field name="openbareruimtenaam" reference-field="openbareruimtenaam" analysis-field="straat" />
@@ -40,7 +40,7 @@
       <field name="bsn" reference-field="bsn" analysis-field="bsn" />
     </match>
     <match id="a-nummer">
-      <field name="a-nummer" reference-field="anummer" analysis-field="a_nummer" />
+      <field name="a-nummer" reference-field="ADMINISTRATIENUMMER" analysis-field="a_nummer" />
     </match>	
     <match id="andere-velden">
 		<!-- om de csv maar te kunnen generenen -->

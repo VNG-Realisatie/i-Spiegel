@@ -13,12 +13,12 @@
         <AnalysisType>WOZ</AnalysisType>
         <CaseSensitiveMatching>false</CaseSensitiveMatching>
         <AdditionalMatching>false</AdditionalMatching>
-        <ReferenceFilePath>C:\tools\data\A-Datakwaliteit GBA - WOZ\gba.csv</ReferenceFilePath>
+        <ReferenceFilePath>I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\data\A-Datakwaliteit GBA - WOZ\gba.csv</ReferenceFilePath>
         <ReferenceFileSeparator>;</ReferenceFileSeparator>
         <ReferenceDatePicker>4-3-2013 0:00:00</ReferenceDatePicker>
         <ReferenceSourceAppProvider>123</ReferenceSourceAppProvider>
         <ReferenceSourceAppName>123</ReferenceSourceAppName>
-        <AnalysisFilePath>C:\tools\data\A-Datakwaliteit GBA - WOZ\woz.csv</AnalysisFilePath>
+        <AnalysisFilePath>I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\data\A-Datakwaliteit GBA - WOZ\woz.csv</AnalysisFilePath>
         <AnalysisFileSeparator>;</AnalysisFileSeparator>
         <AnalysisDatePicker>4-3-2013 0:00:00</AnalysisDatePicker>
         <AnalysisSourceAppProvider>123</AnalysisSourceAppProvider>
@@ -29,14 +29,13 @@
             <Column>0,LastName</Column>
             <Column>1,LastNamePrefix</Column>
             <Column>2,DateOfBirth</Column>
-            <Column>3,PlaceOfBirth</Column>
-            <Column>4,PostalCode</Column>
-            <Column>5,HouseNumber</Column>
-            <Column>6,HouseNumberCharacter</Column>
-            <Column>7,HouseNumberAppendix</Column>
-            <Column>8,Gender</Column>
-            <Column>10,BSN</Column>
-            <Column>11,ANumber</Column>
+            <Column>3,PostalCode</Column>
+            <Column>4,HouseNumber</Column>
+            <Column>5,HouseNumberCharacter</Column>
+            <Column>6,HouseNumberAppendix</Column>
+            <Column>7,Gender</Column>
+            <Column>9,BSN</Column>
+            <Column>10,ANumber</Column>
         </Columns>
     </Reference-Column-Settings>
     <Anlaysis-Column-Settings>
@@ -44,14 +43,13 @@
             <Column>0,LastName</Column>
             <Column>1,LastNamePrefix</Column>
             <Column>2,DateOfBirth</Column>
-            <Column>3,PlaceOfBirth</Column>
-            <Column>4,PostalCode</Column>
-            <Column>5,HouseNumber</Column>
-            <Column>6,HouseNumberCharacter</Column>
-            <Column>7,HouseNumberAppendix</Column>
-            <Column>8,Gender</Column>
-            <Column>10,BSN</Column>
-            <Column>11,ANumber</Column>
+            <Column>3,PostalCode</Column>
+            <Column>4,HouseNumber</Column>
+            <Column>5,HouseNumberCharacter</Column>
+            <Column>6,HouseNumberAppendix</Column>
+            <Column>7,Gender</Column>
+            <Column>9,BSN</Column>
+            <Column>10,ANumber</Column>
         </Columns>
     </Anlaysis-Column-Settings>
 </I-Spiegel-Batch-Settings>

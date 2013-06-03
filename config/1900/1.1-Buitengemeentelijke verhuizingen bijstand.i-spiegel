@@ -13,12 +13,12 @@
         <AnalysisType>Uitkeringensysteem</AnalysisType>
         <CaseSensitiveMatching>false</CaseSensitiveMatching>
         <AdditionalMatching>false</AdditionalMatching>
-        <ReferenceFilePath>C:\tools\data\1.1-Buitengemeentelijke verhuizingen bijstand\gba.csv</ReferenceFilePath>
+        <ReferenceFilePath>I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\data\1.1-Buitengemeentelijke verhuizingen bijstand\gba.csv</ReferenceFilePath>
         <ReferenceFileSeparator>;</ReferenceFileSeparator>
         <ReferenceDatePicker>4-3-2013 0:00:00</ReferenceDatePicker>
         <ReferenceSourceAppProvider>123</ReferenceSourceAppProvider>
         <ReferenceSourceAppName>123</ReferenceSourceAppName>
-        <AnalysisFilePath>C:\tools\data\1.1-Buitengemeentelijke verhuizingen bijstand\gws.csv</AnalysisFilePath>
+        <AnalysisFilePath>I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\data\1.1-Buitengemeentelijke verhuizingen bijstand\gws.csv</AnalysisFilePath>
         <AnalysisFileSeparator>;</AnalysisFileSeparator>
         <AnalysisDatePicker>4-3-2013 0:00:00</AnalysisDatePicker>
         <AnalysisSourceAppProvider>123</AnalysisSourceAppProvider>
