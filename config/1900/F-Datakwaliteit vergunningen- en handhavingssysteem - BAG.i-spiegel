@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <I-Spiegel-Batch-Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <User-Settings>
-        <Name>Eduard Yeb Witteveen</Name>
+        <Name>Registrativergelijker SWF</Name>
         <Municipality>1900</Municipality>
-        <Email>e.witteveen@gemeenteswf.nl</Email>
+        <Email>gegevensbeheer@gemeenteswf.nl</Email>
         <Function>Uitvoerend</Function>
     </User-Settings>
     <Import-Settings>
@@ -15,12 +15,12 @@
         <AdditionalMatching>false</AdditionalMatching>
         <ReferenceFilePath>I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\data\F-Datakwaliteit vergunningen- en handhavingssysteem - BAG\bag.csv</ReferenceFilePath>
         <ReferenceFileSeparator>;</ReferenceFileSeparator>
-        <ReferenceDatePicker>4-3-2013 0:00:00</ReferenceDatePicker>
+        <ReferenceDatePicker></ReferenceDatePicker>
         <ReferenceSourceAppProvider>123</ReferenceSourceAppProvider>
         <ReferenceSourceAppName>123</ReferenceSourceAppName>
         <AnalysisFilePath>I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\data\F-Datakwaliteit vergunningen- en handhavingssysteem - BAG\vergunningen.csv</AnalysisFilePath>
         <AnalysisFileSeparator>;</AnalysisFileSeparator>
-        <AnalysisDatePicker>4-3-2013 0:00:00</AnalysisDatePicker>
+        <AnalysisDatePicker></AnalysisDatePicker>
         <AnalysisSourceAppProvider>123</AnalysisSourceAppProvider>
         <AnalysisSourceAppName>123</AnalysisSourceAppName>
     </Import-Settings>
