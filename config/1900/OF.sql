@@ -16,7 +16,7 @@ OF:
 
 */
 SELECT DISTINCT
-	IDENT AS VGVOB_IDENT,    
+	--IDENT AS VGVOB_IDENT,    
 	VGVOB."STRAAT" AS openbareruimtenaam,
 	VGVOB."HUISNR"  AS huisnummer, 
 	VGVOB."HUISLT" AS huisletter,

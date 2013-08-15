@@ -1,0 +1,24 @@
+Niet werkend:
+	config\1900\3-Geen kwijtschelding aangevraagd.xrv
+		reference-column:huisnummertoevoeging not found in:
+
+	config\1900\5.1-VOW - Bijstand.xrv
+		reference-column:geslacht not found in
+
+	config\1900\6-Aanslagen naar overleden grondbezitters.xrv
+		query from: C:\tools\config\1900\O6.sql
+		ORA-00900: invalid SQL statement
+
+	config\1900\8.1-Inningen OZB BAG - OZB.xrv
+		query from: C:\tools\config\1900\O8.1.sql
+		ORA-00900: invalid SQL statement
+
+
+	config\1900\G-Datakwaliteit NHR - OZB.xrv
+		query from: C:\tools\config\1900\OG.sql
+		ORA-00900: invalid SQL statement
+
+Kleine problemen met de volgende:
+	DE RANE DE RÃ‚NE (Niet veranderd staat zo in Prevent    De Râne )
+
+

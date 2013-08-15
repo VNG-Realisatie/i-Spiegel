@@ -3,12 +3,12 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;
+    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
   </logging>
   <sources>
     <source id="bag">      
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query>
 -- verblijfsobjecten --
 SELECT
@@ -129,7 +129,7 @@ AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr
     </source>
     <source id="kvk">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query>
 		SELECT DISTINCT *
 		FROM (

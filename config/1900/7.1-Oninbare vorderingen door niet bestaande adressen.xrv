@@ -3,17 +3,17 @@
   <!-- comment logging for output to commandline -->
   <logging>
     <database-provider>System.Data.OracleClient</database-provider>
-    <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;
+    <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
   </logging>
   <sources>
     <source id="bag">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\R7.1.sql" />
     </source>
     <source id="debiteuren">
       <database-provider>System.Data.OracleClient</database-provider>
-      <database-connection>Data Source=databasenaam;User Id=gebruiker;Password=wachtwoord;
+      <database-connection>Data Source=database;User Id=gebruiker;Password=wachtwoord;</database-connection>
       <database-query queryfile="I:\Informatievoorziening\Gegevens beheer\Vertrouwelijk\i-spiegel\config\1900\O7.1.sql" />
     </source>
   </sources>

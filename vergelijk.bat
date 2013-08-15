@@ -28,13 +28,9 @@ bin\RegistratieVergelijker.exe "config\1900\X-BAG_KVK.xrv"
 bin\RegistratieVergelijker.exe "config\1900\X-BAG_PBS.xrv"
 bin\RegistratieVergelijker.exe "config\1900\X-GBA_DDS.xrv"
 
+bin\RegistratieVergelijker.exe "config\1900\X-NAP-DDS_K2P.xrv"
+REM bin\RegistratieVergelijker.exe "config\1900\X-NNP-DDS_K2P.xrv"
+
 
 REM =========== De batchdingen klaarzetten ===========
-i-spiegel\i-SpiegelBatch.exe  "config\1900\1.1-Buitengemeentelijke verhuizingen bijstand.i-spiegel"
-i-spiegel\i-SpiegelBatch.exe  "config\1900\2-Verschil in burgelijke staat.i-spiegel"
-i-spiegel\i-SpiegelBatch.exe  "config\1900\4-Uitkeringen op briefadres.i-spiegel"
-i-spiegel\i-SpiegelBatch.exe  "config\1900\A-Datakwaliteit GBA - WOZ.i-spiegel"
-i-spiegel\i-SpiegelBatch.exe  "config\1900\C-Datakwaliteit BAG - GBA.i-spiegel"
-i-spiegel\i-SpiegelBatch.exe  "config\1900\D-Datakwaliteit BAG - WOZ.i-spiegel"
-i-spiegel\i-SpiegelBatch.exe  "config\1900\E-Datakwaliteit reinigingsrechten en afstoffenheffing - BAG.i-spiegel"
-i-spiegel\i-SpiegelBatch.exe  "config\1900\F-Datakwaliteit vergunningen- en handhavingssysteem - BAG.i-spiegel"
+call spiegelen.bat
