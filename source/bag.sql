@@ -1,1 +1,0 @@
-SELECT * FROM BAG_ADRES.csv

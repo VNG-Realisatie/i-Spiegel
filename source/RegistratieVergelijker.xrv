@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <registratie-vergelijker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <!-- comment logging for output to commandline -->
-  <!--
-  <logging>
+    <logging>
     <database-provider>System.Data.OleDb</database-provider>
-    <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source=D:\witteveen-automatisering.nl\i-spiegel\trunk\source\reporting.mdb;</database-connection>
+    <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source=reporting.mdb;</database-connection>
   </logging>
-  -->
   <sources>
-    <source id="bag">
+    <source id="first">
       <database-provider>System.Data.OleDb</database-provider>
-      <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source="D:\witteveen-automatisering.nl\i-spiegel\trunk\source\";Extended Properties="Text;HDR=Yes;FMT=Delimited"</database-connection>
-      <database-query queryfile="D:\witteveen-automatisering.nl\i-spiegel\trunk\source\bag.sql" />
+	  <!-- <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source="D:\witteveen-automatisering.nl\i-spiegel\trunk\source\";Extended Properties="Text;HDR=Yes;FMT=Delimited"</database-connection> -->
+      <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source="${WORKING_DIRECTORY}";Extended Properties="Text;HDR=Yes;FMT=Delimited"</database-connection>
+      <database-query queryfile="first.sql" />
     </source>
-    <source id="gba">
+    <source id="second">
       <database-provider>System.Data.OleDb</database-provider>
-      <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source="D:\witteveen-automatisering.nl\i-spiegel\trunk\source\";Extended Properties="Text;HDR=Yes;FMT=Delimited"</database-connection>
-      <database-query>SELECT * FROM GBA_ADRES.csv</database-query>
+      <!--	<database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source="D:\witteveen-automatisering.nl\i-spiegel\trunk\source\";Extended Properties="Text;HDR=Yes;FMT=Delimited"</database-connection>	-->
+	  <database-connection>Provider=Microsoft.Jet.OLEDB.4.0;Data Source="${WORKING_DIRECTORY}";Extended Properties="Text;HDR=Yes;FMT=Delimited"</database-connection>
+      <database-query>SELECT * FROM second.csv</database-query>
     </source>
   </sources>
-  <compare reference="bag" analysis="gba" primary="postcode-huisnummer">
+  <compare reference="first" analysis="second" primary="postcode-huisnummer">
     <match id="postcode-huisnummer">
-      <field name="postcode" reference-field="POSTCODE" analysis-field="POSTCODE" />
-      <field name="huisnummer" reference-field="HUISNR" analysis-field="RHS" />
-      <field name="huisletter" reference-field="HUISLT" analysis-field="NHSR_LT" />
-      <field name="huisnummertoevoeging" reference-field="TOEVOEGING" analysis-field="KHSR_TV" />
+      <field name="postcode" reference-field="postcode1" analysis-field="postcode2" />
+      <field name="huisnummer" reference-field="huisnummer1" analysis-field="huisnummer2" />
+      <field name="huisletter" reference-field="huisletter1" analysis-field="huisletter2" />
+      <field name="huisnummertoevoeging" reference-field="huisnummertoevoeging1" analysis-field="huisnummertoevoeging2" />
     </match>
     <match id="openbare-ruimte">
-      <field name="naam openbare ruimte" reference-field="RUIMTENAAM" analysis-field="NOPR" />
+      <field name="openbareruimtenaam" reference-field="openbareruimtenaam1" analysis-field="openbareruimtenaam2" />
     </match>
     <match id="bagobjecten">
-      <field name="adressseerbaar object id" reference-field="BAG_VERBLIJFSOBJECT_ID" analysis-field="NID_VBO" />
-      <field name="nummeraanduiding id" reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="NID_NAD" />
+      <field name="adressseerbaarobjectid" reference-field="adressseerbaarobjectid1" analysis-field="adressseerbaarobjectid2" />
+      <field name="nummeraanduidingid" reference-field="nummeraanduidingid1" analysis-field="nummeraanduidingid2" />
     </match>
     <export>
-      <field name="test beide velden" reference-field="BAG_NUMMERAANDUIDING_ID" analysis-field="NID_NAD" />
-      <field name="test alleen reference" reference-field="BAG_NUMMERAANDUIDING_ID" />
-      <field name="test alleen analysis" analysis-field="NID_NAD" />
+      <field name="adressseerbaarobjectid-beide" reference-field="adressseerbaarobjectid1" analysis-field="adressseerbaarobjectid2" />
+      <field name="nummeraanduidingid-reference" reference-field="nummeraanduidingid1" />
+      <field name="nummeraanduidingid-analysis" analysis-field="nummeraanduidingid2" />
     </export>
   </compare>
 </registratie-vergelijker>

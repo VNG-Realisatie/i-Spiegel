@@ -68,21 +68,14 @@ namespace RegistratieVergelijker
 
         public DataTable table = new DataTable();
 
-        public RegistratieSource(System.Xml.XPath.XPathNavigator config)
+        public RegistratieSource(System.Xml.XPath.XPathNavigator config, string sql)
         {
             DbProviderFactory factory = DbProviderFactories.GetFactory(config.SelectSingleNode("database-provider").Value);
             
             DbConnection connection = factory.CreateConnection();
             connection.ConnectionString = config.SelectSingleNode("database-connection").Value;
+            connection.ConnectionString = connection.ConnectionString.Replace("${WORKING_DIRECTORY}", System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar);
 
-            String sql = config.SelectSingleNode("database-query").Value;
-            if(sql == null || sql.Trim().Length == 0) {
-                // maybe in a file?
-                String filename = config.SelectSingleNode("database-query/@queryfile").Value;
-                System.IO.FileInfo fi = new System.IO.FileInfo(filename);
-                System.Console.Out.WriteLine("\tquery from: " + fi.FullName);
-                sql = System.IO.File.ReadAllText(fi.FullName);
-            }
 
             DbCommand selectCommand = factory.CreateCommand();
             selectCommand.Connection = connection;

@@ -34,12 +34,14 @@ namespace RegistratieVergelijker
             kopadapter.SelectCommand = command;
             DbCommandBuilder builder = factory.CreateCommandBuilder();
             builder.DataAdapter = kopadapter;
+            // Wanneer : Additional information: De Microsoft.Jet.OLEDB.4.0-provider is niet geregistreerd op de lokale computer.
+            //  ==> draaien als x86 
             kopadapter.InsertCommand = builder.GetInsertCommand();
             kopadapter.UpdateCommand = builder.GetUpdateCommand();
             kopadapter.DeleteCommand = builder.GetDeleteCommand();
 
             command = factory.CreateCommand();
-            command.CommandText = "SELECT * FROM registatievergelijkingregel";
+            command.CommandText = "SELECT * FROM registratievergelijkingregel";
             command.Connection = connection;
 
             regeladapter = factory.CreateDataAdapter();
@@ -51,7 +53,7 @@ namespace RegistratieVergelijker
             regeladapter.DeleteCommand = builder.GetDeleteCommand();
         }
 
-        public void Start(string exportname, string referencename, string analysename, string configuration)
+        public void Start(string exportname, string referencename, string analysename, string configuration, string referencesql, string analysesql)
         {
             // get our next id
             DbCommand command = connection.CreateCommand();
@@ -69,6 +71,8 @@ namespace RegistratieVergelijker
             koprow["tijdstip"] = DateTime.Now;
             koprow["vergelijking"] = exportname;
             koprow["configuratie"] = configuration;
+            koprow["referencesql"] = referencesql;
+            koprow["analysesql"] = analysesql;
             koprow["percentage"] = 0;
             koprow["referentieaantal"] = 0;
             koprow["analyseaantal"] = 0;
@@ -79,8 +83,8 @@ namespace RegistratieVergelijker
             ds.Tables["registratievergelijking"].Rows.Add(koprow);
             kopadapter.Update(ds, "registratievergelijking");
 
-            regeladapter.SelectCommand.CommandText = "SELECT * FROM registatievergelijkingregel WHERE registratievergelijkingid = " + registratievergelijkingid;
-            regeladapter.Fill(ds, "registatievergelijkingregel");
+            regeladapter.SelectCommand.CommandText = "SELECT * FROM registratievergelijkingregel WHERE registratievergelijkingid = " + registratievergelijkingid;
+            regeladapter.Fill(ds, "registratievergelijkingregel");
 
             match = 0;
             nomatch = 0;

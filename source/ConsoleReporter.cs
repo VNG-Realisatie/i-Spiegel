@@ -11,7 +11,7 @@ namespace RegistratieVergelijker
         private long nomatch;
         private long missing;
 
-        public void Start(string exportname, string referencename, string analysename, string configuration)
+        public void Start(string exportname, string referencename, string analysename, string configuration, string referencesql, string analysesql)
         {
             Console.WriteLine("[start]\texportname:\t\t" + exportname);
             Console.WriteLine("[start]\treferencename:\t\t" + referencename);

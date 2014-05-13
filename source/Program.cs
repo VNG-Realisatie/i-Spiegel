@@ -59,21 +59,42 @@ namespace RegistratieVergelijker
                         configuration.SelectSingleNode("/registratie-vergelijker/logging/database-connection").Value
                         );
                 }
+                // sql
+                String referencesql = referenceconfig.SelectSingleNode("database-query").Value;
+                    if(referencesql == null || referencesql.Trim().Length == 0) {
+                        // maybe in a file?
+                        String filename = referenceconfig.SelectSingleNode("database-query/@queryfile").Value;
+                        System.IO.FileInfo fi = new System.IO.FileInfo(filename);
+                        System.Console.Out.WriteLine("\tquery from: " + fi.FullName);
+                        referencesql = System.IO.File.ReadAllText(fi.FullName);
+                }
+                String analysesql = analysisconfig.SelectSingleNode("database-query").Value;
+                    if(analysesql == null || referencesql.Trim().Length == 0) {
+                        // maybe in a file?
+                        String filename = analysisconfig.SelectSingleNode("database-query/@queryfile").Value;
+                        System.IO.FileInfo fi = new System.IO.FileInfo(filename);
+                        System.Console.Out.WriteLine("\tquery from: " + fi.FullName);
+                        analysesql = System.IO.File.ReadAllText(fi.FullName);
+                }
+
                 // report our start
                 int lengte = configurationfile.Name.Length - configurationfile.Extension.Length;
-                String exportname =configurationfile.Name.Substring(0, lengte);
+                String exportname = configurationfile.Name.Substring(0, lengte);
                 reporter.Start(
                     exportname, 
                     compareconfig.SelectSingleNode("@reference").Value, 
                     compareconfig.SelectSingleNode("@analysis").Value,
-                    System.IO.File.ReadAllText(configurationfile.FullName));
+                    System.IO.File.ReadAllText(configurationfile.FullName),
+                    referencesql,
+                    analysesql
+                    );
 
                 // create the data sources
                 System.Console.WriteLine("[" + compareconfig.SelectSingleNode("@reference").Value + "] data will be loaded");
-                RegistratieSource reference = new RegistratieSource(referenceconfig);
+                RegistratieSource reference = new RegistratieSource(referenceconfig, referencesql);
                 System.Console.WriteLine("[" + compareconfig.SelectSingleNode("@reference").Value + "] data loaded");
                 System.Console.WriteLine("[" + compareconfig.SelectSingleNode("@analysis").Value + "] data will be loaded");
-                RegistratieSource analysis = new RegistratieSource(analysisconfig);
+                RegistratieSource analysis = new RegistratieSource(analysisconfig, analysesql);
                 System.Console.WriteLine("[" + compareconfig.SelectSingleNode("@analysis").Value + "] data loaded");
 
                 // check the columns (better error messages!)

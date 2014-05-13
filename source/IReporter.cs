@@ -7,7 +7,7 @@ namespace RegistratieVergelijker
 {
     interface IReporter
     {
-        void Start(string exportname, string referencename, string analysename, string configuration);
+        void Start(string exportname, string referencename, string analysename, string configuration, string referencesql, string analysesql);
 
         void EntryMatch(System.Data.DataRow searchrow, RegistratieItem searchitem, System.Data.DataRow foundrow);
         void EntryNoMatch(System.Data.DataRow searchrow, RegistratieItem searchitem, System.Data.DataRow found, string matchername, RegistratieItem analyse, RegistratieItem reference);
