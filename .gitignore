@@ -6,3 +6,4 @@
 /bin/GegevensVergelijker.vshost.exe
 /bin/GegevensVergelijker.vshost.exe.config
 /bin/GegevensVergelijker.vshost.exe.manifest
+/bin/*.laccdb

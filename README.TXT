@@ -24,26 +24,30 @@ Het schrijven van deze querys laten we bewust door de functioneelbeheerders van 
 
 [Installatie]
 1.	De bestanden uit de directory: https://github.com/EduardWitteveen/GegevensVergelijker/tree/master/bin moeten worden geplaatst in een aparte directory
-2.	In het bestand GegevensVergelijker.exe.config (een xml bestand) moet de configuratie bestand worden aangepast. Dit zijn de volgende onderdelen:
-  a.	De database provider: databaseprovider , bijvoorbeeld:
-    i.	System.Data.Odbc
-    ii.	System.Data.OleDb
-    iii.	System.Data.OracleClient
-    iv.	Oracle.DataAccess.Client
-    v.	System.Data.SqlClient
-    vi.	System.Data.SqlServerCe.3.5
-    vii.	…..
-  b.	De connectiestring: Hodor.Properties.Settings.databaseconnection , zie https://www.connectionstrings.com/ 
-  c.	De rest van de configuratie
+2.	In het bestand GegevensVergelijker.exe.config (een xml bestand) moet de configuratie bestand worden aangepast.
+	Dit zijn de volgende onderdelen:
+	  a.	De database provider: databaseprovider , bijvoorbeeld:
+			i.		System.Data.Odbc
+			ii.		System.Data.OleDb
+			iii.	System.Data.OracleClient
+			iv.		Oracle.DataAccess.Client
+			v.		System.Data.SqlClient
+			vi.		System.Data.SqlServerCe.3.5
+			vii.	…
+	  b.	De connectiestring: GegevensVergelijker.Properties.Settings.databaseconnection , zie https://www.connectionstrings.com/ 
+	  c.	De rest van de configuratie
+	  
+	  Het is niet noodzakelijk om de access database (Gegevensvergelijker.accdb) te vervangen door een ander, maar vanuit de organisatie is dit meestal gewenst.
+	  
 3.	Creeer de database structuur door het uitvoeren van de https://github.com/EduardWitteveen/GegevensVergelijker/tree/master/data/*.sql in de gebruikte database.
 4.	Vul de database met de data uit de https://github.com/EduardWitteveen/GegevensVergelijker/tree/master/data/*.xlsx bestanden.
 5.	Pas waar nodig de volgende bestanden aan in database:
-  a.	Tabel: HODOR_DATASOURCE « databron van bvb bag-adressen, gba-adressen, gba-personen ed.
-  b.	Tabel: HODOR_COMPARE      « vergelijking tussen 2 databronnen, gespecificeerd in een stukje xml
-  c.	Tabel: HODOR_CHECK            « conditionele test op een datasource
+		a.	Tabel: GGV_DATASOURCE 	« databron van bvb bag-adressen, gba-adressen, gba-personen ed.
+		b.	Tabel: GGV_COMPARE      « vergelijking tussen 2 databronnen, gespecificeerd in een stukje xml
+		c.	Tabel: GGV_CHECK        « conditionele test op een datasource
 6.	Start > Run > cmd 
 7.	Start op de commandprompt de GegevensVergelijker.exe op en kijk of alles succesvol verloopt. 
 8.	Anders krijg je een email en een waarschuwing op de commandline wat er fout gaat.
 9.	De resultaten zijn te vinden op de volgende plekken:
-  a.	HODOR_OUTPUT                    « totalen
-  b.	HODOR_OUTPUTLINE            « details
+		a.	GGV_OUTPUT              « totalen
+		b.	GGV_OUTPUTLINE          « details
