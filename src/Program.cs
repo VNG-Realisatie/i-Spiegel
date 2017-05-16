@@ -26,7 +26,7 @@ namespace GegevensVergelijker
             adapter.SelectCommand = command;
             var table = new DataTable();
             adapter.Fill(table);
-            if (table.Rows.Count != 1) throw new Exception("verkeerd aantal databasources dingen");
+            if (table.Rows.Count != 1) throw new Exception("Kon de datasource met naam:" + datasourcename + " niet vinden!");
 
             String datasource_provider = Convert.ToString( table.Rows[0]["provider"]);
             String datasource_connectionstring = Convert.ToString(table.Rows[0]["connectionstring"]);
@@ -313,14 +313,23 @@ namespace GegevensVergelijker
                 Output.Error("***** ERROR *****", ex);
             }
 #endif
-            System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            message.To.Add(Properties.Settings.Default.email_receiver);
-            message.Subject = Properties.Settings.Default.email_subject;
-            message.From = new System.Net.Mail.MailAddress(Properties.Settings.Default.email_from);
-            message.Body = Output.ToString();
-            System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Properties.Settings.Default.email_smtp);
-            smtp.UseDefaultCredentials = true;
-            smtp.Send(message);
+            if (Properties.Settings.Default.email_smtp.Length > 0)
+            {
+                System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+                message.To.Add(Properties.Settings.Default.email_receiver);
+                message.Subject = Properties.Settings.Default.email_subject;
+                message.From = new System.Net.Mail.MailAddress(Properties.Settings.Default.email_from);
+                message.Body = Output.ToString();
+                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Properties.Settings.Default.email_smtp);
+                smtp.UseDefaultCredentials = true;
+                smtp.Send(message);
+            }
+            else
+            {
+                Console.WriteLine("\n\n=== no emailserver configured, waiting for user-input ===");
+                Console.WriteLine("Press Any Key to Continue");
+                Console.ReadKey();
+            }
         }
     }
 }
