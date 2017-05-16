@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace Hodor
+namespace GegevensVergelijker
 {
     public class ConsoleReporter : IReporter 
     {
@@ -58,6 +59,11 @@ namespace Hodor
             Console.WriteLine("[stop]");
             Console.WriteLine("press any key to continue......");
             Console.ReadKey();
+        }
+
+        public void EntryMatch(DataRow searchrow)
+        {
+            throw new NotImplementedException();
         }
     }
 }

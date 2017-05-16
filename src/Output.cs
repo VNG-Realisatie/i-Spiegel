@@ -78,7 +78,7 @@ namespace GegevensVergelijker
         }
 
 
-        public static String ToString()
+        new public static String ToString()
         {
             return writer.ToString();
         }

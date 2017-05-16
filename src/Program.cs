@@ -20,7 +20,7 @@ namespace GegevensVergelijker
         {
             var command = configprovider.CreateCommand();
             // TODO: parameter
-            command.CommandText = "SELECT * FROM hodor_datasource WHERE name LIKE '" + datasourcename + "'";
+            command.CommandText = "SELECT * FROM GGV_datasource WHERE name LIKE '" + datasourcename + "'";
             command.Connection = configconnection;
             var adapter = configprovider.CreateDataAdapter();
             adapter.SelectCommand = command;
@@ -67,9 +67,9 @@ namespace GegevensVergelijker
             connection.ConnectionString = ReplaceVariables(Properties.Settings.Default.databaseconnection);
             connection.Open();
 
-            #region HODOR_COMPARE
+            #region GGV_COMPARE
             var command = provider.CreateCommand();
-            command.CommandText = "SELECT * FROM hodor_compare WHERE active = -1";
+            command.CommandText = "SELECT * FROM GGV_compare WHERE active = -1";
             command.Connection = connection;
             var adapter = provider.CreateDataAdapter();
             adapter.SelectCommand = command;
@@ -258,12 +258,13 @@ namespace GegevensVergelijker
                 }
 #endif
             }
-            #endregion HODOR_COMPARE
+            #endregion GGV_COMPARE
 
-            #region HODOR_CHECK
+            #region GGV_CHECK
 
             command = provider.CreateCommand();
-            command.CommandText = "SELECT * FROM hodor_check WHERE active = -1";
+            // "small detail", in access boolean: true = false and visaversa
+            command.CommandText = "SELECT * FROM GGV_check WHERE active = -1";
             command.Connection = connection;
             adapter = provider.CreateDataAdapter();
             adapter.SelectCommand = command;
@@ -278,8 +279,10 @@ namespace GegevensVergelijker
                 string checkvalue = Convert.ToString(checkrow["checkvalue"]);
 
                 Output.Info("START: " + checkname);
+#if !DEBUG
                 try
                 {
+#endif
                     DatabaseReporter reporter = new DatabaseReporter(provider, connection);
                     reporter.Start(checkname, datasourcename, null, columnname + "='" + checkvalue + "'", datasourcename, null);
                     DataTable datatable = GetData(provider, connection, datasourcename);
@@ -291,14 +294,16 @@ namespace GegevensVergelijker
                     reporter.Stop(datatable.Rows.Count);
 
                     Output.Info("STOP: " + checkname);
+#if !DEBUG
                 }
                 catch (Exception ex)
                 {
                     Output.Warn("ERROR PROCESSING: " + checkname, ex);
                 }
+#endif
             }
-            #endregion HODOR_CHECK            
-            
+            #endregion GGV_CHECK            
+
             connection.Close();
             Output.Info("***** STOP *****");
 #if !DEBUG
