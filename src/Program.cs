@@ -134,56 +134,58 @@ namespace GegevensVergelijker
                         }
                     }
                     Output.Info("\t[check] field references correct");
-                    #endregion
+                #endregion
 
-                    // export into csv, so we can use i-spiegel
-                    #region export csv
+                // export into csv, so we can use i-spiegel
+                #region export csv
+                /*
+                {
+                    DirectoryInfo exportdirectory = new DirectoryInfo("data");
+                    if (!exportdirectory.Exists) exportdirectory.Create();
+                    exportdirectory = new DirectoryInfo("data\\" + comparename);
+                    if (!exportdirectory.Exists) exportdirectory.Create();
+
+                    List<string> n = new List<string>();
+                    List<string> r = new List<string>();
+                    List<string> a = new List<string>();
+                    foreach (XPathNavigator field in compareconfig.Select("//field"))
                     {
-                        DirectoryInfo exportdirectory = new DirectoryInfo("data");
-                        if (!exportdirectory.Exists) exportdirectory.Create();
-                        exportdirectory = new DirectoryInfo("data\\" + comparename);
-                        if (!exportdirectory.Exists) exportdirectory.Create();
-
-                        List<string> n = new List<string>();
-                        List<string> r = new List<string>();
-                        List<string> a = new List<string>();
-                        foreach (XPathNavigator field in compareconfig.Select("//field"))
+                        n.Add(field.SelectSingleNode("@name").Value);
+                        if (field.SelectSingleNode("@reference-field") != null)
                         {
-                            n.Add(field.SelectSingleNode("@name").Value);
-                            if (field.SelectSingleNode("@reference-field") != null)
-                            {
-                                r.Add(field.SelectSingleNode("@reference-field").Value);
-                            }
-                            else
-                            {
-                                r.Add(null);
-                            }
-                            if (field.SelectSingleNode("@analysis-field") != null)
-                            {
-                                a.Add(field.SelectSingleNode("@analysis-field").Value);
-                            }
-                            else
-                            {
-                                a.Add(null);
-                            }
+                            r.Add(field.SelectSingleNode("@reference-field").Value);
                         }
-                        Output.Info("\tSTART: exporting the data");
-                        try
+                        else
                         {
-                            reference.Export(r, n, exportdirectory, compareconfig.SelectSingleNode("@reference").Value);
-                            analysis.Export(a, n, exportdirectory, compareconfig.SelectSingleNode("@analysis").Value);
-
-                            Output.Info("\tSTOP: exporting the data");
+                            r.Add(null);
                         }
-                        catch(Exception ex) {
-                            Output.Warn("\tERROR: exporting the data", ex);
+                        if (field.SelectSingleNode("@analysis-field") != null)
+                        {
+                            a.Add(field.SelectSingleNode("@analysis-field").Value);
+                        }
+                        else
+                        {
+                            a.Add(null);
                         }
                     }
-                    #endregion
+                    Output.Info("\tSTART: exporting the data");
+                    try
+                    {
+                        reference.Export(r, n, exportdirectory, compareconfig.SelectSingleNode("@reference").Value);
+                        analysis.Export(a, n, exportdirectory, compareconfig.SelectSingleNode("@analysis").Value);
 
-                    // matches
-                    #region build matchers
-                    Dictionary<string, List<string>[]> matchers = new Dictionary<string, List<string>[]>();
+                        Output.Info("\tSTOP: exporting the data");
+                    }
+                    catch(Exception ex) {
+                        Output.Warn("\tERROR: exporting the data", ex);
+                    }
+                }
+                */
+                #endregion
+
+                // matches
+                #region build matchers
+                Dictionary<string, List<string>[]> matchers = new Dictionary<string, List<string>[]>();
                     foreach (XPathNavigator match in compareconfig.Select("match"))
                     {
                         String name = match.SelectSingleNode("@id").Value;

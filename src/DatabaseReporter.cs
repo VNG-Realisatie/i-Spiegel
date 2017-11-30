@@ -20,8 +20,12 @@ namespace GegevensVergelijker
         private long missing;
         private long invalid;
 
+        private System.Diagnostics.Stopwatch watch;
+
         public DatabaseReporter(DbProviderFactory factory, DbConnection connection) {
             this.connection = connection;
+
+            watch = System.Diagnostics.Stopwatch.StartNew();
 
             DbCommand command = factory.CreateCommand();
             command.CommandText = "SELECT * FROM GGV_output";
@@ -74,7 +78,7 @@ namespace GegevensVergelijker
             koprow["gelijkaantal"] = 0;
             koprow["afwijkingaantal"] = 0;
             koprow["nietgevondenaantal"] = 0;
-            koprow["looptijd"] = DateTime.MinValue;
+            koprow["looptijd"] = new DateTime(watch.ElapsedTicks);
             ds.Tables["GGV_output"].Rows.Add(koprow);
             kopadapter.Update(ds, "GGV_output");
 
@@ -159,7 +163,10 @@ namespace GegevensVergelijker
             koprow["afwijkingaantal"] = nomatch;
             koprow["nietgevondenaantal"] = missing;
             koprow["ongeldig"] = invalid;
-            koprow["looptijd"] = DateTime.Now;
+
+            // the code that you want to measure comes here
+            watch.Stop();
+            koprow["looptijd"] = new DateTime(watch.ElapsedTicks);
             kopadapter.Update(ds, "GGV_output");
         }
 
