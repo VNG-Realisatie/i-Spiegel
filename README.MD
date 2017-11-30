@@ -1,9 +1,9 @@
-#Gegevensvergelijker
+# Gegevensvergelijker
 
-##Doel
+## Doel
 Naar voorbeeld van de I-Spiegel applicatie van KING heb ik een tool gemaakt om 2 registraties te vergelijken.
 
-##Hoe verhoudt de tool zich ivm. Architectuur en KING
+## Hoe verhoudt de tool zich ivm. Architectuur en KING
 De gegevensvergelijker krijgt zeker een positie in de architectuur. 
 Het kwaliteitstool wordt ondergebracht binnen het thema gegevensmanagement op de gemmaonline website.
  
@@ -15,7 +15,7 @@ Naast het tactisch katern zal ook een aparte pagina worden opgenomen in de gemma
 Voor het downloaden van de tool zal worden verwezen naar de iSpiegel website. KING ontvangt graag van ons een beschrijvende teksten ten aanzien van de functionaliteit van de gegevensvergelijker. 
 
 
-##Applicatie
+## Applicatie
 De applicatie is geschreven in C# en is een .NET console-applicatie, op deze manier kunnen we het elke dag geautomatiseerd laten draaien. De bron en vergelijkings queries, maar ook de resultaten van de vergelijking worden in een applicatie-specifieke-database opgeslagen.
 
 Doordat er gebruik is gemaakt van de generieke database laag uit .NET maakt het niet uit welke database er wordt gebruikt. Bij de gemeente Súdwest-Fryslân wordt er voor de applicatie-specifieke-database Oracle gebruikt.
@@ -28,16 +28,16 @@ Voor de sql maken we gebruik van bestaande rapportages om te kijken welke tabell
 De praktijk wijst uit dat je met deze informatie het beste zelf de queries kan schrijven. 
 Het schrijven van deze querys laten we bewust door de functioneel beheerders van de betreffende vakapplicaties zelf doen.
 
-##Werking
-###Globaal
+## Werking
+### Globaal
 De tool wordt aangeroepen en haalt uit de database alle uit te voeren vergelijkingen.
 Voor de verschillende vergelijken wordt er contact gelegd met de ingestelde database en worden de betreffende queries gedraait.
 De output van de vergelijking wordt daarna opgeslagen in de database.
 
-###Details
+### Details
 Na downloaden en uitpakken zijn er 5 directories aangemaakt, te weten:
 
-####bin : bevat de daadwerkelijke tool 
+#### bin : bevat de daadwerkelijke tool 
 1. Gegevensvergelijker.exe : Deze tool start de SQL-queries op zoals deze in de database gedefinieerd staan.
 2. Gegevensvergelijker.accdb
 	- GGV_DATASOURCE  : in veld QUERY van tabel GGV_DATASOURCE (zie punt 5 van [Installatie] voor inrichting).
@@ -75,7 +75,7 @@ Bevat de resultaten van de verschillende gemeenten tot nu toe
 #### src
 broncode van de applicatie
 
-##Installatie
+## Installatie
     1.	De bestanden uit de directory: https://github.com/EduardWitteveen/GegevensVergelijker/tree/master/bin moeten worden geplaatst in een aparte directory
     2.	Voor de koppeling naar de database waarin de data terecht komt, moet het configuratie bestand 'GegevensVergelijker.exe.config' (een xml bestand in map 'bin')
     	worden aangepast.
@@ -103,7 +103,7 @@ broncode van de applicatie
     3.	Creeer de database structuur door het uitvoeren van de https://github.com/EduardWitteveen/GegevensVergelijker/tree/master/data/*.sql in de gebruikte database.
     ------------ Einde optioneel 
 
-##Inrichting
+## Inrichting
 1. Vul de database (tabellen GGV_DATASOURCE, GGV_COMPARE en GGV_CHECK) met de data uit de https://github.com/EduardWitteveen/GegevensVergelijker/tree/master/data/*.xlsx bestanden voor die databronnen die je wilt vergelijken.
 2. Localiseer de inrichting door aanpassen van dezelfde tabellen aan de lokale situatie:
 	- 	Tabel: GGV_COMPARE      « vergelijking tussen 2 databronnen, gespecificeerd in een stukje xml
@@ -112,7 +112,7 @@ broncode van de applicatie
 
 Zie apart document GGV_Inrichting voor een uitgebreidere beschrijving van de database en een toelichting op wat waar ingericht cq. aangepast moet worden.
 
-##Gebruik
+## Gebruik
 - Open een DOS-box via Start > Run > cmd
 - Start op de commandprompt de GegevensVergelijker.exe op en kijk of alles succesvol verloopt. 
 - Anders krijg je een email en een waarschuwing op de commandline wat er fout gaat.
