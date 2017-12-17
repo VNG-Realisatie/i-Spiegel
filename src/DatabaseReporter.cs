@@ -7,7 +7,7 @@ using System.Text;
 
 namespace GegevensVergelijker
 {
-    public class DatabaseReporter : IReporter
+    public class DatabaseReporter
     {
         private DbConnection connection = null;
         private DataSet ds = null;
@@ -28,7 +28,7 @@ namespace GegevensVergelijker
             watch = System.Diagnostics.Stopwatch.StartNew();
 
             DbCommand command = factory.CreateCommand();
-            command.CommandText = "SELECT * FROM GGV_output";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "output";
             command.Connection = connection;
 
             kopadapter = factory.CreateDataAdapter();
@@ -42,7 +42,7 @@ namespace GegevensVergelijker
             kopadapter.DeleteCommand = builder.GetDeleteCommand();
 
             command = factory.CreateCommand();
-            command.CommandText = "SELECT * FROM GGV_outputline";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "outputline";
             command.Connection = connection;
 
             regeladapter = factory.CreateDataAdapter();
@@ -54,36 +54,45 @@ namespace GegevensVergelijker
             regeladapter.DeleteCommand = builder.GetDeleteCommand();
         }
 
-        public void Start(string exportname, string referencename, string analysename, string configuration, string referencesql, string analysesql)
+        public void Start(string exportname, string referentiename, string analysename, string configuration, string referencesql, string analysesql)
         {
             // get our next id
             DbCommand command = connection.CreateCommand();
-            command.CommandText = "SELECT MAX(outputid) FROM GGV_output ";
+            command.CommandText = "SELECT MAX(outputid) FROM " + Properties.Settings.Default.databaseprefix + "output ";
             object result = command.ExecuteScalar();
             long outputid = DBNull.Value == result ? 0 : Convert.ToUInt32(result);
             outputid++;
 
             ds = new DataSet();
-            kopadapter.Fill(ds, "GGV_output");
-            koprow = ds.Tables["GGV_output"].NewRow();
+            kopadapter.Fill(ds, "output");
+            koprow = ds.Tables["output"].NewRow();
+
             koprow["outputid"] = outputid;
             koprow["tijdstip"] = DateTime.Now;
-            koprow["vergelijking"] = exportname;
+            koprow["vergelijkingnaam"] = exportname;
             koprow["configuratie"] = configuration;
-            koprow["referencesql"] = referencesql;
-            koprow["analysesql"] = analysesql;
+            koprow["referentienaam"] = referentiename;
+            koprow["analysenaam"] = analysename;
+            koprow["referentiequery"] = referencesql;
+            koprow["analysequery"] = analysesql;
+            koprow["referentieapplicatie"] = "";
+            koprow["analyseapplicatie"] = "";
+            koprow["referentiegemeentecode"] = "";
+            koprow["analysegemeentecode"] = "";
             koprow["percentage"] = 0;
             koprow["referentieaantal"] = 0;
-            koprow["analyseaantal"] = 0;
+            koprow["analyseaantal"] = 0;          
             koprow["gelijkaantal"] = 0;
             koprow["afwijkingaantal"] = 0;
             koprow["nietgevondenaantal"] = 0;
+            koprow["ongeldigaantal"] = 0;            
             koprow["looptijd"] = new DateTime(watch.ElapsedTicks);
-            ds.Tables["GGV_output"].Rows.Add(koprow);
-            kopadapter.Update(ds, "GGV_output");
 
-            regeladapter.SelectCommand.CommandText = "SELECT * FROM GGV_outputline WHERE outputid = " + outputid;
-            regeladapter.Fill(ds, "GGV_outputline");
+            ds.Tables["output"].Rows.Add(koprow);
+            kopadapter.Update(ds, "output");
+
+            regeladapter.SelectCommand.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "outputline WHERE outputid = " + outputid;
+            regeladapter.Fill(ds, "outputline");
 
             match = 0;
             nomatch = 0;
@@ -91,88 +100,135 @@ namespace GegevensVergelijker
             invalid = 0;
         }
 
-        public void EntryMatch(System.Data.DataRow searchrow)
-        {
-            /*
-            DataRow row = ds.Tables["GGV_outputline"].NewRow();
-            row["outputid"] = koprow["outputid"];
-            row["regelnummer"] = ds.Tables["GGV_outputline"].Rows.Count + 1;
-            row["status"] = "MATCH";
-            row["melding"] = "match:" + searchitem;
-            row["referentieregel"] = RegistratieSource.ToString(foundrow);
-            row["analyseregel"] = RegistratieSource.ToString(searchrow);
-            ds.Tables["GGV_outputline"].Rows.Add(row);
-            */
-            match++;
-        }
 
-
-        public void EntryInvalid(string checkname, string primary, string columnname, string checkvalue, DataRow found)
+        public void EntryInvalid(string checkname, string sleutelcolumname, string checkcolumnname, string checkvalue, DataRow found)
         {
-            DataRow row = ds.Tables["GGV_outputline"].NewRow();
+            DataRow row = ds.Tables["outputline"].NewRow();
             row["outputid"] = koprow["outputid"];
-            row["regelnummer"] = ds.Tables["GGV_outputline"].Rows.Count + 1;
+            row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
             row["status"] = "INVALID";
-            row["melding"] = "check:" + checkname + " found:" + found[columnname] + " expected:" + checkvalue;
-            row["referentieregel"] = RegistratieSource.ToString(found);
-            //row["analyseregel"] = RegistratieSource.ToString(searchrow);
-            ds.Tables["GGV_outputline"].Rows.Add(row);
+
+
+//            row["melding"] = "check:" + checkname + " found:" + found[columnname] + " expected:" + checkvalue;
+//            row["referentieregel"] = RegistratieSource.ToString(found);
+//            //row["analyseregel"] = RegistratieSource.ToString(searchrow);
+//            ds.Tables["outputline"].Rows.Add(row);
+
+
+            row["controle"] = checkname;
+            row["sleutel"] = RegistratieSource.ToFieldXml(sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
+            row["analysewaarde"] = RegistratieSource.ToFieldXml(checkcolumnname, checkvalue);
+            row["referentiewaarde"] = DBNull.Value;
+            row["analyseregel"] = RegistratieSource.ToFieldXml(found);
+            row["referentieregel"] = DBNull.Value;
+            ds.Tables["outputline"].Rows.Add(row);
 
             invalid++;
 
         }
 
-        public void EntryNoMatch(System.Data.DataRow searchrow, RegistratieItem searchitem, System.Data.DataRow found, string matchername, RegistratieItem analyse, RegistratieItem reference)
+        public void EntryNoMatch(System.Data.DataRow searchrow, RegistratieItem searchitem, System.Data.DataRow found, string vergelijking, RegistratieItem analyse, RegistratieItem reference, RegistratieItem sleutel)
         {
-            DataRow row = ds.Tables["GGV_outputline"].NewRow();
+            DataRow row = ds.Tables["outputline"].NewRow();
             row["outputid"] = koprow["outputid"];
-            row["regelnummer"] = ds.Tables["GGV_outputline"].Rows.Count + 1;
+            row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
             row["status"] = "NO MATCH";
-            row["melding"] = "matcher:" + matchername + " found:" + analyse + " expected:" + reference;
-            row["referentieregel"] = RegistratieSource.ToString(found);
-            row["analyseregel"] = RegistratieSource.ToString(searchrow);
-            ds.Tables["GGV_outputline"].Rows.Add(row);
+
+            row["controle"] = vergelijking;
+            row["sleutel"] = RegistratieSource.ToFieldXml(sleutel);
+            row["analysewaarde"] = RegistratieSource.ToFieldXml(searchitem);
+            row["referentiewaarde"] = RegistratieSource.ToFieldXml(reference);
+            row["analyseregel"] = RegistratieSource.ToFieldXml(searchrow);
+            row["referentieregel"] = RegistratieSource.ToFieldXml(found);
+            ds.Tables["outputline"].Rows.Add(row);
 
             nomatch++;
         }
 
-        public void EntryNotFound(string primary, System.Data.DataRow searchrow, RegistratieItem searchitem)
+        public void EntryNotFound(string vergelijking, System.Data.DataRow searchrow, RegistratieItem searchitem)
         {
-            DataRow row = ds.Tables["GGV_outputline"].NewRow();
+            DataRow row = ds.Tables["outputline"].NewRow();
             row["outputid"] = koprow["outputid"];
-            row["regelnummer"] = ds.Tables["GGV_outputline"].Rows.Count + 1;
+            row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
             row["status"] = "NOT FOUND";
-            row["melding"] = "matcher:" + primary + " search:" + searchitem;
+
+            row["vergelijking"] = vergelijking;
+            row["sleutel"] = RegistratieSource.ToFieldXml(searchitem); 
+            row["analysewaarde"] = RegistratieSource.ToFieldXml(searchitem);
+            row["referentiewaarde"] = DBNull.Value;
+            row["analyseregel"] = RegistratieSource.ToFieldXml(searchrow);
             row["referentieregel"] = DBNull.Value;
-            row["analyseregel"] = RegistratieSource.ToString(searchrow);
-            ds.Tables["GGV_outputline"].Rows.Add(row);
+            ds.Tables["outputline"].Rows.Add(row);
 
             missing++;
         }
 
-        public void Stop(long analysecount, long referencecount = 0)
+        public void Stop(string analyseapplicatie, string referentieapplicatie, string analysequery, string referentiequery, string analysegemeentecode, string referentiegemeentecode, long analysecount, long referencecount)
         {
             // save the regels
-            regeladapter.Update(ds, "GGV_outputline");
+            regeladapter.Update(ds, "outputline");
 
             // update the koprow
+            koprow["referentieapplicatie"] = referentieapplicatie;
+            koprow["analyseapplicatie"] = analyseapplicatie;
+            koprow["referentiequery"] = referentiequery;
+            koprow["analysequery"] = analysequery;
+            koprow["referentiegemeentecode"] = referentiegemeentecode;
+            koprow["analysegemeentecode"] = analysegemeentecode;
             koprow["percentage"] = (100.0 / analysecount) * match;
             koprow["referentieaantal"] = referencecount;
             koprow["analyseaantal"] = analysecount;
             koprow["gelijkaantal"] = match;
             koprow["afwijkingaantal"] = nomatch;
             koprow["nietgevondenaantal"] = missing;
-            koprow["ongeldig"] = invalid;
+            koprow["ongeldigaantal"] = invalid;
 
             // the code that you want to measure comes here
             watch.Stop();
             koprow["looptijd"] = new DateTime(watch.ElapsedTicks);
-            kopadapter.Update(ds, "GGV_output");
+            kopadapter.Update(ds, "output");
         }
 
-        public void EntryMatch(DataRow searchrow, RegistratieItem searchitem, DataRow foundrow)
+        public void EntryMatch(string checkname, string sleutelcolumname, string checkcolumnname, string checkvalue, DataRow found)
         {
-            throw new NotImplementedException();
+            if (Properties.Settings.Default.output_everything) { 
+                DataRow row = ds.Tables["outputline"].NewRow();
+                row["outputid"] = koprow["outputid"];
+                row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
+                row["status"] = "VALID";
+                //            row["melding"] = "check:" + checkname + " found:" + found[columnname] + " expected:" + checkvalue;
+                //            row["referentieregel"] = RegistratieSource.ToString(found);
+                //            //row["analyseregel"] = RegistratieSource.ToString(searchrow);
+                //            ds.Tables["outputline"].Rows.Add(row);
+                row["controle"] = checkname;
+                row["sleutel"] = RegistratieSource.ToFieldXml(sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
+                row["analysewaarde"] = RegistratieSource.ToFieldXml(checkcolumnname, checkvalue);
+                row["referentiewaarde"] = DBNull.Value;
+                row["analyseregel"] = RegistratieSource.ToFieldXml(found);
+                row["referentieregel"] = DBNull.Value;
+                ds.Tables["outputline"].Rows.Add(row);
+            }
+            match++;
         }
-    }   
+        
+        public void EntryMatch(System.Data.DataRow searchrow, System.Data.DataRow found, RegistratieItem sleutel)
+        {
+            DataRow row = ds.Tables["outputline"].NewRow();
+            row["outputid"] = koprow["outputid"];
+            row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
+            row["status"] = "VALID";
+
+            row["controle"] = "";
+            row["sleutel"] = RegistratieSource.ToFieldXml(sleutel);
+            row["analysewaarde"] = "";
+            row["referentiewaarde"] = "";
+            row["analyseregel"] = RegistratieSource.ToFieldXml(searchrow);
+            row["referentieregel"] = RegistratieSource.ToFieldXml(found);
+            ds.Tables["outputline"].Rows.Add(row);
+
+            nomatch++;
+        }
+
+
+    }
 }

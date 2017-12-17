@@ -116,7 +116,7 @@ namespace GegevensVergelijker
             return result;
         }
 
-        public static string ToString(DataRow row)
+        public static string ToFieldXml(DataRow row)
         {
             string result = null;
             foreach (object field in row.ItemArray)
@@ -124,10 +124,26 @@ namespace GegevensVergelijker
                 string v = (field == null || field == DBNull.Value) ? " (null) " : "'" + field + "'";
                 if (result == null) result = v;
                 else result = result + "," + v;
-            }
-            return "{" + result + "}";
-
+            }            
+            return "<row> ToFieldXml(DataRow row) " + result + "</row>";
         }
+
+        public static string ToFieldXml(RegistratieItem row)
+        {
+            string result = null;
+            foreach (string field in row.fieldvalues)
+            {
+                if (result == null) result = field;
+                else result = result + "," + field;
+            }
+            return "<row> ToFieldXml(RegistratieItem searchitem) " + result + "</row>";
+        }
+
+        public static string ToFieldXml(string veldnaam, string sleutelwaarde)
+        {
+            return "<row><field name='" + veldnaam + "'>" + sleutelwaarde + "</field><row>";
+        }
+
 
         public void Export(List<string> fields, List<string> names, System.IO.DirectoryInfo exportdirectory, string filename)
         {

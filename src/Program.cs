@@ -20,7 +20,7 @@ namespace GegevensVergelijker
         {
             var command = configprovider.CreateCommand();
             // TODO: parameter
-            command.CommandText = "SELECT * FROM GGV_datasource WHERE name LIKE '" + datasourcename + "'";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "databron WHERE databronnaam LIKE '" + datasourcename + "'";
             command.Connection = configconnection;
             var adapter = configprovider.CreateDataAdapter();
             adapter.SelectCommand = command;
@@ -31,6 +31,8 @@ namespace GegevensVergelijker
             String datasource_provider = Convert.ToString( table.Rows[0]["provider"]);
             String datasource_connectionstring = Convert.ToString(table.Rows[0]["connectionstring"]);
             String datasource_query = Convert.ToString(table.Rows[0]["query"]);
+            String applicatie = Convert.ToString(table.Rows[0]["applicatienaam"]);
+            String gemeentecode = Convert.ToString(table.Rows[0]["gemeentecode"]);
 
             var datasource_factory = DbProviderFactories.GetFactory(datasource_provider);
             var datasource_connection = datasource_factory.CreateConnection();
@@ -44,6 +46,12 @@ namespace GegevensVergelijker
             var datasource_table = new DataTable();
             datasource_adapter.Fill(datasource_table);
             datasource_connection.Close();
+
+            datasource_table.ExtendedProperties.Add("databronnaam", datasourcename);
+            datasource_table.ExtendedProperties.Add("applicatienaam", applicatie);
+            datasource_table.ExtendedProperties.Add("referentiequery", datasource_query);
+            datasource_table.ExtendedProperties.Add("gemeentecode", gemeentecode);
+
             return datasource_table;
         }
 
@@ -67,9 +75,9 @@ namespace GegevensVergelijker
             connection.ConnectionString = ReplaceVariables(Properties.Settings.Default.databaseconnection);
             connection.Open();
 
-            #region GGV_COMPARE
+            #region COMPARE
             var command = provider.CreateCommand();
-            command.CommandText = "SELECT * FROM GGV_compare WHERE active = -1";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "vergelijking WHERE actief = -1";
             command.Connection = connection;
             var adapter = provider.CreateDataAdapter();
             adapter.SelectCommand = command;
@@ -77,7 +85,7 @@ namespace GegevensVergelijker
             adapter.Fill(table);
             foreach (DataRow comparerow in table.Rows)
             {
-                string comparename = Convert.ToString(comparerow["comparename"]);
+                string comparename = Convert.ToString(comparerow["vergelijkingnaam"]);
                 string config = Convert.ToString(comparerow["config"]);
 
                 Output.Info("START: " + comparename);
@@ -239,19 +247,26 @@ namespace GegevensVergelijker
                                 if (!a.Equals(r))
                                 {
                                     fullmatch = false;
-                                    reporter.EntryNoMatch(row, matcher, found, matchername, a, r);
+                                    reporter.EntryNoMatch(row, matcher, found, matchername, a, r, matcher);
                                 }
                             }
                         }
                         if (fullmatch)
                         {
-                            reporter.EntryMatch(row);
+                            reporter.EntryMatch(row, found, matcher);
                         }
                     }
+                    reporter.Stop(
+                            reference.table.ExtendedProperties["applicatienaam"].ToString(),
+                            analysis.table.ExtendedProperties["applicatienaam"].ToString(),
+                            reference.table.ExtendedProperties["referentiequery"].ToString(),
+                            analysis.table.ExtendedProperties["referentiequery"].ToString(),
+                            reference.table.ExtendedProperties["gemeentecode"].ToString(),
+                            analysis.table.ExtendedProperties["gemeentecode"].ToString(),
+                            analysis.table.Rows.Count, 
+                            reference.table.Rows.Count);
 
-                    reporter.Stop(analysis.table.Rows.Count, reference.table.Rows.Count);
-
-                    Output.Info("STOP: " + comparename);
+                Output.Info("STOP: " + comparename);
 #if !DEBUG
                 }
                 catch (Exception ex)
@@ -260,13 +275,13 @@ namespace GegevensVergelijker
                 }
 #endif
             }
-            #endregion GGV_COMPARE
+            #endregion COMPARE
 
-            #region GGV_CHECK
+            #region CHECK
 
             command = provider.CreateCommand();
             // "small detail", in access boolean: true = false and visaversa
-            command.CommandText = "SELECT * FROM GGV_check WHERE active = -1";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "controle WHERE actief = -1";
             command.Connection = connection;
             adapter = provider.CreateDataAdapter();
             adapter.SelectCommand = command;
@@ -274,11 +289,11 @@ namespace GegevensVergelijker
             adapter.Fill(table);
             foreach (DataRow checkrow in table.Rows)
             {
-                string checkname = Convert.ToString(checkrow["checkname"]);
-                string datasourcename = Convert.ToString(checkrow["datasourcename"]);
-                string primary = Convert.ToString(checkrow["primary"]);
-                string columnname = Convert.ToString(checkrow["columnname"]);
-                string checkvalue = Convert.ToString(checkrow["checkvalue"]);
+                string checkname = Convert.ToString(checkrow["controlenaam"]);
+                string datasourcename = Convert.ToString(checkrow["databronnaam"]);
+                string primary = Convert.ToString(checkrow["sleutelkolom"]);
+                string columnname = Convert.ToString(checkrow["controlekolom"]);
+                string checkvalue = Convert.ToString(checkrow["controlewaarde"]);
 
                 Output.Info("START: " + checkname);
 #if !DEBUG
@@ -290,11 +305,19 @@ namespace GegevensVergelijker
                     DataTable datatable = GetData(provider, connection, datasourcename);
 
                     foreach(DataRow datarow in datatable.Rows) {
-                        if (Convert.ToString(datarow[columnname]).Equals(checkvalue)) reporter.EntryMatch(datarow);
+                        if (Convert.ToString(datarow[columnname]).Equals(checkvalue)) reporter.EntryMatch(checkname, primary, columnname, checkvalue, datarow);
                         else reporter.EntryInvalid(checkname, primary, columnname, checkvalue, datarow);
                     }
-                    reporter.Stop(datatable.Rows.Count);
 
+                    reporter.Stop(
+                        datatable.ExtendedProperties["applicatienaam"].ToString(), 
+                        null,
+                        datatable.ExtendedProperties["referentiequery"].ToString(),
+                        null,
+                        datatable.ExtendedProperties["gemeentecode"].ToString(), 
+                        null, datatable.Rows.
+                        Count, 
+                        0);
                     Output.Info("STOP: " + checkname);
 #if !DEBUG
                 }
@@ -304,7 +327,7 @@ namespace GegevensVergelijker
                 }
 #endif
             }
-            #endregion GGV_CHECK            
+            #endregion CHECK            
 
             connection.Close();
             Output.Info("***** STOP *****");
