@@ -110,7 +110,7 @@ broncode van de applicatie
 	- 	Tabel: GGV_DATASOURCE 	« databron van bv. bag-adressen, gba-adressen, gba-personen e.d.
 	- 	Tabel: GGV_CHECK        « conditionele test op een datasource	
 
-Zie apart document GGV_Inrichting voor een uitgebreidere beschrijving van de database en een toelichting op wat waar ingericht cq. aangepast moet worden.
+Zie apart document doc/inrichting.xlsx voor een uitgebreidere beschrijving van de database en een toelichting op wat waar ingericht cq. aangepast moet worden.
 
 ## Gebruik
 - Open een DOS-box via Start > Run > cmd
