@@ -1,7 +1,17 @@
 # Gegevensvergelijker
 
-## Doel
-Naar voorbeeld van de I-Spiegel applicatie van KING heb ik een tool gemaakt om 2 registraties te vergelijken.
+##  I-spiegel 3.0. 
+Binnen de gemeente hebben we te maken met veel persoons- en adresgegevens. Deze gegevens worden door de hele organisatie verspreid. Dit leidt tot vele processen en veel afnemende applicaties, die hier gebruik van maken. Het is van belang dat de gegevens binnen de ketens kloppen. Dus van begin tot eind. Om grip te krijgen op de kwaliteit kun je gebruik maken van de Gegevensvergelijker, oftewel de i-Spiegel 3.0. Hiermee vergelijk je de gegevens uit verschillende systemen met elkaar, dus de gegevens van de afnemende applicaties met de gegevens uit de bron. 
+
+Afwijkingen kunnen ontstaan door allerlei oorzaken, bijvoorbeeld als gevolg van een update in de keten, onvoldoende beheer, verkeerde werkwijzen, stilstaande (technische) processen etc. De gegevensvergelijker kan leiden tot verbeteringen  in je gemeentelijke processen en werkinstructies. Ook stimuleert dit het contact tussen functioneel beheerders binnen een organisatie. 
+Hiernaast geeft het ook inzicht in de trends van de ontwikkeling van de gegevenskwaliteit. De inspanningen om de kwaliteit te verbeteren zijn direct zichtbaar in de grafieken.
+
+## Hoe werkt de iSpiegel 3.0?
+Met behulp van de open source software (die gratis te downloaden is) maak je verbinding met de databases die je wilt vergelijken. Door de SQL statements naast elkaar te leggen, vergelijk je de verschillende velden met elkaar. De tool geeft vervolgens een percentage terug van de gegevens die overeen komen. Daarnaast wordt er ook een uitvallijst gemaakt, waarin de afwijkingen en verschillen te zien zijn.  Samen met de betreffende functioneel beheerder kunnen afspraken gemaakt worden over wat te doen met deze lijst. De percentages worden online gezet, op de website van de I-spiegel. Door de resultaten te publiceren, kan benchmarking plaatsvinden met andere gemeenten. Zo is in één blik duidelijk of er sprake is van een reëel percentage of dat het beter kan. 
+Eenmaal ingericht kun je de query’s periodiek laten draaien. 
+
+## Gebruikersgroep
+Er is een gebruikersgroep, waarin ervaringen worden gedeeld, SQL query’s worden uitgewisseld en er wordt nagedacht over de verdere ontwikkeling van deze tool. 
 
 ## Hoe verhoudt de tool zich ivm. Architectuur en KING
 De gegevensvergelijker krijgt zeker een positie in de architectuur. 
@@ -110,7 +120,7 @@ broncode van de applicatie
 	- 	Tabel: GGV_DATASOURCE 	« databron van bv. bag-adressen, gba-adressen, gba-personen e.d.
 	- 	Tabel: GGV_CHECK        « conditionele test op een datasource	
 
-Zie apart document GGV_Inrichting voor een uitgebreidere beschrijving van de database en een toelichting op wat waar ingericht cq. aangepast moet worden.
+Zie apart document doc/inrichting.xlsx voor een uitgebreidere beschrijving van de database en een toelichting op wat waar ingericht cq. aangepast moet worden.
 
 ## Gebruik
 - Open een DOS-box via Start > Run > cmd
