@@ -96,5 +96,23 @@ namespace GegevensVergelijker.Properties {
                 return ((bool)(this["output_everything"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.111.70:8086/write?db=ispiegel")]
+        public string influxdb_url {
+            get {
+                return ((string)(this["influxdb_url"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("demo:demo")]
+        public string influxdb_auth {
+            get {
+                return ((string)(this["influxdb_auth"]));
+            }
+        }
     }
 }

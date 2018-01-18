@@ -162,7 +162,6 @@ namespace GegevensVergelijker
 
             missing++;
         }
-
         public void Stop(string analyseapplicatie, string referentieapplicatie, string analysequery, string referentiequery, string analysegemeentecode, string referentiegemeentecode, long analysecount, long referencecount)
         {
             // save the regels
@@ -187,7 +186,22 @@ namespace GegevensVergelijker
             watch.Stop();
             koprow["looptijd"] = new DateTime(watch.ElapsedTicks);
             kopadapter.Update(ds, "output");
+            // dimensions
+            ResultLine = "referentieapplicatie=" + (referentieapplicatie == null ? "" : referentieapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") )+ ",";
+            ResultLine += "analyseapplicatie=" + (analyseapplicatie == null ? "" : analyseapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
+            ResultLine += "referentiegemeentecode=" + (referentiegemeentecode == null ? "" : referentiegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
+            ResultLine += "analysegemeentecode=" + (analysegemeentecode == null ? "" : analysegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + " ";
+            // values
+            ResultLine += "referentieaantal=" + referencecount + ",";
+            ResultLine += "analyseaantal=" + analysecount + ",";
+            ResultLine += "gelijkaantal=" + match + ",";
+            ResultLine += "afwijkingaantal=" + nomatch + ",";
+            ResultLine += "nietgevondenaantal=" + missing + ",";
+            ResultLine += "ongeldigaantal=" + invalid + ",";
+            ResultLine += "percentage=" + Math.Round((100.0 / analysecount) * match, 2);
         }
+
+        public String ResultLine;
 
         public void EntryMatch(string checkname, string sleutelcolumname, string checkcolumnname, string checkvalue, DataRow found)
         {

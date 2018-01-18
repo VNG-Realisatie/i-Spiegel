@@ -30,5 +30,11 @@
     <Setting Name="output_everything" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="influxdb_url" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://192.168.111.70:8086/write?db=ispiegel</Value>
+    </Setting>
+    <Setting Name="influxdb_auth" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">demo:demo</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -266,6 +266,23 @@ namespace GegevensVergelijker
                             analysis.table.Rows.Count, 
                             reference.table.Rows.Count);
 
+                if (Properties.Settings.Default.influxdb_url != "")
+                {
+                    var postdata = "ispiegel,";
+                    postdata += "vergelijking=" + comparename.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") + ",";
+                    postdata += reporter.ResultLine;
+                    System.Net.WebClient client = new System.Net.WebClient();
+                    if (Properties.Settings.Default.influxdb_auth != "") {
+
+                        // ik wil in één keer de boel versturen, stomme "client.Credentials = new NetworkCredential"!
+                        string credentials = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(Properties.Settings.Default.influxdb_auth));
+                        client.Headers[System.Net.HttpRequestHeader.Authorization] = string.Format("Basic {0}", credentials);
+                    }
+                    client.Headers[System.Net.HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    Output.Info("\t>>> posting to: " + Properties.Settings.Default.influxdb_url + " the following data:" + postdata);
+                    var response = client.UploadString(Properties.Settings.Default.influxdb_url, postdata);
+                }
+
                 Output.Info("STOP: " + comparename);
 #if !DEBUG
                 }
