@@ -152,7 +152,7 @@ namespace GegevensVergelijker
             row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
             row["status"] = "NOT FOUND";
 
-            row["controle"] = vergelijking;
+            row["vergelijking"] = vergelijking;
             row["sleutel"] = RegistratieSource.ToFieldXml(searchitem); 
             row["analysewaarde"] = RegistratieSource.ToFieldXml(searchitem);
             row["referentiewaarde"] = DBNull.Value;
@@ -227,22 +227,20 @@ namespace GegevensVergelijker
         
         public void EntryMatch(System.Data.DataRow searchrow, System.Data.DataRow found, RegistratieItem sleutel)
         {
-            if (Properties.Settings.Default.output_everything)
-            {
-                DataRow row = ds.Tables["outputline"].NewRow();
-                row["outputid"] = koprow["outputid"];
-                row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
-                row["status"] = "VALID";
+            DataRow row = ds.Tables["outputline"].NewRow();
+            row["outputid"] = koprow["outputid"];
+            row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
+            row["status"] = "VALID";
 
-                row["controle"] = "";
-                row["sleutel"] = RegistratieSource.ToFieldXml(sleutel);
-                row["analysewaarde"] = "";
-                row["referentiewaarde"] = "";
-                row["analyseregel"] = RegistratieSource.ToFieldXml(searchrow);
-                row["referentieregel"] = RegistratieSource.ToFieldXml(found);
-                ds.Tables["outputline"].Rows.Add(row);
-            }
-            match++;
+            row["controle"] = "";
+            row["sleutel"] = RegistratieSource.ToFieldXml(sleutel);
+            row["analysewaarde"] = "";
+            row["referentiewaarde"] = "";
+            row["analyseregel"] = RegistratieSource.ToFieldXml(searchrow);
+            row["referentieregel"] = RegistratieSource.ToFieldXml(found);
+            ds.Tables["outputline"].Rows.Add(row);
+
+            nomatch++;
         }
 
 
