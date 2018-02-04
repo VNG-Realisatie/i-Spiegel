@@ -62,8 +62,12 @@ namespace GegevensVergelijker
         [STAThread]
         static void Main(string[] args)
         {
-                //TODO: email versturen
-                //      field xml
+            // . as decimal-seperator, etc      
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+
+            //TODO: 
+            //      field xml
             Output.Info("***** START *****");
 #if !DEBUG
             try
@@ -280,7 +284,13 @@ namespace GegevensVergelijker
                     }
                     client.Headers[System.Net.HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
                     Output.Info("\t>>> posting to: " + Properties.Settings.Default.influxdb_url + " the following data:" + postdata);
-                    var response = client.UploadString(Properties.Settings.Default.influxdb_url, postdata);
+                    try { 
+                        var response = client.UploadString(Properties.Settings.Default.influxdb_url, postdata);
+                    }
+                    catch (System.Net.WebException ex)
+                    {
+                        Output.Warn("Sending the data to: " + Properties.Settings.Default.influxdb_url, ex);
+                    }
                 }
 
                 Output.Info("STOP: " + comparename);

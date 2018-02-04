@@ -152,7 +152,7 @@ namespace GegevensVergelijker
             row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
             row["status"] = "NOT FOUND";
 
-            row["vergelijking"] = vergelijking;
+            row["controle"] = vergelijking;
             row["sleutel"] = RegistratieSource.ToFieldXml(searchitem); 
             row["analysewaarde"] = RegistratieSource.ToFieldXml(searchitem);
             row["referentiewaarde"] = DBNull.Value;
@@ -240,7 +240,7 @@ namespace GegevensVergelijker
             row["referentieregel"] = RegistratieSource.ToFieldXml(found);
             ds.Tables["outputline"].Rows.Add(row);
 
-            nomatch++;
+            match++;
         }
 
 
