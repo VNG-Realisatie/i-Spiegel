@@ -62,8 +62,12 @@ namespace GegevensVergelijker
         [STAThread]
         static void Main(string[] args)
         {
-                //TODO: email versturen
-                //      field xml
+            // punten als decimaal scheidingsreken enzo...
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+
+            //TODO: email versturen
+            //      field xml
             Output.Info("***** START *****");
 #if !DEBUG
             try
@@ -272,7 +276,8 @@ namespace GegevensVergelijker
                     postdata += "vergelijking=" + comparename.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") + ",";
                     postdata += reporter.ResultLine;
                     System.Net.WebClient client = new System.Net.WebClient();
-                    if (Properties.Settings.Default.influxdb_auth != "") {
+                    if (Properties.Settings.Default.influxdb_auth != "")
+                    {
 
                         // ik wil in één keer de boel versturen, stomme "client.Credentials = new NetworkCredential"!
                         string credentials = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(Properties.Settings.Default.influxdb_auth));
@@ -280,9 +285,15 @@ namespace GegevensVergelijker
                     }
                     client.Headers[System.Net.HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
                     Output.Info("\t>>> posting to: " + Properties.Settings.Default.influxdb_url + " the following data:" + postdata);
-                    var response = client.UploadString(Properties.Settings.Default.influxdb_url, postdata);
+                    try
+                    {
+                        var response = client.UploadString(Properties.Settings.Default.influxdb_url, postdata);
+                    }
+                    catch (System.Net.WebException ex)
+                    {
+                        Output.Error("error posting the results", ex);
+                    }
                 }
-
                 Output.Info("STOP: " + comparename);
 #if !DEBUG
                 }
