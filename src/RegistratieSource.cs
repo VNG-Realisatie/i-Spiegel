@@ -9,13 +9,18 @@ namespace GegevensVergelijker
 {
     public class RegistratieItem : IComparable
     {
+        public string[] fieldnames;
         public string[] fieldvalues;
+        
 
-        public RegistratieItem(string[] fieldvalues)
+        public RegistratieItem(string[] fieldnames, string[] fieldvalues)
         {
+            this.fieldnames = fieldnames;
             this.fieldvalues = fieldvalues;
         }
         private int CompareTo(object obj) {
+            // misschien nog eens de fieldnames vergelijken, maar dat kan altijd nog
+
             if (!(obj is RegistratieItem)) throw new ArgumentException("Object is not a RegistratieItem.");
             RegistratieItem r2 = (RegistratieItem) obj;
 
@@ -68,25 +73,6 @@ namespace GegevensVergelijker
 
         public DataTable table = new DataTable();
 
-        /*
-        public RegistratieSource(System.Xml.XPath.XPathNavigator config, string sql)
-        {
-            DbProviderFactory factory = DbProviderFactories.GetFactory(config.SelectSingleNode("database-provider").Value);
-            
-            DbConnection connection = factory.CreateConnection();
-            connection.ConnectionString = config.SelectSingleNode("database-connection").Value;
-            connection.ConnectionString = connection.ConnectionString.Replace("${WORKING_DIRECTORY}", System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar);
-
-
-            DbCommand selectCommand = factory.CreateCommand();
-            selectCommand.Connection = connection;
-            selectCommand.CommandText = sql;
-
-            DbDataAdapter adapter = factory.CreateDataAdapter();
-            adapter.SelectCommand = selectCommand;
-            adapter.Fill(table);
-        }
-        */
         public RegistratieSource(DataTable datatable)
         {
             table = datatable;
@@ -101,7 +87,7 @@ namespace GegevensVergelijker
                 if (fieldvalue == DBNull.Value) fieldvalues[i] = null;
                 else fieldvalues[i] = Convert.ToString(fieldvalue);
             }
-            return new RegistratieItem(fieldvalues);
+            return new RegistratieItem(fieldnames, fieldvalues);
         }
 
         public SortedDictionary<RegistratieItem, DataRow> GetSortedList(string[] fieldnames)
@@ -115,7 +101,7 @@ namespace GegevensVergelijker
             }
             return result;
         }
-
+        /*
         public static string ToFieldXml(DataRow row)
         {
             string result = null;
@@ -125,7 +111,7 @@ namespace GegevensVergelijker
                 if (result == null) result = v;
                 else result = result + "," + v;
             }            
-            return "<row> ToFieldXml(DataRow row) " + result + "</row>";
+            return "<row DataRow row> ToFieldXml(DataRow row) " + result + "</row>";
         }
 
         public static string ToFieldXml(RegistratieItem row)
@@ -136,14 +122,14 @@ namespace GegevensVergelijker
                 if (result == null) result = field;
                 else result = result + "," + field;
             }
-            return "<row> ToFieldXml(RegistratieItem searchitem) " + result + "</row>";
+            return "<row RegistratieItem row> ToFieldXml(RegistratieItem searchitem) " + result + "</row>";
         }
 
         public static string ToFieldXml(string veldnaam, string sleutelwaarde)
         {
-            return "<row><field name='" + veldnaam + "'>" + sleutelwaarde + "</field><row>";
+            return "<row string veldnaam, string sleutelwaarde><field name='" + veldnaam + "'>" + sleutelwaarde + "</field><row>";
         }
-
+        */
 
         public void Export(List<string> fields, List<string> names, System.IO.DirectoryInfo exportdirectory, string filename)
         {

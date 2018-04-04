@@ -77,6 +77,7 @@ namespace GegevensVergelijker
             var provider = DbProviderFactories.GetFactory(Properties.Settings.Default.databaseprovider);
             var connection = provider.CreateConnection();
             connection.ConnectionString = ReplaceVariables(Properties.Settings.Default.databaseconnection);
+            // If error.message == The 'Microsoft.ACE.OLEDB.12.0' provider is not registered on the local machine. ==> are we debugging in 32-bits (x86) mode?
             connection.Open();
 
             #region COMPARE
@@ -89,10 +90,12 @@ namespace GegevensVergelijker
             adapter.Fill(table);
             foreach (DataRow comparerow in table.Rows)
             {
-                string comparename = Convert.ToString(comparerow["vergelijkingnaam"]);
-                string config = Convert.ToString(comparerow["config"]);
+                string vergelijkingnaam = Convert.ToString(comparerow["vergelijkingnaam"]);
+                string veldtoewijzing = Convert.ToString(comparerow["veldtoewijzing"]);
+                string referentiedatabronnaam = Convert.ToString(comparerow["referentiedatabronnaam"]);
+                string analysedatabronnaam = Convert.ToString(comparerow["analysedatabronnaam"]);
 
-                Output.Info("START: " + comparename);
+                Output.Info("START: " + vergelijkingnaam);
 #if !DEBUG
                 try
                 {
@@ -100,31 +103,29 @@ namespace GegevensVergelijker
                     // what shall we do with the console reporter?
                     DatabaseReporter reporter = new DatabaseReporter(provider, connection);
 
-                    XPathDocument document = new XPathDocument(new StringReader(config));
+                    XPathDocument document = new XPathDocument(new StringReader(veldtoewijzing));
                     XPathNavigator compareconfig = document.CreateNavigator();
                     compareconfig = compareconfig.SelectSingleNode("/compare");
 
-                    String referencedatasource = compareconfig.SelectSingleNode("@reference").Value;
-                    String analysisdatasource = compareconfig.SelectSingleNode("@analysis").Value;
-
                     reporter.Start(
-                        comparename,
-                        referencedatasource,
-                        analysisdatasource,
-                        config,
+                        vergelijkingnaam,
+                        referentiedatabronnaam,
+                        analysedatabronnaam,
+                        veldtoewijzing,
                         null,
                         null
                         );
 
                     // create the data sources
-                    Output.Info("\t[" + referencedatasource + "] data will be loaded");
-                    DataTable referencetable = GetData(provider, connection, referencedatasource);
+                    Output.Info("\t[" + referentiedatabronnaam + "] data will be loaded");
+                    DataTable referencetable = GetData(provider, connection, referentiedatabronnaam);
                     RegistratieSource reference = new RegistratieSource(referencetable);
-                    Output.Info("\t[" + compareconfig.SelectSingleNode("@reference").Value + "] data loaded (#" + referencetable.Rows.Count + ")");
-                    Output.Info("\t[" + compareconfig.SelectSingleNode("@analysis").Value + "] data will be loaded");
-                    DataTable analysetable = GetData(provider, connection, analysisdatasource);
+                    Output.Info("\t[" + referentiedatabronnaam + "] data loaded (#" + referencetable.Rows.Count + ")");
+
+                    Output.Info("\t[" + analysedatabronnaam + "] data will be loaded");
+                    DataTable analysetable = GetData(provider, connection, analysedatabronnaam);
                     RegistratieSource analysis = new RegistratieSource(analysetable);
-                    Output.Info("\t[" + compareconfig.SelectSingleNode("@analysis").Value + "] data loaded (#" + analysetable.Rows.Count + ")");
+                    Output.Info("\t[" + analysedatabronnaam + "] data loaded (#" + analysetable.Rows.Count + ")");
 
                     // check the columns (better error messages!)
                     #region matching
@@ -231,7 +232,7 @@ namespace GegevensVergelijker
 
                         if (!lookup.ContainsKey(matcher))
                         {
-                            reporter.EntryNotFound(primary, row, matcher);
+                            reporter.EntryNotFound(vergelijkingnaam, primary, row, matcher);
                             continue;
                         }
                         System.Data.DataRow found = lookup[matcher];
@@ -251,13 +252,13 @@ namespace GegevensVergelijker
                                 if (!a.Equals(r))
                                 {
                                     fullmatch = false;
-                                    reporter.EntryNoMatch(row, matcher, found, matchername, a, r, matcher);
+                                    reporter.EntryNoMatch(vergelijkingnaam, row, matcher, found, matchername, a, r, matcher);
                                 }
                             }
                         }
                         if (fullmatch)
                         {
-                            reporter.EntryMatch(row, found, matcher);
+                            reporter.EntryMatch(vergelijkingnaam, row, found, matcher);
                         }
                     }
                     reporter.Stop(
@@ -273,7 +274,7 @@ namespace GegevensVergelijker
                 if (Properties.Settings.Default.influxdb_url != "")
                 {
                     var postdata = "ispiegel,";
-                    postdata += "vergelijking=" + comparename.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") + ",";
+                    postdata += "vergelijking=" + vergelijkingnaam.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") + ",";
                     postdata += reporter.ResultLine;
                     System.Net.WebClient client = new System.Net.WebClient();
                     if (Properties.Settings.Default.influxdb_auth != "") {
@@ -293,7 +294,7 @@ namespace GegevensVergelijker
                     }
                 }
 
-                Output.Info("STOP: " + comparename);
+                Output.Info("STOP: " + vergelijkingnaam);
 #if !DEBUG
                 }
                 catch (Exception ex)
@@ -332,8 +333,13 @@ namespace GegevensVergelijker
                     DataTable datatable = GetData(provider, connection, datasourcename);
 
                     foreach(DataRow datarow in datatable.Rows) {
-                        if (Convert.ToString(datarow[columnname]).Equals(checkvalue)) reporter.EntryMatch(checkname, primary, columnname, checkvalue, datarow);
-                        else reporter.EntryInvalid(checkname, primary, columnname, checkvalue, datarow);
+                        if (Convert.ToString(datarow[columnname]).Equals(checkvalue))
+                        {
+                            reporter.EntryMatch(checkname, checkname, primary, columnname, checkvalue, datarow);
+                        }
+                        else {
+                            reporter.EntryInvalid(checkname, columnname, primary, checkvalue, datarow);
+                        }
                     }
 
                     reporter.Stop(
