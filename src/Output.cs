@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace GegevensVergelijker
+namespace ISpiegel
 {
     public static class Output
     {

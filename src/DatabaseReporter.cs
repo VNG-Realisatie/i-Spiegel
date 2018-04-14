@@ -5,7 +5,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 
-namespace GegevensVergelijker
+namespace ISpiegel
 {
     public class DatabaseReporter
     {
@@ -18,7 +18,7 @@ namespace GegevensVergelijker
         private long match;
         private long nomatch;
         private long missing;
-        private long invalid;
+        //private long invalid;
 
         private System.Diagnostics.Stopwatch watch;
 
@@ -34,6 +34,7 @@ namespace GegevensVergelijker
             kopadapter = factory.CreateDataAdapter();
             kopadapter.SelectCommand = command;
             DbCommandBuilder builder = factory.CreateCommandBuilder();
+            builder.ConflictOption = ConflictOption.OverwriteChanges;
             builder.DataAdapter = kopadapter;
             // Wanneer : Additional information: De Microsoft.Jet.OLEDB.4.0-provider is niet geregistreerd op de lokale computer.
             //  ==> draaien als x86 
@@ -48,13 +49,14 @@ namespace GegevensVergelijker
             regeladapter = factory.CreateDataAdapter();
             regeladapter.SelectCommand = command;
             builder = factory.CreateCommandBuilder();
+            builder.ConflictOption = ConflictOption.OverwriteChanges;
             builder.DataAdapter = regeladapter;
             regeladapter.InsertCommand = builder.GetInsertCommand();
             regeladapter.UpdateCommand = builder.GetUpdateCommand();
             regeladapter.DeleteCommand = builder.GetDeleteCommand();
         }
 
-        public void Start(string exportname, string referentiename, string analysename, string configuration, string referencesql, string analysesql)
+        public void Start(string vergelijkingnaam, string referentiename, string analysename, string configuration, string referencesql, string analysesql)
         {
             // get our next id
             DbCommand command = connection.CreateCommand();
@@ -69,7 +71,7 @@ namespace GegevensVergelijker
 
             koprow["outputid"] = outputid;
             koprow["tijdstip"] = DateTime.Now;
-            koprow["vergelijkingnaam"] = exportname;
+            koprow["vergelijkingnaam"] = vergelijkingnaam;
             koprow["configuratie"] = configuration;
             koprow["referentienaam"] = referentiename;
             koprow["analysenaam"] = analysename;
@@ -85,8 +87,8 @@ namespace GegevensVergelijker
             koprow["gelijkaantal"] = 0;
             koprow["afwijkingaantal"] = 0;
             koprow["nietgevondenaantal"] = 0;
-            koprow["ongeldigaantal"] = 0;            
-            koprow["looptijd"] = new DateTime(watch.ElapsedTicks);
+            //koprow["ongeldigaantal"] = 0;            
+            koprow["looptijd"] = watch.Elapsed;
 
             ds.Tables["output"].Rows.Add(koprow);
             kopadapter.Update(ds, "output");
@@ -97,37 +99,76 @@ namespace GegevensVergelijker
             match = 0;
             nomatch = 0;
             missing = 0;
-            invalid = 0;
+            //invalid = 0;
         }
 
-
-        public void EntryInvalid(string vergelijking, string sleutelcolumname, string checkcolumnname, string checkvalue, DataRow found)
+        public void Stop(string vergelijkingnaam, string analyseapplicatie, string referentieapplicatie, string analysequery, string referentiequery, string analysegemeentecode, string referentiegemeentecode, long analysecount, long referencecount)
         {
-            DataRow row = ds.Tables["outputline"].NewRow();
-            row["outputid"] = koprow["outputid"];
-            row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
-            row["status"] = "INVALID";
+            // save the regels
+            regeladapter.Update(ds, "outputline");
 
+            // update the koprow
+            koprow["referentieapplicatie"] = referentieapplicatie;
+            koprow["analyseapplicatie"] = analyseapplicatie;
+            koprow["referentiequery"] = referentiequery;
+            koprow["analysequery"] = analysequery;
+            koprow["referentiegemeentecode"] = referentiegemeentecode;
+            koprow["analysegemeentecode"] = analysegemeentecode;
+            koprow["percentage"] = (100.0 / analysecount) * match;
+            koprow["referentieaantal"] = referencecount;
+            koprow["analyseaantal"] = analysecount;
+            koprow["gelijkaantal"] = match;
+            koprow["afwijkingaantal"] = nomatch;
+            koprow["nietgevondenaantal"] = missing;
+            //koprow["ongeldigaantal"] = invalid;
 
-//            row["melding"] = "check:" + checkname + " found:" + found[columnname] + " expected:" + checkvalue;
-//            row["referentieregel"] = RegistratieSource.ToString(found);
-//            //row["analyseregel"] = RegistratieSource.ToString(searchrow);
-//            ds.Tables["outputline"].Rows.Add(row);
+            // the code that you want to measure comes here
+            watch.Stop();
+            koprow["looptijd"] = new DateTime(watch.ElapsedTicks);
+            //ds.Tables["output"].Rows[0]. koprow
+            //koprow.SetModified();
+            kopadapter.Update(ds, "output");
 
+            if (Properties.Settings.Default.influxdb_url != "")
+            {
 
-            row["controle"] = vergelijking;
-            //row["sleutel"] = RegistratieSource.ToFieldXml(sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
-            //row["analysewaarde"] = RegistratieSource.ToFieldXml(checkcolumnname, checkvalue);
-            row["sleutel"] = CreateRowXml(vergelijking, sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
-            row["analysewaarde"] = CreateRowXml(vergelijking, checkcolumnname, checkvalue);
-            //row["referentiewaarde"] = DBNull.Value;
-            row["referentiewaarde"] = CreateRowXml(vergelijking);
-            //row["analyseregel"] = RegistratieSource.ToFieldXml(found);
-            row["analyseregel"] = CreateRowXml(vergelijking, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
-            row["referentieregel"] = CreateRowXml(vergelijking);
-            ds.Tables["outputline"].Rows.Add(row);
+                // dimensions
+                String ResultLine = "referentieapplicatie=" + (referentieapplicatie == null ? "" : referentieapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
+                ResultLine += "analyseapplicatie=" + (analyseapplicatie == null ? "" : analyseapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
+                ResultLine += "referentiegemeentecode=" + (referentiegemeentecode == null ? "" : referentiegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
+                ResultLine += "analysegemeentecode=" + (analysegemeentecode == null ? "" : analysegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + " ";
+                // values
+                ResultLine += "referentieaantal=" + referencecount + ",";
+                ResultLine += "analyseaantal=" + analysecount + ",";
+                ResultLine += "gelijkaantal=" + match + ",";
+                ResultLine += "afwijkingaantal=" + nomatch + ",";
+                ResultLine += "nietgevondenaantal=" + missing + ",";
+                //ResultLine += "ongeldigaantal=" + invalid + ",";
+                ResultLine += "percentage=" + Math.Round((100.0 / analysecount) * match, 2);
 
-            invalid++;
+                var postdata = "ispiegel,";
+                postdata += "vergelijking=" + vergelijkingnaam.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") + ",";
+                postdata += ResultLine;
+                System.Net.WebClient client = new System.Net.WebClient();
+                if (Properties.Settings.Default.influxdb_auth != "")
+                {
+
+                    // ik wil in één keer de boel versturen, stomme "client.Credentials = new NetworkCredential"!
+                    string credentials = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(Properties.Settings.Default.influxdb_auth));
+                    client.Headers[System.Net.HttpRequestHeader.Authorization] = string.Format("Basic {0}", credentials);
+                }
+                client.Headers[System.Net.HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                Output.Info("\t>>> posting to: " + Properties.Settings.Default.influxdb_url + " the following data:" + postdata);
+                try
+                {
+                    var response = client.UploadString(Properties.Settings.Default.influxdb_url, postdata);
+                }
+                catch (System.Net.WebException ex)
+                {
+                    Output.Warn("Sending the data to: " + Properties.Settings.Default.influxdb_url, ex);
+                }
+            }
+
         }
 
         private string[] ToStringArray(DataColumnCollection columns)
@@ -198,6 +239,81 @@ namespace GegevensVergelijker
             return reader.ReadToEnd();
         }
 
+        public void EntryMatch(string vergelijking, string matcher, string sleutelcolumname, string checkcolumnname, string checkvalue, DataRow found)
+        {
+            if (Properties.Settings.Default.output_everything) { 
+                DataRow row = ds.Tables["outputline"].NewRow();
+                row["outputid"] = koprow["outputid"];
+                row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
+                row["status"] = "VALID";
+                //            row["melding"] = "check:" + checkname + " found:" + found[columnname] + " expected:" + checkvalue;
+                //            row["referentieregel"] = RegistratieSource.ToString(found);
+                //            //row["analyseregel"] = RegistratieSource.ToString(searchrow);
+                //            ds.Tables["outputline"].Rows.Add(row);
+
+                row["controle"] = matcher;
+                row["sleutel"] = CreateRowXml(vergelijking, sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
+                row["analysewaarde"] = CreateRowXml(vergelijking, checkcolumnname, checkvalue);
+                //row["referentiewaarde"] = CreateRowXml(vergelijking);
+                row["referentiewaarde"] = DBNull.Value;
+                row["analyseregel"] = CreateRowXml(vergelijking, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
+                row["referentieregel"] = DBNull.Value;
+                ds.Tables["outputline"].Rows.Add(row);
+            }
+            match++;
+        }
+
+        public void EntryInvalid(string vergelijking, string matcher, string sleutelcolumname, string checkcolumnname, string checkvalue, DataRow found)
+        {
+            DataRow row = ds.Tables["outputline"].NewRow();
+            row["outputid"] = koprow["outputid"];
+            row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
+            row["status"] = "INVALID";
+
+
+            //            row["melding"] = "check:" + checkname + " found:" + found[columnname] + " expected:" + checkvalue;
+            //            row["referentieregel"] = RegistratieSource.ToString(found);
+            //            //row["analyseregel"] = RegistratieSource.ToString(searchrow);
+            //            ds.Tables["outputline"].Rows.Add(row);
+
+
+            row["controle"] = matcher;
+            //row["sleutel"] = RegistratieSource.ToFieldXml(sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
+            //row["analysewaarde"] = RegistratieSource.ToFieldXml(checkcolumnname, checkvalue);
+            row["sleutel"] = CreateRowXml(vergelijking, sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
+            row["analysewaarde"] = CreateRowXml(vergelijking, checkcolumnname, checkvalue);
+            row["referentiewaarde"] = DBNull.Value;
+            //row["referentiewaarde"] = CreateRowXml(vergelijking);
+            //row["analyseregel"] = RegistratieSource.ToFieldXml(found);
+            row["analyseregel"] = CreateRowXml(vergelijking, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
+            //row["referentieregel"] = CreateRowXml(vergelijking);
+            row["referentieregel"] = DBNull.Value;
+            ds.Tables["outputline"].Rows.Add(row);
+
+            nomatch++;
+        }
+
+
+        public void EntryMatch(string vergelijking, System.Data.DataRow searchrow, System.Data.DataRow found, RegistratieItem sleutel)
+        {
+            if (Properties.Settings.Default.output_everything)
+            {
+                DataRow row = ds.Tables["outputline"].NewRow();
+                row["outputid"] = koprow["outputid"];
+                row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
+                row["status"] = "VALID";
+
+                row["controle"] = DBNull.Value;
+                row["sleutel"] = CreateRowXml(vergelijking, sleutel.fieldnames, sleutel.fieldvalues);
+                row["analysewaarde"] = CreateRowXml(vergelijking);
+                row["referentiewaarde"] = CreateRowXml(vergelijking);
+                row["analyseregel"] = CreateRowXml(vergelijking, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
+                row["referentieregel"] = CreateRowXml(vergelijking, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
+                ds.Tables["outputline"].Rows.Add(row);
+            }
+            match++;
+        }
+
         public void EntryNoMatch(string vergelijking, System.Data.DataRow searchrow, RegistratieItem searchitem, System.Data.DataRow found, string matcher, RegistratieItem analyse, RegistratieItem reference, RegistratieItem sleutel)
         {
             DataRow row = ds.Tables["outputline"].NewRow();
@@ -208,7 +324,7 @@ namespace GegevensVergelijker
             row["controle"] = matcher;
             row["sleutel"] = CreateRowXml(vergelijking, sleutel.fieldnames, sleutel.fieldvalues);
             row["analysewaarde"] = CreateRowXml(vergelijking, searchitem.fieldnames, searchitem.fieldvalues);
-            row["referentiewaarde"] = CreateRowXml(vergelijking, reference.fieldnames, reference.fieldvalues);            
+            row["referentiewaarde"] = CreateRowXml(vergelijking, reference.fieldnames, reference.fieldvalues);
             row["analyseregel"] = CreateRowXml(vergelijking, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
             row["referentieregel"] = CreateRowXml(vergelijking, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
             ds.Tables["outputline"].Rows.Add(row);
@@ -233,87 +349,7 @@ namespace GegevensVergelijker
 
             missing++;
         }
-        public String ResultLine;
-        private object HttpUtility;
 
-        public void EntryMatch(string vergelijking, string matcher, string sleutelcolumname, string checkcolumnname, string checkvalue, DataRow found)
-        {
-            if (Properties.Settings.Default.output_everything) { 
-                DataRow row = ds.Tables["outputline"].NewRow();
-                row["outputid"] = koprow["outputid"];
-                row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
-                row["status"] = "VALID";
-                //            row["melding"] = "check:" + checkname + " found:" + found[columnname] + " expected:" + checkvalue;
-                //            row["referentieregel"] = RegistratieSource.ToString(found);
-                //            //row["analyseregel"] = RegistratieSource.ToString(searchrow);
-                //            ds.Tables["outputline"].Rows.Add(row);
 
-                row["controle"] = matcher;
-                row["sleutel"] = CreateRowXml(vergelijking, sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
-                row["analysewaarde"] = CreateRowXml(vergelijking, checkcolumnname, checkvalue);
-                row["referentiewaarde"] = CreateRowXml(vergelijking);
-                row["analyseregel"] = CreateRowXml(vergelijking, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
-                row["referentieregel"] = CreateRowXml(vergelijking);
-                ds.Tables["outputline"].Rows.Add(row);
-            }
-            match++;
-        }
-        
-        public void EntryMatch(string vergelijking, System.Data.DataRow searchrow, System.Data.DataRow found, RegistratieItem sleutel)
-        {
-            DataRow row = ds.Tables["outputline"].NewRow();
-            row["outputid"] = koprow["outputid"];
-            row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
-            row["status"] = "VALID";
-
-            row["controle"] = DBNull.Value;
-            row["sleutel"] = CreateRowXml(vergelijking, sleutel.fieldnames, sleutel.fieldvalues);
-            row["analysewaarde"] = CreateRowXml(vergelijking);
-            row["referentiewaarde"] = CreateRowXml(vergelijking);
-            row["analyseregel"] = CreateRowXml(vergelijking, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
-            row["referentieregel"] = CreateRowXml(vergelijking, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
-            ds.Tables["outputline"].Rows.Add(row);
-
-            match++;
-        }
-
-        public void Stop(string analyseapplicatie, string referentieapplicatie, string analysequery, string referentiequery, string analysegemeentecode, string referentiegemeentecode, long analysecount, long referencecount)
-        {
-            // save the regels
-            regeladapter.Update(ds, "outputline");
-
-            // update the koprow
-            koprow["referentieapplicatie"] = referentieapplicatie;
-            koprow["analyseapplicatie"] = analyseapplicatie;
-            koprow["referentiequery"] = referentiequery;
-            koprow["analysequery"] = analysequery;
-            koprow["referentiegemeentecode"] = referentiegemeentecode;
-            koprow["analysegemeentecode"] = analysegemeentecode;
-            koprow["percentage"] = (100.0 / analysecount) * match;
-            koprow["referentieaantal"] = referencecount;
-            koprow["analyseaantal"] = analysecount;
-            koprow["gelijkaantal"] = match;
-            koprow["afwijkingaantal"] = nomatch;
-            koprow["nietgevondenaantal"] = missing;
-            koprow["ongeldigaantal"] = invalid;
-
-            // the code that you want to measure comes here
-            watch.Stop();
-            koprow["looptijd"] = new DateTime(watch.ElapsedTicks);
-            kopadapter.Update(ds, "output");
-            // dimensions
-            ResultLine = "referentieapplicatie=" + (referentieapplicatie == null ? "" : referentieapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
-            ResultLine += "analyseapplicatie=" + (analyseapplicatie == null ? "" : analyseapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
-            ResultLine += "referentiegemeentecode=" + (referentiegemeentecode == null ? "" : referentiegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
-            ResultLine += "analysegemeentecode=" + (analysegemeentecode == null ? "" : analysegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + " ";
-            // values
-            ResultLine += "referentieaantal=" + referencecount + ",";
-            ResultLine += "analyseaantal=" + analysecount + ",";
-            ResultLine += "gelijkaantal=" + match + ",";
-            ResultLine += "afwijkingaantal=" + nomatch + ",";
-            ResultLine += "nietgevondenaantal=" + missing + ",";
-            ResultLine += "ongeldigaantal=" + invalid + ",";
-            ResultLine += "percentage=" + Math.Round((100.0 / analysecount) * match, 2);
-        }
     }
 }

@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.XPath;
 
-namespace GegevensVergelijker
+namespace ISpiegel
 {        
     static class Program
     {
@@ -262,6 +262,7 @@ namespace GegevensVergelijker
                         }
                     }
                     reporter.Stop(
+                            vergelijkingnaam,
                             reference.table.ExtendedProperties["applicatienaam"].ToString(),
                             analysis.table.ExtendedProperties["applicatienaam"].ToString(),
                             reference.table.ExtendedProperties["referentiequery"].ToString(),
@@ -271,28 +272,6 @@ namespace GegevensVergelijker
                             analysis.table.Rows.Count, 
                             reference.table.Rows.Count);
 
-                if (Properties.Settings.Default.influxdb_url != "")
-                {
-                    var postdata = "ispiegel,";
-                    postdata += "vergelijking=" + vergelijkingnaam.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") + ",";
-                    postdata += reporter.ResultLine;
-                    System.Net.WebClient client = new System.Net.WebClient();
-                    if (Properties.Settings.Default.influxdb_auth != "") {
-
-                        // ik wil in één keer de boel versturen, stomme "client.Credentials = new NetworkCredential"!
-                        string credentials = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(Properties.Settings.Default.influxdb_auth));
-                        client.Headers[System.Net.HttpRequestHeader.Authorization] = string.Format("Basic {0}", credentials);
-                    }
-                    client.Headers[System.Net.HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                    Output.Info("\t>>> posting to: " + Properties.Settings.Default.influxdb_url + " the following data:" + postdata);
-                    try { 
-                        var response = client.UploadString(Properties.Settings.Default.influxdb_url, postdata);
-                    }
-                    catch (System.Net.WebException ex)
-                    {
-                        Output.Warn("Sending the data to: " + Properties.Settings.Default.influxdb_url, ex);
-                    }
-                }
 
                 Output.Info("STOP: " + vergelijkingnaam);
 #if !DEBUG
@@ -317,32 +296,33 @@ namespace GegevensVergelijker
             adapter.Fill(table);
             foreach (DataRow checkrow in table.Rows)
             {
-                string checkname = Convert.ToString(checkrow["controlenaam"]);
+                string vergelijkingnaam = Convert.ToString(checkrow["controlenaam"]);
                 string datasourcename = Convert.ToString(checkrow["databronnaam"]);
                 string primary = Convert.ToString(checkrow["sleutelkolom"]);
                 string columnname = Convert.ToString(checkrow["controlekolom"]);
                 string checkvalue = Convert.ToString(checkrow["controlewaarde"]);
 
-                Output.Info("START: " + checkname);
+                Output.Info("START: " + vergelijkingnaam);
 #if !DEBUG
                 try
                 {
 #endif
                     DatabaseReporter reporter = new DatabaseReporter(provider, connection);
-                    reporter.Start(checkname, datasourcename, null, columnname + "='" + checkvalue + "'", datasourcename, null);
+                    reporter.Start(vergelijkingnaam, null, datasourcename, columnname + "='" + checkvalue + "'", null, datasourcename);
                     DataTable datatable = GetData(provider, connection, datasourcename);
 
                     foreach(DataRow datarow in datatable.Rows) {
                         if (Convert.ToString(datarow[columnname]).Equals(checkvalue))
                         {
-                            reporter.EntryMatch(checkname, checkname, primary, columnname, checkvalue, datarow);
+                            reporter.EntryMatch(vergelijkingnaam, vergelijkingnaam, primary, columnname, checkvalue, datarow);
                         }
                         else {
-                            reporter.EntryInvalid(checkname, columnname, primary, checkvalue, datarow);
+                            reporter.EntryInvalid(vergelijkingnaam, vergelijkingnaam, primary, columnname, checkvalue, datarow);
                         }
                     }
 
                     reporter.Stop(
+                        vergelijkingnaam,
                         datatable.ExtendedProperties["applicatienaam"].ToString(), 
                         null,
                         datatable.ExtendedProperties["referentiequery"].ToString(),
@@ -351,7 +331,7 @@ namespace GegevensVergelijker
                         null, datatable.Rows.
                         Count, 
                         0);
-                    Output.Info("STOP: " + checkname);
+                    Output.Info("STOP: " + vergelijkingnaam);
 #if !DEBUG
                 }
                 catch (Exception ex)
