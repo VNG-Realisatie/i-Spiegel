@@ -119,7 +119,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Gegevensvergelijker.accdb">
+    <Content Include="ISpiegel.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Sample.accdb">

@@ -107,7 +107,8 @@ namespace ISpiegel.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ispiegel;User Id=ispiegel;Password=ispiegel;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=${WORKING_DIRECTORY}\\ISpiegel.accdb" +
+            "")]
         public string databaseconnection {
             get {
                 return ((string)(this["databaseconnection"]));
