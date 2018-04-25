@@ -124,7 +124,7 @@ namespace ISpiegel
 
             // the code that you want to measure comes here
             watch.Stop();
-            koprow["looptijd"] = new DateTime(watch.ElapsedTicks);
+            koprow["looptijd"] = watch.Elapsed.TotalSeconds;
             //ds.Tables["output"].Rows[0]. koprow
             //koprow.SetModified();
             kopadapter.Update(ds, "output");
