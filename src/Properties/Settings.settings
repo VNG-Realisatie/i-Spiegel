@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="email_subject" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">GegevensVergelijker</Value>
+      <Value Profile="(Default)">ISpiegel</Value>
     </Setting>
     <Setting Name="email_from" Type="System.String" Scope="Application">
       <Value Profile="(Default)">eduard@witteveen-automatisering.nl</Value>
@@ -21,7 +21,7 @@
       <Value Profile="(Default)">demo:demo</Value>
     </Setting>
     <Setting Name="databaseprovider" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">System.Data.OracleClient</Value>
+      <Value Profile="(Default)">System.Data.OleDb</Value>
     </Setting>
     <Setting Name="influxdb_url" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://84.81.153.226/write?db=ispiegel</Value>

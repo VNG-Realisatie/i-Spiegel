@@ -88,7 +88,7 @@ namespace ISpiegel
             koprow["afwijkingaantal"] = 0;
             koprow["nietgevondenaantal"] = 0;
             //koprow["ongeldigaantal"] = 0;            
-            koprow["looptijd"] = watch.Elapsed;
+            koprow["looptijd"] = watch.Elapsed.TotalSeconds;
 
             ds.Tables["output"].Rows.Add(koprow);
             kopadapter.Update(ds, "output");
@@ -204,15 +204,16 @@ namespace ISpiegel
         private string CreateRowXml(string vergelijking, string[] fieldnames, string[] fieldvalues)
         {
             var doc = new System.Xml.XmlDocument();
-            var rootnode = doc.CreateElement(System.Xml.XmlConvert.EncodeName(vergelijking));
-            var nil = doc.CreateAttribute("nil", "xsi", "http://w3.org/2001/XMLSchema-instance");
+            var rootnode = doc.CreateElement(System.Xml.XmlConvert.EncodeName(vergelijking).ToLower());
             if (fieldnames.Length > 0)
             {
                 for(int i=0; i < fieldnames.Length; i++)
                 {
-                    var element = doc.CreateElement(System.Xml.XmlConvert.EncodeName(fieldnames[i]));
-                    if(fieldvalues[i] == null)
+                    var element = doc.CreateElement(System.Xml.XmlConvert.EncodeName(fieldnames[i]).ToLower());
+                    if(fieldvalues[i] == null || Convert.ToString(fieldvalues[i]).Length == 0)
                     {
+                        var nil = doc.CreateAttribute("nil", "xsi", "http://w3.org/2001/XMLSchema-instance");
+                        nil.Value = Convert.ToString(true);
                         element.Attributes.Append(nil);
                     }
                     else
@@ -224,6 +225,8 @@ namespace ISpiegel
             }
             else
             {
+                var nil = doc.CreateAttribute("nil", "xsi", "http://w3.org/2001/XMLSchema-instance");
+                nil.Value = Convert.ToString(true);
                 rootnode.Attributes.Append(nil);                    
             }
             doc.AppendChild(rootnode);

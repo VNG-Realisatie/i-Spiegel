@@ -25,7 +25,7 @@ namespace ISpiegel.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("GegevensVergelijker")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ISpiegel")]
         public string email_subject {
             get {
                 return ((string)(this["email_subject"]));
@@ -79,7 +79,7 @@ namespace ISpiegel.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("System.Data.OracleClient")]
+        [global::System.Configuration.DefaultSettingValueAttribute("System.Data.OleDb")]
         public string databaseprovider {
             get {
                 return ((string)(this["databaseprovider"]));
