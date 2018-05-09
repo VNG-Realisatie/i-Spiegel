@@ -17,9 +17,6 @@
     <Setting Name="output_everything" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="influxdb_auth" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">demo:demo</Value>
-    </Setting>
     <Setting Name="databaseprovider" Type="System.String" Scope="Application">
       <Value Profile="(Default)">System.Data.OleDb</Value>
     </Setting>
@@ -36,6 +33,9 @@
   &lt;ProviderName&gt;System.Data.OleDb&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Provider=Microsoft.ACE.OLEDB.12.0;Data Source=${WORKING_DIRECTORY}\ISpiegel.accdb</Value>
+    </Setting>
+    <Setting Name="influxdb_auth" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ispiegel:ispiegel</Value>
     </Setting>
   </Settings>
 </SettingsFile>

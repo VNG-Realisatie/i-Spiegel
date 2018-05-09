@@ -102,6 +102,16 @@ namespace ISpiegel
             //invalid = 0;
         }
 
+        public class ShootAndForgetWebClient : System.Net.WebClient
+        {
+            protected override System.Net.WebRequest GetWebRequest(Uri address)
+            {
+                var request = base.GetWebRequest(address);
+                request.Timeout = 1000;//In Milli seconds
+                return request;
+            }
+        }
+
         public void Stop(string vergelijkingnaam, string analyseapplicatie, string referentieapplicatie, string analysequery, string referentiequery, string analysegemeentecode, string referentiegemeentecode, long analysecount, long referencecount)
         {
             // save the regels
@@ -149,7 +159,7 @@ namespace ISpiegel
                 var postdata = "ispiegel,";
                 postdata += "vergelijking=" + vergelijkingnaam.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") + ",";
                 postdata += ResultLine;
-                System.Net.WebClient client = new System.Net.WebClient();
+                var  client = new ShootAndForgetWebClient();
                 if (Properties.Settings.Default.influxdb_auth != "")
                 {
 
@@ -326,10 +336,10 @@ namespace ISpiegel
 
             row["controle"] = matcher;
             row["sleutel"] = CreateRowXml(vergelijking, sleutel.fieldnames, sleutel.fieldvalues);
-            row["analysewaarde"] = CreateRowXml(vergelijking, searchitem.fieldnames, searchitem.fieldvalues);
-            row["referentiewaarde"] = CreateRowXml(vergelijking, reference.fieldnames, reference.fieldvalues);
-            row["analyseregel"] = CreateRowXml(vergelijking, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
-            row["referentieregel"] = CreateRowXml(vergelijking, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
+            row["analysewaarde"] = CreateRowXml(matcher, analyse.fieldnames, analyse.fieldvalues);
+            row["referentiewaarde"] = CreateRowXml(matcher, reference.fieldnames, reference.fieldvalues);
+            row["analyseregel"] = CreateRowXml(searchrow.Table.ExtendedProperties["databronnaam"].ToString(), ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
+            row["referentieregel"] = CreateRowXml(found.Table.ExtendedProperties["databronnaam"].ToString(), ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
             ds.Tables["outputline"].Rows.Add(row);
             nomatch++;
         }
@@ -344,10 +354,10 @@ namespace ISpiegel
 
             row["controle"] = matcher;
             row["sleutel"] = CreateRowXml(vergelijking, searchitem.fieldnames, searchitem.fieldvalues);
-            row["analysewaarde"] = CreateRowXml(vergelijking, searchitem.fieldnames, searchitem.fieldvalues);
-            row["referentiewaarde"] = CreateRowXml(vergelijking);
-            row["analyseregel"] = CreateRowXml(vergelijking, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
-            row["referentieregel"] = CreateRowXml(vergelijking);
+            row["analysewaarde"] = CreateRowXml(matcher, searchitem.fieldnames, searchitem.fieldvalues);
+            row["referentiewaarde"] = DBNull.Value;
+            row["analyseregel"] = CreateRowXml(searchrow.Table.ExtendedProperties["databronnaam"].ToString(), ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
+            row["referentieregel"] = DBNull.Value;
             ds.Tables["outputline"].Rows.Add(row);
 
             missing++;

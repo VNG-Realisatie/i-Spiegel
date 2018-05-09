@@ -18,9 +18,15 @@ namespace ISpiegel
 
         private static DataTable GetData(DbProviderFactory configprovider, DbConnection configconnection, String datasourcename)
         {
+
+            // const string sql = "SELECT * FROM SOME_TABLE WHERE Name = @name";
+            // cmd.CommandText = sql;
+            // cmd.Parameters.AddWithValue("@name", name);
+
+
             var command = configprovider.CreateCommand();
             // TODO: parameter
-            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "databron WHERE databronnaam LIKE '" + datasourcename + "'";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "databron WHERE databronnaam LIKE '" +  datasourcename + "'";
             command.Connection = configconnection;
             var adapter = configprovider.CreateDataAdapter();
             adapter.SelectCommand = command;

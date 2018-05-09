@@ -119,10 +119,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ISpiegel.accdb">
+    <Content Include="DemoData.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sample.accdb">
+    <Content Include="ISpiegel.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

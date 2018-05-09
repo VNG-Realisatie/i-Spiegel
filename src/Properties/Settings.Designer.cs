@@ -70,15 +70,6 @@ namespace ISpiegel.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("demo:demo")]
-        public string influxdb_auth {
-            get {
-                return ((string)(this["influxdb_auth"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("System.Data.OleDb")]
         public string databaseprovider {
             get {
@@ -112,6 +103,15 @@ namespace ISpiegel.Properties {
         public string databaseconnection {
             get {
                 return ((string)(this["databaseconnection"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ispiegel:ispiegel")]
+        public string influxdb_auth {
+            get {
+                return ((string)(this["influxdb_auth"]));
             }
         }
     }

@@ -1,0 +1,1 @@
+20:55 9-5-2018 : Alles werkt min/meer zoals we willen, wel moeten we nog behoorlijk refactoren!
