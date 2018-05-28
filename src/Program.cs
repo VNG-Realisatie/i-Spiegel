@@ -284,7 +284,7 @@ namespace ISpiegel
                 }
                 catch (Exception ex)
                 {
-                    Output.Warn("ERROR PROCESSING: " + comparename, ex);
+                    Output.Warn("ERROR PROCESSING: " + vergelijkingnaam, ex);
                 }
 #endif
             }
@@ -342,7 +342,7 @@ namespace ISpiegel
                 }
                 catch (Exception ex)
                 {
-                    Output.Warn("ERROR PROCESSING: " + checkname, ex);
+                    Output.Warn("ERROR PROCESSING: " + vergelijkingnaam, ex);
                 }
 #endif
             }
