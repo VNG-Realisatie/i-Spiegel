@@ -1,0 +1,21 @@
+"VERGELIJKINGNAAM","REFERENTIEDATABRONNAAM","ANALYSEDATABRONNAAM","VELDTOEWIJZING","ACTIEF"
+"BRP.Persoon-BAG.Adres","BAG.Adres.DemoData","BRP.Persoon.DemoData","<compare primary=""nummeraanduidingid"">
+	<match id=""nummeraanduidingid"">
+		<field name=""nummeraanduidingid"" reference-field=""nummeraanduidingid"" analysis-field=""nummeraanduidingid"" />
+	</match>	
+	<match id=""adressseerbaarobjectid"">
+		<field name=""adressseerbaarobjectid"" reference-field=""adressseerbaarobjectid"" analysis-field=""adressseerbaarobjectid"" />
+	</match>	
+	<match id=""postcode-huisnummer"">
+		<field name=""postcode"" reference-field=""postcode"" analysis-field=""postcode"" />
+		<field name=""huisnummer"" reference-field=""huisnummer"" analysis-field=""huisnummer"" />
+		<field name=""huisletter"" reference-field=""huisletter"" analysis-field=""huisletter"" />
+		<field name=""huisnummertoevoeging"" reference-field=""huisnummertoevoeging"" analysis-field=""huisnummertoevoeging"" />
+	</match>
+	<match id=""openbare-ruimte"">
+		<field name=""openbareruimtenaam"" reference-field=""openbareruimtenaam"" analysis-field=""openbareruimtenaam"" />
+	</match>
+	<match id=""woonplaats"">
+		<field name=""woonplaatsnaam"" reference-field=""woonplaatsnaam"" analysis-field=""woonplaatsnaam"" />
+	</match>		
+</compare>",1
