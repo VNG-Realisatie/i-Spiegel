@@ -19,3 +19,76 @@
 		<field name=""woonplaatsnaam"" reference-field=""woonplaatsnaam"" analysis-field=""woonplaatsnaam"" />
 	</match>		
 </compare>",1
+"GD.Adres-BAG.Adres","BAG.Adres.Vicrea","GD.Adres.Centric","<compare primary=""nummeraanduidingid"">
+	<match id=""nummeraanduidingid"">
+		<field name=""nummeraanduidingid"" reference-field=""nummeraanduidingid"" analysis-field=""nummeraanduidingid"" />
+	</match>	
+	<match id=""adressseerbaarobjectid"">
+		<field name=""adressseerbaarobjectid"" reference-field=""adressseerbaarobjectid"" analysis-field=""adressseerbaarobjectid"" />
+	</match>	
+	<match id=""postcode-huisnummer"">
+		<field name=""postcode"" reference-field=""postcode"" analysis-field=""postcode"" />
+		<field name=""huisnummer"" reference-field=""huisnummer"" analysis-field=""huisnummer"" />
+		<field name=""huisletter"" reference-field=""huisletter"" analysis-field=""huisletter"" />
+		<field name=""huisnummertoevoeging"" reference-field=""huisnummertoevoeging"" analysis-field=""huisnummertoevoeging"" />
+	</match>
+	<match id=""openbare-ruimte"">
+		<field name=""openbareruimtenaam"" reference-field=""openbareruimtenaam"" analysis-field=""openbareruimtenaam"" />
+	</match>
+	<match id=""woonplaats"">
+		<field name=""woonplaatsnaam"" reference-field=""woonplaatsnaam"" analysis-field=""woonplaatsnaam"" />
+	</match>		
+</compare>
+	<match id=""""nummeraanduidingid"""">
+		<field name=""""nummeraanduidingid"""" reference-field=""""nummeraanduidingid"""" analysis-field=""""nummeraanduidingid"""" />
+	</match>	
+	<match id=""""adressseerbaarobjectid"""">
+		<field name=""""adressseerbaarobjectid"""" reference-field=""""adressseerbaarobjectid"""" analysis-field=""""adressseerbaarobjectid"""" />
+	</match>	
+	<match id=""""postcode-huisnummer"""">
+		<field name=""""postcode"""" reference-field=""""postcode"""" analysis-field=""""postcode"""" />
+		<field name=""""huisnummer"""" reference-field=""""huisnummer"""" analysis-field=""""huisnummer"""" />
+		<field name=""""huisletter"""" reference-field=""""huisletter"""" analysis-field=""""huisletter"""" />
+		<field name=""""huisnummertoevoeging"""" reference-field=""""huisnummertoevoeging"""" analysis-field=""""huisnummertoevoeging"""" />
+	</match>
+	<match id=""""openbare-ruimte"""">
+		<field name=""""openbareruimtenaam"""" reference-field=""""openbareruimtenaam"""" analysis-field=""""openbareruimtenaam"""" />
+	</match>
+	<match id=""""woonplaats"""">
+		<field name=""""woonplaatsnaam"""" reference-field=""""woonplaatsnaam"""" analysis-field=""""woonplaatsnaam"""" />
+	</match>		
+</compare>",0
+"GD.Persoon-BRP.Persoon","BRP.Persoon.Centric","GD.Persoon.Centric","<compare primary=""bsn"">
+	<match id=""bsn"">
+		<field name=""bsn"" reference-field=""bsn"" analysis-field=""bsn"" />
+	</match>	
+	<match id=""naam"">
+		<field name=""voorletters"" reference-field=""voorletters"" analysis-field=""voorletters"" />
+		<field name=""voorvoegsel"" reference-field=""voorvoegsel"" analysis-field=""voorvoegsel"" />
+		<field name=""geslachtsnaam"" reference-field=""geslachtsnaam"" analysis-field=""geslachtsnaam"" />
+	</match>
+	<match id=""geheim"">
+		<field name=""geheim"" reference-field=""geheim"" analysis-field=""geheim"" />
+	</match>		
+	<match id=""geboortedatum"">
+		<field name=""geboortedatum"" reference-field=""geboortedatum"" analysis-field=""geboortedatum"" />
+	</match>	
+	<match id=""nummeraanduidingid"">
+		<field name=""nummeraanduidingid"" reference-field=""nummeraanduidingid"" analysis-field=""nummeraanduidingid"" />
+	</match>	
+	<match id=""adressseerbaarobjectid"">
+		<field name=""adressseerbaarobjectid"" reference-field=""adressseerbaarobjectid"" analysis-field=""adressseerbaarobjectid"" />
+	</match>	
+	<match id=""postcode-huisnummer"">
+		<field name=""postcode"" reference-field=""postcode"" analysis-field=""postcode"" />
+		<field name=""huisnummer"" reference-field=""huisnummer"" analysis-field=""huisnummer"" />
+		<field name=""huisletter"" reference-field=""huisletter"" analysis-field=""huisletter"" />
+		<field name=""huisnummertoevoeging"" reference-field=""huisnummertoevoeging"" analysis-field=""huisnummertoevoeging"" />
+	</match>
+	<match id=""openbare-ruimte"">
+		<field name=""openbareruimtenaam"" reference-field=""openbareruimtenaam"" analysis-field=""openbareruimtenaam"" />
+	</match>
+	<match id=""woonplaats"">
+		<field name=""woonplaatsnaam"" reference-field=""woonplaatsnaam"" analysis-field=""woonplaatsnaam"" />
+	</match>		
+</compare>",0

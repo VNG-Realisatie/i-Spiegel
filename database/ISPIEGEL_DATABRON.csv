@@ -1,121 +1,257 @@
 "DATABRONNAAM","APPLICATIENAAM","GEMEENTECODE","PROVIDER","CONNECTIONSTRING","QUERY"
-"BAG.Adres.Centric","Centric Suite4Basisregistraties","9999","System.Data.OracleClient","Data Source=pbag9999;User Id=username;Password=password;","-- verblijfsobjecten --
-SELECT
-  'verblijfsobject' AS ADRESTYPE,
-  htmlunescape(bra_ruimte.ruimtenaam_d) AS openbareruimtenaam,
-  bra_ruimte.ruimtenaam AS RUIMTENAAM_SIMPEL,
-  htmlunescape(bra_ruimte.ruimtenaam_boco_d) AS RUIMTENAAM_BOCO,
-  UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_USIMPEL,
-  UPPER(htmlunescape(bra_ruimte.ruimtenaam_d)) AS RUIMTENAAM_UPPER,
-  bra_adres.huisnr        AS huisnummer,
-  bra_adres.huislt        AS huisletter,
-  bra_adres.toevoeging    AS huisnummertoevoeging,
-  bra_adres.postc_n || bra_adres.postc_a AS postcode,
-  htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS woonplaatsnaam,
-  bra_woonplaats.woonplaatsnaam  AS WOONPLAATSNAAM_SIMPEL,
-  UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,  
-  bra_adres.adresid       AS nummeraanduidingid,
-  bgr_verblijfsobject.verblijfsobjectid   AS adressseerbaarobjectid
-FROM 
-  BAGOWNER.BRA_ADRES       bra_adres,
-  BAGOWNER.BRA_RUIMTE      bra_ruimte,
-  BAGOWNER.BRA_WOONPLAATS  bra_woonplaats,
-  BAGOWNER.BGR_VERBLIJFSOBJECTADRES bgr_verblijfsobjectadres,
-  BAGOWNER.BGR_VERBLIJFSOBJECT bgr_verblijfsobject
-WHERE bra_adres.ddeinde               IS NULL
-AND bra_adres.indactief               = 'J'
-AND bra_ruimte.ddeinde                IS NULL
-AND bra_ruimte.indactief              = 'J'
-AND bra_woonplaats.ddeinde            IS NULL
-AND bra_woonplaats.indactief          = 'J'
-AND bra_adres.indauthentiek           = 'J'
-AND bgr_verblijfsobject.ddeinde       IS NULL
-AND bgr_verblijfsobject.indactief     = 'J'
-AND bgr_verblijfsobject.indauthentiek = 'J' 
-AND bgr_verblijfsobjectadres.indhoofdadres = 'J'
-AND bra_adres.ruimtenr                = bra_ruimte.ruimtenr
-AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
-AND bra_adres.adresnr                 = bgr_verblijfsobjectadres.adresnr
-AND bgr_verblijfsobject.vobjnr        = bgr_verblijfsobjectadres.vobjnr
-AND bgr_verblijfsobject.vobjvolgnr    = bgr_verblijfsobjectadres.vobjvolgnr
+"BAG.Adres.Centric","Centric Suite4Basisregistraties","9999","System.Data.OracleClient","Data Source=pbag9999;User Id=username;Password=password;","--  BAG - actuele adresseerbare objecten
+
+-- verblijfsobjecten --
+select
+		-- ********** Matching-criteria  **********
+		 -- match nummeraanduidingid
+		adres.adresid                     as nummeraanduidingid, -- primary
+		-- match adressseerbaarobjectid
+		verblijfsobject.verblijfsobjectid as adressseerbaarobjectid,
+		-- match postcode-huisnummer
+		adres.postc_n || adres.postc_a    as postcode,
+		adres.huisnr                      as huisnummer,
+		adres.huislt                      as huisletter,
+		adres.toevoeging                  as huisnummertoevoeging,
+		--adres.aanduiding                  as aanduiding,
+		-- match openbare-ruimte
+		replace(
+			replace(
+				replace(
+					replace(
+						replace(
+							replace(
+								replace(
+									replace(
+										replace(
+											replace(ruimtenaam_d, 
+											'&#0226;', 'a'),
+										'&#0233;', 'e'),
+									'&#0234;', 'e'),
+								'&#0235;', 'e'),
+							'&#0244;', 'o'),
+						'&#0246;', 'o'),
+					'&#0250;', 'u'),
+				'&#0224;', 'a'),
+			'&#0239;', 'i'),
+		'&#0251;', 'u')                   as openbareruimtenaam, -- openbare ruimte met diakrieten (UTF8)		
+		--ruimte.ruimtenaam_boco            as openbareruimtenaam_boco, -- (mogelijk afgekorte) Openbare ruimte zonder diakrieten
+		-- match woonplaats
+		replace(
+			replace(
+				replace(
+					replace(
+						replace(
+							replace(
+								replace(
+									replace(
+										replace(
+											replace(woonplaatsnaam_d,
+											'&#0226;', 'a'),
+										'&#0233;', 'e'),
+									'&#0234;', 'e'),
+								'&#0235;', 'e'),
+							'&#0244;', 'o'),
+						'&#0246;', 'o'),
+					'&#0250;', 'u'),
+				'&#0224;', 'a'),
+			'&#0239;', 'i'),
+		'&#0251;', 'u')                   as woonplaatsnaam, -- woonplaats met diakrieten (UTF8)
+
+		-- ********** Identificatie gegevens **********
+		'verblijfsobject'                 as adrestype
+		--adres.adrestype, -- onderwerpcode, ?? Is een kode (01, 02 of 03) ipv 'ADR'
+		--adres.adresnr, -- Adresnummer
+		--verblijfsobjectadres.vobjnr, -- Verblijfsobjectnr
+		--adres.ddingang AS datumingang_adres, -- Datum ingang adres
+		--ruimte.ddingang AS datumingang_ruimte, -- Datum ingang ruimte
+		--verblijfsobjectadres.ddingang AS datumingang_ado -- Datum ingang verblijfsobjectadres
+from 
+		bagowner.bra_adres adres 
+		join bagowner.bra_ruimte ruimte on adres.ruimtenr = ruimte.ruimtenr
+		join bagowner.bra_woonplaats woonplaats	on ruimte.woonplaatsnr = woonplaats.woonplaatsnr
+		join bagowner.bgr_verblijfsobjectadres verblijfsobjectadres	on adres.adresnr = verblijfsobjectadres.adresnr
+		join bagowner.bgr_verblijfsobject verblijfsobject on verblijfsobject.vobjnr = verblijfsobjectadres.vobjnr and
+			verblijfsobject.vobjvolgnr = verblijfsobjectadres.vobjvolgnr
+where	adres.ddeinde                          is null
+		and	adres.indactief                    = 'J'
+		and	ruimte.ddeinde                     is null
+		and	ruimte.indactief                   = 'J'
+		and	woonplaats.ddeinde                 is null
+		and	woonplaats.indactief               = 'J'
+		and	adres.indauthentiek                = 'J'
+		and	verblijfsobject.ddeinde            is null
+		and	verblijfsobject.indactief          = 'J'
+		and	verblijfsobject.indauthentiek      = 'J' 
+		and	verblijfsobjectadres.indhoofdadres = 'J'
+UNION 
 -- ligplaatsen --
-UNION SELECT 
-  'ligplaats',
-  htmlunescape(bra_ruimte.ruimtenaam_d) AS RUIMTENAAM,
-  bra_ruimte.ruimtenaam AS RUIMTENAAM_SIMPEL,
-  htmlunescape(bra_ruimte.ruimtenaam_boco_d) AS RUIMTENAAM_BOCO,
-  UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_USIMPEL,
-  UPPER(htmlunescape(bra_ruimte.ruimtenaam_d)) AS RUIMTENAAM_UPPER,
-  bra_adres.huisnr,
-  bra_adres.huislt,
-  bra_adres.toevoeging,
-  bra_adres.postc_n || bra_adres.postc_a, 
-  htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
-  bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
-  UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,
-  bra_adres.adresid,
-  bgr_ligplaats.ligplaatsid
-FROM
-  BAGOWNER.BRA_ADRES       bra_adres,
-  BAGOWNER.BRA_RUIMTE      bra_ruimte,  
-  BAGOWNER.BRA_WOONPLAATS  bra_woonplaats,
-  BAGOWNER.BGR_LIGPLAATSADRES bgr_ligplaatsadres,
-  BAGOWNER.BGR_LIGPLAATS bgr_ligplaats
-WHERE bra_adres.ddeinde        IS NULL
-AND bra_adres.indactief           = 'J'
-AND bra_ruimte.ddeinde           IS NULL
-AND bra_ruimte.indactief          = 'J'
-AND bra_woonplaats.ddeinde       IS NULL
-AND bra_woonplaats.indactief      = 'J'
-AND bra_adres.indauthentiek       = 'J'
-AND bgr_ligplaats.ddeinde        IS NULL
-AND bgr_ligplaats.indactief       = 'J'
-AND bgr_ligplaats.indauthentiek   = 'J'
-AND bgr_ligplaatsadres.indhoofdadres = 'J'
-AND bra_adres.ruimtenr            = bra_ruimte.ruimtenr
-AND bra_ruimte.woonplaatsnr       = bra_woonplaats.woonplaatsnr
-AND bra_adres.adresnr             = bgr_ligplaatsadres.adresnr
-AND bgr_ligplaats.ligplaatsnr     = bgr_ligplaatsadres.ligplaatsnr
-AND bgr_ligplaats.ligplaatsvolgnr = bgr_ligplaatsadres.ligplaatsvolgnr
--- ligplaatsen --
-UNION SELECT 
-  'standplaats',
-  htmlunescape(bra_ruimte.ruimtenaam_d) AS RUIMTENAAM,
-  bra_ruimte.ruimtenaam AS RUIMTENAAM_SIMPEL,
-  htmlunescape(bra_ruimte.ruimtenaam_boco_d) AS RUIMTENAAM_BOCO,
-  UPPER(bra_ruimte.ruimtenaam_boco) AS RUIMTENAAM_USIMPEL,  
-  UPPER(htmlunescape(bra_ruimte.ruimtenaam_d)) AS RUIMTENAAM_UPPER,
-  bra_adres.huisnr,
-  bra_adres.huislt,
-  bra_adres.toevoeging,
-  bra_adres.postc_n || bra_adres.postc_a,
-  htmlunescape(bra_woonplaats.woonplaatsnaam_d) AS WOONPLAATSNAAM,
-  bra_woonplaats.woonplaatsnaam AS WOONPLAATSNAAM_SIMPEL,
-  UPPER(bra_woonplaats.woonplaatsnaam)  AS WOONPLAATSNAAM_USIMPEL,
-  bra_adres.adresid,
-  bgr_standplaats.standplaatsid
-FROM
-  BAGOWNER.BRA_ADRES       bra_adres,
-  BAGOWNER.BRA_RUIMTE      bra_ruimte,  
-  BAGOWNER.BRA_WOONPLAATS  bra_woonplaats,
-  BAGOWNER.BGR_STANDPLAATSADRES bgr_standplaatsadres,
-  BAGOWNER.BGR_STANDPLAATS bgr_standplaats    
-WHERE bra_adres.ddeinde            IS NULL
-AND bra_adres.indactief               = 'J'
-AND bra_ruimte.ddeinde               IS NULL
-AND bra_ruimte.indactief              = 'J'
-AND bra_woonplaats.ddeinde           IS NULL
-AND bra_woonplaats.indactief          = 'J'
-AND bra_adres.indauthentiek           = 'J'
-AND bgr_standplaats.ddeinde          IS NULL
-AND bgr_standplaats.indactief         = 'J'
-AND bgr_standplaats.indauthentiek     = 'J'
-AND bgr_standplaatsadres.indhoofdadres = 'J'
-AND bra_adres.ruimtenr                = bra_ruimte.ruimtenr
-AND bra_ruimte.woonplaatsnr           = bra_woonplaats.woonplaatsnr
-AND bra_adres.adresnr                 = bgr_standplaatsadres.adresnr
-AND bgr_standplaats.standplaatsnr     = bgr_standplaatsadres.standplaatsnr
-AND bgr_standplaats.standplaatsvolgnr = bgr_standplaatsadres.standplaatsvolgnr"
+select 
+		-- ********** Matching-criteria  **********
+		 -- Match nummeraanduidingid
+		adres.adresid                    as nummeraanduidingid, -- primary
+		-- Match adressseerbaarobjectid
+		ligplaats.ligplaatsid            as adressseerbaarobjectid,
+		-- Match postcode-huisnummer
+		adres.postc_n || adres.postc_a   as postcode,
+		adres.huisnr                     as huisnr,
+		adres.huislt                     as huislt,
+		adres.toevoeging                 as toevoeging,
+		--adres.aanduiding                 as aanduiding,
+		-- Match openbare-ruimte
+		replace(
+			replace(
+				replace(
+					replace(
+						replace(
+							replace(
+								replace(
+									replace(
+										replace(
+											replace(ruimtenaam_d, 
+											'&#0226;', 'a'),
+										'&#0233;', 'e'),
+									'&#0234;', 'e'),
+								'&#0235;', 'e'),
+							'&#0244;', 'o'),
+						'&#0246;', 'o'),
+					'&#0250;', 'u'),
+				'&#0224;', 'a'),
+			'&#0239;', 'i'),
+		'&#0251;', 'u')                   as ruimtenaam_d, -- openbare ruimte met diakrieten (UTF8)
+		--ruimte.ruimtenaam_boco            as ruimtenaam_boco, -- (mogelijk afgekorte) Openbare ruimte zonder diakrieten
+		-- Match woonplaats
+		replace(
+			replace(
+				replace(
+					replace(
+						replace(
+							replace(
+								replace(
+									replace(
+										replace(
+											replace(woonplaatsnaam_d,
+											'&#0226;', 'a'),
+										'&#0233;', 'e'),
+									'&#0234;', 'e'),
+								'&#0235;', 'e'),
+							'&#0244;', 'o'),
+						'&#0246;', 'o'),
+					'&#0250;', 'u'),
+				'&#0224;', 'a'),
+			'&#0239;', 'i'),
+		'&#0251;', 'u')                   as woonplaatsnaam_d, -- woonplaats met diakrieten (UTF8)
+
+		-- ********** Identificatie gegevens **********
+		'ligplaats'                      as adrestype
+		--adres.adrestype, -- onderwerpcode, ?? Is een kode (01, 02 of 03) ipv 'ADR'
+		--adres.adresnr, -- Adresnummer
+		--ligplaatsadres.ligplaatsnr, -- Verblijfsobjectnr
+		--adres.ddingang, -- Datum ingang adres
+		--ruimte.ddingang, -- Datum ingang ruimte
+		--ligplaatsadres.ddingang -- Datum ingang verblijfsobjectadres
+from
+		bagowner.bra_adres adres 
+		join bagowner.bra_ruimte ruimte on adres.ruimtenr = ruimte.ruimtenr
+		join bagowner.bra_woonplaats woonplaats on ruimte.woonplaatsnr = woonplaats.woonplaatsnr
+		join bagowner.bgr_ligplaatsadres ligplaatsadres on adres.adresnr = ligplaatsadres.adresnr
+		join bagowner.bgr_ligplaats ligplaats on ligplaats.ligplaatsnr = ligplaatsadres.ligplaatsnr and
+			ligplaats.ligplaatsvolgnr = ligplaatsadres.ligplaatsvolgnr
+where	adres.ddeinde        is null
+		and	adres.indactief              = 'J'
+		and	ruimte.ddeinde               is null
+		and	ruimte.indactief             = 'J'
+		and	woonplaats.ddeinde           is null
+		and	woonplaats.indactief         = 'J'
+		and	adres.indauthentiek          = 'J'
+		and	ligplaats.ddeinde            is null
+		and	ligplaats.indactief          = 'J'
+		and	ligplaats.indauthentiek      = 'J'
+		and	ligplaatsadres.indhoofdadres = 'J'
+UNION 
+-- standplaatsen --
+select 
+		-- ********** Matching-criteria  **********
+		 -- Match nummeraanduidingid
+		adres.adresid                    as nummeraanduidingid,  -- primary
+		-- Match adressseerbaarobjectid
+		standplaats.standplaatsid        as adressseerbaarobjectid,
+		-- Match postcode-huisnummer
+		adres.postc_n || adres.postc_a   as postcode,
+		adres.huisnr                     as huisnr,
+		adres.huislt                     as huislt,
+		adres.toevoeging                 as toevoeging,
+		--adres.aanduiding                 as aanduiding,
+		-- Match openbare-ruimte
+		replace(
+			replace(
+				replace(
+					replace(
+						replace(
+							replace(
+								replace(
+									replace(
+										replace(
+											replace(ruimtenaam_d, 
+											'&#0226;', 'a'),
+										'&#0233;', 'e'),
+									'&#0234;', 'e'),
+								'&#0235;', 'e'),
+							'&#0244;', 'o'),
+						'&#0246;', 'o'),
+					'&#0250;', 'u'),
+				'&#0224;', 'a'),
+			'&#0239;', 'i'),
+		'&#0251;', 'u')                   as ruimtenaam_d, -- openbare ruimte met diakrieten (UTF8)
+		--ruimte.ruimtenaam_boco            as ruimtenaam_boco, -- (mogelijk afgekorte) Openbare ruimte zonder diakrieten
+		-- Match woonplaats
+		replace(
+			replace(
+				replace(
+					replace(
+						replace(
+							replace(
+								replace(
+									replace(
+										replace(
+											replace(woonplaatsnaam_d,
+											'&#0226;', 'a'),
+										'&#0233;', 'e'),
+									'&#0234;', 'e'),
+								'&#0235;', 'e'),
+							'&#0244;', 'o'),
+						'&#0246;', 'o'),
+					'&#0250;', 'u'),
+				'&#0224;', 'a'),
+			'&#0239;', 'i'),
+		'&#0251;', 'u')                   as woonplaatsnaam_d, -- woonplaats met diakrieten (UTF8)
+
+		-- ********** Identificatie gegevens **********
+		'standplaats'                    as adrestype
+		--adres.adrestype, -- onderwerpcode, ?? Is een kode (01, 02 of 03) ipv 'ADR'
+		--adres.adresnr, -- Adresnummer
+		--standplaatsadres.standplaatsnr, -- Verblijfsobjectnr
+		--adres.ddingang, -- Datum ingang adres
+		--ruimte.ddingang, -- Datum ingang ruimte
+		--standplaatsadres.ddingang -- Datum ingang verblijfsobjectadres
+from
+		bagowner.bra_adres adres
+		join bagowner.bra_ruimte ruimte on adres.ruimtenr = ruimte.ruimtenr
+		join bagowner.bra_woonplaats woonplaats on ruimte.woonplaatsnr = woonplaats.woonplaatsnr
+		join bagowner.bgr_standplaatsadres standplaatsadres on adres.adresnr = standplaatsadres.adresnr
+		join bagowner.bgr_standplaats standplaats on standplaats.standplaatsnr = standplaatsadres.standplaatsnr and
+			standplaats.standplaatsvolgnr = standplaatsadres.standplaatsvolgnr
+where	adres.ddeinde                          is null
+		and adres.indactief                    = 'J'
+		and ruimte.ddeinde                     is null
+		and ruimte.indactief                   = 'J'
+		and woonplaats.ddeinde                 is null
+		and woonplaats.indactief               = 'J'
+		and adres.indauthentiek                = 'J'
+		and standplaats.ddeinde            is null
+		and standplaats.indactief          = 'J'
+		and standplaats.indauthentiek      = 'J' 
+		and standplaatsadres.indhoofdadres = 'J'"
 "BAG.Adres.DemoData","ISpiegel DemoData","9999","System.Data.OleDb","Provider=Microsoft.ACE.OLEDB.12.0;Data Source=${WORKING_DIRECTORY}\DemoData.accdb","SELECT * FROM Adres"
 "BAG.Adres.Vicrea","Vicrea BAG Neuron","9999","System.Data.OracleClient","Data Source=pnsr9999;User Id=username;Password=password;","--VERBLIJFSOBJECTEN
 SELECT 
@@ -306,21 +442,119 @@ ON LIGPLAATS.LIGPLAATS_ID = VBOADRES.LIGPLAATS_ID
   GBA_VSELAKTP.GEBOORTEDATUM, 
   GBA_VSELAKTP.VOORLETTERS, 
   GBA_VSELAKTP.VOORVOEGSEL, 
-  GBA_VSELAKTP.GESLACHTSNAAM, 
-  GBA_VSELAKTP.GEMEENTEKODE, 
-  GBA_VSELAKTP.STRAATNAAM, 
+  GBA_VSELAKTP.GESLACHTSNAAM,   
+  --GBA_VSELAKTP.GEMEENTEKODE, 
+  --GBA_VSELAKTP.STRAATNAAM, 
   GBA_VSELADRS.NAAM_OPENBARE_RUIMTE AS openbareruimtenaam, 
   GBA_VSELAKTP.HUISNUMMER AS huisnummer, 
   GBA_VSELAKTP.HUISLETTER AS huisletter, 
   GBA_VSELAKTP.TOEVOEGING_HUISNUMMER AS huisnummertoevoeging, 
-  GBA_VSELAKTP.AANDUIDING_HUISNUMMER, 
-  GBA_VSELAKTP.OMSCHRIJVING_LOKATIE, 
+  --GBA_VSELAKTP.AANDUIDING_HUISNUMMER, 
+  --GBA_VSELAKTP.OMSCHRIJVING_LOKATIE, 
   GBA_VSELAKTP.POSTKODE_NUMERIEK || GBA_VSELAKTP.POSTKODE_ALFANUMERIEK AS postcode, 
   GBA_VSELADRS.GEMEENTEDEEL AS woonplaatsnaam,
   GBA_VSELADRS.IDENT_VERBLIJFPLAATS AS adressseerbaarobjectid, 
-  GBA_VSELADRS.IDENT_NUMMERAANDUIDING AS nummeraanduidingid
+  GBA_VSELADRS.IDENT_NUMMERAANDUIDING AS nummeraanduidingid,
+  GBA_VSELAKTP.KODE_GEHEIM AS geheim
 FROM
-  PRODPIV.GBA_VSELAKTP,
+  PRODPIV.GBA_VSELAKTP
+ JOIN
   PRODPIV.GBA_VSELADRS
-WHERE GBA_VSELAKTP.SYSTEEMNUMMER_ADRES = GBA_VSELADRS.SYSTEEMNUMMER_ADRES"
+ON GBA_VSELAKTP.SYSTEEMNUMMER_ADRES = GBA_VSELADRS.SYSTEEMNUMMER_ADRES"
 "BRP.Persoon.DemoData","ISpiegel DemoData","9999","System.Data.OleDb","Provider=Microsoft.ACE.OLEDB.12.0;Data Source=${WORKING_DIRECTORY}\DemoData.accdb","SELECT * FROM Persoon"
+"GD.Adres.Centric","Centric Key2Datadistributie","9999","System.Data.OracleClient","Data Source=pdds9999;User Id=username;Password=password;","/* Actele adressen in DDS als afnemer voor vgl. met BAG
+*/
+
+select
+		-- ********** Matching-criteria  **********
+		-- Match nummeraanduidingid
+		adr.identna AS nummeraanduidingid, -- Primary en Selectie, Nummeraanduidingid
+		-- Match adressseerbaarobjectid (verblijfplaats)
+		adr.identtgo AS adressseerbaarobjectid, -- Adressseerbaarobjectid
+		-- Match Postcode-huisnummer
+		adr.pkdnum AS postcode, -- Postkode
+		adr.huinum AS huisnummer, -- Huis-nummer
+		adr.huilet AS huisletter, -- Huis-letter
+		adr.huitvg AS huisnummertoevoeging, -- Huis-toevoegeing
+		--adr.huiand, -- Huis-aanduiding
+		-- Match openbare-ruimte    
+    DDS_TEKENSETCONVERSIE.TELETEX2UNICODE (adr.obrnam_d) AS openbareruimtenaam, 
+		--translate(dds_tekensetconversie.teletex2unicode(adr.obrnam_d), 'aeiou aeiou aeiou aeiou', 'aeiou aeiou aeiou aeiou') as openbare_ruimte, -- Openbare ruimte zonder diakrieten
+		-- dds_tekensetconversie.teletex2unicode(adr.obrnam_d) as obrnam_d, -- Openbare ruimte met diakrieten
+		--translate(dds_tekensetconversie.teletex2unicode(adr.sttnam_d), 'aeiou aeiou aeiou aeiou', 'aeiou aeiou aeiou aeiou') as straatnaam,  -- Straatnaam zonder diakrieten = openbareruimte_boco
+--		dds_tekensetconversie.teletex2unicode(adr.sttnam_d) as  sttnam_d, -- Straatnaam met diakrieten
+		-- Match woonplaats
+    DDS_TEKENSETCONVERSIE.TELETEX2UNICODE (adr.wplnam_bag) AS woonplaatsnaam
+		--translate(dds_tekensetconversie.teletex2unicode(adr.wplnam_bag), 'aeiou aeiou aeiou aeiou', 'aeiou aeiou aeiou aeiou') as woonplaats, -- woonplaats zonder diakrieten
+		--dds_tekensetconversie.teletex2unicode(adr.wplnam_bag) as wplnam_bag, -- Woonplaats met diakrieten
+		
+		-- ********** Identificatie gegevens **********
+		-- ===== Selectie-criteria =====
+--		ind.onderwerpcode,
+--		adr.gemkde,
+		-- ===== Einde Selectie-criteria =====
+--		adr.sttnam, -- Straatnaam
+--		adr.adrnr, -- Adresnummer
+--		ind.sleutelsrv, -- sleutel in DDS
+--		ind.sleutelcli, -- sleutel in de afnemende applicatie
+--		adr.vbonr,
+--		ind.dating, -- Datum ingang adres
+--		Toevoegen: veld voor weergave gebruiksdoel van het verblijfsobject
+--		dds_tekensetconversie.teletex2unicode(adr.wplnam) as wplnam_d -- Woonplaats met evt. toevoegingen, bv. Nes bij Dongeradeel; Beek (Limburg)
+					-- Dit is specifiek voor DDS (komt niet uit de BAG)
+from	dds_adr_opslag adr
+--		join dds_indicatie ind on adr.adrnr = ind.sleutelsrv
+where	adr.datend is null
+and		adr.identna is not null --(postbusadressen)
+-- Let op: aanpassen gemeentekode
+and		adr.gemkde = 
+  (select organisatiecode from dds_organisatie where indstandaard = 'J' AND indactief='J') -- Alleen adressen van de 'eigen' gemeente kunnen met de BAG vergeleken worden
+--and		ind.onderwerpcode = 'ADR'
+AND   AOATYP != 'Overig adresseerbaar object aanduiding'
+order by adr.wplnam_bag, adr.sttnam_d, adr.huinum, adr.huitvg, adr.huilet, adr.huiand"
+"GD.Persoon.Centric","Centric Key2Datadistributie","9999","System.Data.OracleClient","Data Source=pdds9999;User Id=username;Password=password;","select
+  --dds_prs_opslag.PRSNR,
+  --dds_prs_opslag.gesnam,
+  DDS_TEKENSETCONVERSIE.TELETEX2UNICODE (dds_prs_opslag.gesnam_d) AS geslachtsnaam,
+  --dds_prs_opslag.gesvor,
+  dds_prs_opslag.gesvvg AS voorvoegsel,
+  dds_prs_opslag.gesvlt AS voorletters,
+  --dds_prs_opslag.admnum,
+  dds_prs_opslag.sofnum AS bsn,
+  dds_prs_opslag.gebdat AS geboortedatum,
+  --SUBSTR(DDS_PRS_OPSLAG.GEBDAT, 7, 2) || '-' || SUBSTR(DDS_PRS_OPSLAG.GEBDAT, 5, 2) || '-' || SUBSTR(DDS_PRS_OPSLAG.GEBDAT, 1, 4) AS GEBDAT,
+  --dds_prs_opslag.gesand,
+  --dds_prs_opslag.ovldat,
+  --dds_prs_opslag.gemins,
+  dds_prs_opslag.INDGHM AS geheim,
+  --dds_adr_opslag.sttnam,
+  --dds_adr_opslag.sttnam_u,
+  --dds_adr_opslag.sttnam_d,
+  --dds_adr_opslag.huinum,
+  --dds_adr_opslag.huilet,
+  --dds_adr_opslag.huitvg,
+  --SUBSTR(dds_adr_opslag.pkdnum, 1, 4) || ' ' || SUBSTR(dds_adr_opslag.pkdnum, 5, 2) AS pkdnum,
+  --dds_adr_opslag.pkdnum AS POSTCODE,
+  --dds_adr_opslag.wplnam,
+  --dds_adr_opslag.numsta,
+  --dds_adr_opslag.obrnam_d,
+  --dds_adr_opslag.obrnam,
+    adr.identna AS nummeraanduidingid, 
+    adr.identtgo AS adressseerbaarobjectid, -- Adressseerbaarobjectid
+		adr.pkdnum AS postcode, -- Postkode
+		adr.huinum AS huisnummer, -- Huis-nummer
+		adr.huilet AS huisletter, -- Huis-letter
+		adr.huitvg AS huisnummertoevoeging, -- Huis-toevoegeing
+    DDS_TEKENSETCONVERSIE.TELETEX2UNICODE (adr.obrnam_d) AS openbareruimtenaam, 
+    DDS_TEKENSETCONVERSIE.TELETEX2UNICODE (adr.wplnam_bag) AS woonplaatsnaam
+from dds_prs_opslag
+join dds_prsadr_opslag
+  on dds_prs_opslag.prsnr = dds_prsadr_opslag.prsnr
+join dds_adr_opslag adr
+  on dds_prsadr_opslag.adrnr = adr.adrnr
+--AND DDS_ADR_OPSLAG.DATEND IS null
+WHERE DDS_PRSADR_OPSLAG.SRTADR = 'I'
+-- 20150625 EW: altijd sofinummer
+AND NOT DDS_PRS_OPSLAG.SOFNUM IS NULL
+and DDS_PRSADR_OPSLAG.datend is null
+and dds_prs_opslag.ovldat IS NULL"
