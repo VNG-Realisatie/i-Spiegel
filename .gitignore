@@ -7,3 +7,5 @@
 /bin/GegevensVergelijker.vshost.exe.config
 /bin/GegevensVergelijker.vshost.exe.manifest
 /bin/*.laccdb
+/src/DemoData.accdb
+/src/ISpiegel.accdb
