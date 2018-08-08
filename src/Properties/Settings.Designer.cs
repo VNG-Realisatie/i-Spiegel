@@ -108,19 +108,19 @@ namespace ISpiegel.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ispiegel:ispiegel")]
-        public string influxdb_auth {
+        [global::System.Configuration.DefaultSettingValueAttribute("html")]
+        public string output_format {
             get {
-                return ((string)(this["influxdb_auth"]));
+                return ((string)(this["output_format"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("html")]
-        public string output_format {
+        [global::System.Configuration.DefaultSettingValueAttribute("demo:demo")]
+        public string influxdb_auth {
             get {
-                return ((string)(this["output_format"]));
+                return ((string)(this["influxdb_auth"]));
             }
         }
     }
