@@ -23,6 +23,7 @@ namespace ISpiegel
             //TODO: 
             //      field xml
             Output.Info("***** START *****");
+            Output.Info("Using: " + Properties.Settings.Default.output_format + " as output format");
 #if !DEBUG
             try
             {
@@ -237,7 +238,7 @@ namespace ISpiegel
                 }
                 catch (Exception ex)
                 {
-                    Output.Warn("ERROR PROCESSING: " + vergelijkingnaam, ex);
+                    Output.Warn("ERROR PROCESSING: " + vergelijking.Naam, ex);
                 }
 #endif
             }
@@ -295,7 +296,7 @@ namespace ISpiegel
                 }
                 catch (Exception ex)
                 {
-                    Output.Warn("ERROR PROCESSING: " + vergelijkingnaam, ex);
+                    Output.Warn("ERROR PROCESSING: " + controlenaam, ex);
                 }
 #endif
             }

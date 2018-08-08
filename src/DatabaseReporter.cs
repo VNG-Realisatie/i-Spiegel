@@ -192,35 +192,66 @@ namespace ISpiegel
         private string CreateRowXml(string vergelijking, string[] fieldnames, string[] fieldvalues)
         {
             var doc = new System.Xml.XmlDocument();
-            var rootnode = doc.CreateElement(System.Xml.XmlConvert.EncodeName(vergelijking).ToLower());
-            if (fieldnames.Length > 0)
+            if (Properties.Settings.Default.output_format == "html")
             {
-                for(int i=0; i < fieldnames.Length; i++)
+                var table = doc.CreateElement("table");
+                var tablename = doc.CreateAttribute("name");
+                tablename.Value = vergelijking.ToLower();
+                table.Attributes.Append(tablename);
+                doc.AppendChild(table);
+
+                for (int i = 0; i < fieldnames.Length; i++)
                 {
-                    var element = doc.CreateElement(System.Xml.XmlConvert.EncodeName(fieldnames[i]).ToLower());
-                    if(fieldvalues[i] == null || Convert.ToString(fieldvalues[i]).Length == 0)
+                    var tr = doc.CreateElement("tr");
+                    table.AppendChild(tr);
+
+                    var tdname = doc.CreateElement("td");
+                    tdname.InnerText = fieldnames[i].ToLower();
+                    tr.AppendChild(tdname);
+
+                    var tdvalue = doc.CreateElement("td");
+                    if (fieldvalues[i] == null || Convert.ToString(fieldvalues[i]).Length == 0)
                     {
-                        var nil = doc.CreateAttribute("nil", "xsi", "http://w3.org/2001/XMLSchema-instance");
-                        nil.Value = Convert.ToString(true);
-                        element.Attributes.Append(nil);
+                        // we moeten er iets in hebben staan om de uitlijning altijd goed te houden
+                        tdvalue.InnerXml = "&nbsp;";
                     }
                     else
                     {
-                        element.InnerText = fieldvalues[i];
+                        tdvalue.InnerText = fieldvalues[i];
                     }
-                    rootnode.AppendChild(element);
+                    tr.AppendChild(tdvalue);
                 }
             }
-            else
-            {
-                var nil = doc.CreateAttribute("nil", "xsi", "http://w3.org/2001/XMLSchema-instance");
-                nil.Value = Convert.ToString(true);
-                rootnode.Attributes.Append(nil);                    
+            else {                 
+                var rootnode = doc.CreateElement(System.Xml.XmlConvert.EncodeName(vergelijking).ToLower());
+                if (fieldnames.Length > 0)
+                {
+                    for(int i=0; i < fieldnames.Length; i++)
+                    {
+                        var element = doc.CreateElement(System.Xml.XmlConvert.EncodeName(fieldnames[i]).ToLower());
+                        if(fieldvalues[i] == null || Convert.ToString(fieldvalues[i]).Length == 0)
+                        {
+                            var nil = doc.CreateAttribute("nil", "xsi", "http://w3.org/2001/XMLSchema-instance");
+                            nil.Value = Convert.ToString(true);
+                            element.Attributes.Append(nil);
+                        }
+                        else
+                        {
+                            element.InnerText = fieldvalues[i];
+                        }
+                        rootnode.AppendChild(element);
+                    }
+                }
+                else
+                {
+                    var nil = doc.CreateAttribute("nil", "xsi", "http://w3.org/2001/XMLSchema-instance");
+                    nil.Value = Convert.ToString(true);
+                    rootnode.Attributes.Append(nil);                    
+                }
+                doc.AppendChild(rootnode);
             }
-            doc.AppendChild(rootnode);
-
             var stream = new System.IO.MemoryStream();
-            var  writer = new System.Xml.XmlTextWriter(stream, Encoding.Unicode);
+            var writer = new System.Xml.XmlTextWriter(stream, Encoding.Unicode);
             writer.Formatting = System.Xml.Formatting.Indented;
             doc.WriteContentTo(writer);
             writer.Flush();

@@ -25,15 +25,6 @@ namespace ISpiegel.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ISpiegel")]
-        public string email_subject {
-            get {
-                return ((string)(this["email_subject"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("eduard@witteveen-automatisering.nl")]
         public string email_from {
             get {
@@ -108,10 +99,28 @@ namespace ISpiegel.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("iSpiegel")]
+        public string email_subject {
+            get {
+                return ((string)(this["email_subject"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ispiegel:ispiegel")]
         public string influxdb_auth {
             get {
                 return ((string)(this["influxdb_auth"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("html")]
+        public string output_format {
+            get {
+                return ((string)(this["output_format"]));
             }
         }
     }
