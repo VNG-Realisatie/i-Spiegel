@@ -8,8 +8,8 @@ namespace ISpiegel
 {
     public class EscapeSequence
     {
-        List<string> van = new List<string>();
-        List<string> naar = new List<string>();
+        List<string> vanEscapedArray = new List<string>();
+        List<string> naarEscapedArray = new List<string>();
         
 
         public EscapeSequence()
@@ -21,6 +21,7 @@ namespace ISpiegel
         {
             if (filename.Length > 0)
             {
+                // StreamReader default => Encoding.UTF8
                 using (var reader = new System.IO.StreamReader(filename))
                 {
 
@@ -29,8 +30,8 @@ namespace ISpiegel
                         var line = reader.ReadLine();
                         var values = line.Split(',');
 
-                        van.Add(values[0]);
-                        naar.Add(values[1]);
+                        vanEscapedArray.Add(values[0]);
+                        naarEscapedArray.Add(values[1]);
                     }
                 }
             }
@@ -41,14 +42,42 @@ namespace ISpiegel
             if (databasevalue == DBNull.Value) return null;
             var unescaped = Convert.ToString(databasevalue);
 
-            if (van.Count > 0)
+            if (vanEscapedArray.Count > 0)
             {
-                StringBuilder sb = new StringBuilder(unescaped);
-                for(int i=0; i < van.Count; i++)
+                // ugly, but hey it works :D
+                var builder = new StringBuilder();
+                int i = 0;
+                while (i < unescaped.Length)
                 {
-                    sb.Replace(van[i], naar[i]);
+                    var escaped = false;
+
+                    // Kijk of we de huidige moeten escapen
+                    for (int j = 0; j < vanEscapedArray.Count; j++)
+                    {
+                        var van = vanEscapedArray[j];
+                        var naar = naarEscapedArray[j];
+                        var huidige = unescaped.Substring(i);
+                        if (huidige.StartsWith(van))
+                        {
+                            builder.Append(naar);
+                            escaped = true;
+                            i += van.Length;
+                            break;
+                        }
+                    }
+
+                    // niets gevonden, gewoon copieren
+                    if (!escaped) {
+                        builder.Append(unescaped[i]);
+                        i++;
+                    }
                 }
-                return sb.ToString();
+                var result = builder.ToString();
+                if (!result.Equals(unescaped))
+                {
+                    System.Diagnostics.Debug.WriteLine("Escaped string, from: '" + unescaped + "' to '" + result + "'");
+                }                
+                return result;
             }
             else return unescaped;
         }
