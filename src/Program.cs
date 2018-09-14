@@ -37,7 +37,7 @@ namespace ISpiegel
 
             #region COMPARE
             var command = provider.CreateCommand();
-            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "vergelijking WHERE actief = -1";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "vergelijking WHERE actief = -1 ORDER BY vergelijkingnaam";
             command.Connection = connection;
             var adapter = provider.CreateDataAdapter();
             adapter.SelectCommand = command;
@@ -248,7 +248,7 @@ namespace ISpiegel
 
             command = provider.CreateCommand();
             // "small detail", in access boolean: true = false and visaversa
-            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "controle WHERE actief = -1";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "controle WHERE actief = -1 ORDER BY controlenaam";
             command.Connection = connection;
             adapter = provider.CreateDataAdapter();
             adapter.SelectCommand = command;
