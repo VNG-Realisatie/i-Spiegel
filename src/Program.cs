@@ -22,7 +22,7 @@ namespace ISpiegel
 
             //TODO: 
             //      field xml
-            Output.Info("***** START *****");
+            Output.Info("*****************\n***** START *****\n*****************");
             Output.Info("Using: " + Properties.Settings.Default.output_format + " as output format");
 #if !DEBUG
             try
@@ -303,12 +303,12 @@ namespace ISpiegel
             #endregion CHECK            
 
             connection.Close();
-            Output.Info("***** STOP *****");
+            Output.Info("*****************\n***** STOP ******\n*****************");
 #if !DEBUG
             }
             catch (Exception ex)
             {
-                Output.Error("***** ERROR *****", ex);
+                Output.Error("*****************\n***** ERROR ******\n*****************", ex);
             }
 #endif
             if (Properties.Settings.Default.email_smtp.Length > 0)
