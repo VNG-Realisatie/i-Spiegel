@@ -61,7 +61,13 @@ namespace ISpiegel
                         {
                             builder.Append(naar);
                             escaped = true;
+
+                            if(ISpiegel.Properties.Settings.Default.escape_logging) Console.WriteLine("\tEscaping character, match on: '" + van + "'-->'" + naar + "' on pos:" + i + " in string: '" + unescaped + "' current new string: '" + builder + "'");
+
                             i += van.Length;
+
+                            // we hebben een scape gedaan, 
+                            // we kunnen nu ook gewoon door naar het volgende karakter
                             break;
                         }
                     }
@@ -75,7 +81,8 @@ namespace ISpiegel
                 var result = builder.ToString();
                 if (!result.Equals(unescaped))
                 {
-                    System.Diagnostics.Debug.WriteLine("Escaped string, from: '" + unescaped + "' to '" + result + "'");
+                    //System.Diagnostics.Debug.WriteLine("Escaped string, from: '" + unescaped + "' to '" + result + "'");
+                    if (ISpiegel.Properties.Settings.Default.escape_logging) Console.WriteLine("Escaped string, from: '" + unescaped + "' to '" + result + "'");
                 }                
                 return result;
             }

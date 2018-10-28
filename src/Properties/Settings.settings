@@ -39,5 +39,8 @@
     <Setting Name="influxdb_auth" Type="System.String" Scope="Application">
       <Value Profile="(Default)">demo:demo</Value>
     </Setting>
+    <Setting Name="escape_logging" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
