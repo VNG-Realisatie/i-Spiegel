@@ -57,7 +57,7 @@ namespace ISpiegel
                         var van = vanEscapedArray[j];
                         var naar = naarEscapedArray[j];
                         var huidige = unescaped.Substring(i);
-                        if (huidige.StartsWith(van))
+                        if (huidige.StartsWith(van,StringComparison.Ordinal))
                         {
                             builder.Append(naar);
                             escaped = true;

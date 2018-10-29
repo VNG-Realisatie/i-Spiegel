@@ -281,6 +281,13 @@ namespace ISpiegel
                 //row["analyseregel"] = CreateRowXml(vergelijking.Naam, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
                 row["analyseregel"] = CreateRowXml(vergelijking.Naam, found.FieldNames, found.FieldValues);
                 row["referentieregel"] = DBNull.Value;
+
+                row["analysesleutelwaarde"] = sleutelcolumname;
+                row["referentiesleutelwaarde"] = DBNull.Value;
+                row["analyseveldwaarde"] = string.Join(", ", found.FieldValues);
+                row["referentieveldwaarde"] = DBNull.Value;
+
+
                 ds.Tables["outputline"].Rows.Add(row);
             }
             match++;
@@ -312,6 +319,12 @@ namespace ISpiegel
             row["analyseregel"] = CreateRowXml(vergelijking.Naam, found.FieldNames, found.FieldValues);
             //row["referentieregel"] = CreateRowXml(vergelijking);
             row["referentieregel"] = DBNull.Value;
+
+            row["analysesleutelwaarde"] = sleutelcolumname;
+            row["referentiesleutelwaarde"] = DBNull.Value;
+            row["analyseveldwaarde"] = string.Join(", ", found.FieldValues);
+            row["referentieveldwaarde"] = DBNull.Value;
+
             ds.Tables["outputline"].Rows.Add(row);
 
             nomatch++;
@@ -335,6 +348,12 @@ namespace ISpiegel
                 //row["referentieregel"] = CreateRowXml(vergelijking.Naam, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
                 row["analyseregel"] = CreateRowXml(vergelijking.Naam, searchrow.FieldNames, searchrow.FieldValues);
                 row["referentieregel"] = CreateRowXml(vergelijking.Naam, found.FieldNames, found.FieldValues);
+
+                row["analysesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
+                row["referentiesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
+                row["analyseveldwaarde"] = string.Join(", ", searchrow.FieldValues);
+                row["referentieveldwaarde"] = string.Join(", ", found.FieldValues);
+
                 ds.Tables["outputline"].Rows.Add(row);
             }
             match++;
@@ -355,6 +374,12 @@ namespace ISpiegel
             //row["referentieregel"] = CreateRowXml(vergelijking.Reference.DatabronNaam, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
             row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, searchrow.FieldNames, searchrow.FieldValues);
             row["referentieregel"] = CreateRowXml(vergelijking.Reference.DatabronNaam, found.FieldNames, found.FieldValues);
+
+            row["analysesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
+            row["referentiesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
+            row["analyseveldwaarde"] = string.Join(", ", analyse.fieldvalues);
+            row["referentieveldwaarde"] = string.Join(", ", reference.fieldvalues);  
+
             ds.Tables["outputline"].Rows.Add(row);
             nomatch++;
         }
@@ -374,6 +399,13 @@ namespace ISpiegel
             //row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
             row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, searchrow.FieldNames, searchrow.FieldValues);
             row["referentieregel"] = DBNull.Value;
+
+
+            row["analysesleutelwaarde"] = string.Join(", ", searchitem.fieldvalues);
+            row["referentiesleutelwaarde"] = string.Join(", ", DBNull.Value);
+            row["analyseveldwaarde"] = string.Join(", ", searchitem.fieldvalues);
+            row["referentieveldwaarde"] = string.Join(", ", DBNull.Value);
+
             ds.Tables["outputline"].Rows.Add(row);
 
             missing++;
