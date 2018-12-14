@@ -192,8 +192,10 @@ namespace ISpiegel
         private string CreateRowXml(string vergelijking, string[] fieldnames, string[] fieldvalues)
         {
             var doc = new System.Xml.XmlDocument();
+            /*
             if (Properties.Settings.Default.output_format == "html")
             {
+            */
                 var table = doc.CreateElement("table");
                 var tablename = doc.CreateAttribute("name");
                 tablename.Value = vergelijking.ToLower();
@@ -221,6 +223,7 @@ namespace ISpiegel
                     }
                     tr.AppendChild(tdvalue);
                 }
+            /*
             }
             else {                 
                 var rootnode = doc.CreateElement(System.Xml.XmlConvert.EncodeName(vergelijking).ToLower());
@@ -250,6 +253,7 @@ namespace ISpiegel
                 }
                 doc.AppendChild(rootnode);
             }
+            */
             var stream = new System.IO.MemoryStream();
             var writer = new System.Xml.XmlTextWriter(stream, Encoding.Unicode);
             writer.Formatting = System.Xml.Formatting.Indented;
@@ -359,7 +363,7 @@ namespace ISpiegel
             match++;
         }
 
-        public void EntryNoMatch(Vergelijking vergelijking, DataRegel searchrow, RegistratieItem searchitem, DataRegel found, string matcher, RegistratieItem analyse, RegistratieItem reference, RegistratieItem sleutel)
+        public void EntryNoMatch(Vergelijking vergelijking, DataRegel searchrow, RegistratieItem searchitem, DataRegel found, string matcher, RegistratieItem analyse, RegistratieItem reference, RegistratieItem sleutel, bool countaserror)
         {
             DataRow row = ds.Tables["outputline"].NewRow();
             row["outputid"] = koprow["outputid"];
@@ -381,7 +385,9 @@ namespace ISpiegel
             row["referentieveldwaarde"] = string.Join(", ", reference.fieldvalues);  
 
             ds.Tables["outputline"].Rows.Add(row);
-            nomatch++;
+            if(countaserror) {
+                nomatch++;
+            }
         }
 
         public void EntryNotFound(Vergelijking vergelijking, string matcher, DataRegel searchrow, RegistratieItem searchitem)
