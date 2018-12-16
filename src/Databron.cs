@@ -45,7 +45,16 @@ namespace ISpiegel
             }            
             EscapeSequence escaper = new EscapeSequence(escapesequence);
 
-            var datasource_factory = DbProviderFactories.GetFactory(datasource_provider);
+            var connection = new ISpiegel.Provider.FileSystem.Connection();
+            DbProviderFactory datasource_factory = null;
+            if (datasource_provider.Equals("ISpiegel.Provider.FileSystem"))
+            {
+                datasource_factory = new ISpiegel.Provider.FileSystem.Factory();
+            }
+            else
+            {
+                datasource_factory = DbProviderFactories.GetFactory(datasource_provider);
+            }
             var datasource_connection = datasource_factory.CreateConnection();
             datasource_connection.ConnectionString = datasource_connectionstring.Replace("${WORKING_DIRECTORY}", System.IO.Directory.GetCurrentDirectory());
             datasource_connection.Open();

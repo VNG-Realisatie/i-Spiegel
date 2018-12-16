@@ -7,7 +7,7 @@ using System.Linq;
 using System.Xml.XPath;
 
 namespace ISpiegel
-{
+{        
     static class Program
     {
         /// <summary>
@@ -165,6 +165,7 @@ namespace ISpiegel
                             List<string>[] ra = new List<string>[2];
                             ra[0] = r;
                             ra[1] = a;
+                            if (matchers.ContainsKey(name)) throw new Exception("match with id:" + name + " does already exist!");
                             matchers.Add(name, ra);
                         }
                         #endregion
@@ -213,9 +214,6 @@ namespace ISpiegel
                                     {
                                         fullmatch = false;
                                         reporter.EntryNoMatch(vergelijking, regel, matcher, found, matchername, a, r, matcher);
-                                        // fout is fout (niet meer keren meetellen!)
-                                        // waarschijnlijk niet backwards compatible!
-                                        break;
                                     }
                                 }
                             }
@@ -232,8 +230,9 @@ namespace ISpiegel
                                 analysis.ReferentieQuery,
                                 reference.GemeenteCode,
                                 analysis.GemeenteCode,
-                                analysis.Count,
+                            analysis.Count, 
                                 reference.Count);
+
 
                         Output.Info("STOP: " + vergelijking.Naam);
 #if !DEBUG
@@ -271,29 +270,27 @@ namespace ISpiegel
 #endif
                         DatabaseReporter reporter = new DatabaseReporter(provider, connection);
                         reporter.Start(controlenaam, null, datasourcename, columnname + "='" + checkvalue + "'", null, datasourcename);
-                        var controle = Databron.GetData(provider, connection, datasourcename);
+                    var controle = Databron.GetData(provider, connection, datasourcename); 
 
-                        foreach (DataRegel datarow in controle.Regels)
-                        {
+                    foreach(DataRegel datarow in controle.Regels) {
                             if (Convert.ToString(datarow[columnname]).Equals(checkvalue))
                             {
                                 reporter.EntryMatch(null, controlenaam, primary, columnname, checkvalue, datarow);
                             }
-                            else
-                            {
+                        else {
                                 reporter.EntryInvalid(null, controlenaam, primary, columnname, checkvalue, datarow);
                             }
                         }
 
                         reporter.Stop(
                             controlenaam,
-                            controle.ApplicatieNaam,
+                        controle.ApplicatieNaam, 
                             null,
                             controle.ReferentieQuery,
                             null,
-                            controle.GemeenteCode,
-                            null,
-                            controle.Regels.Count,
+                        controle.GemeenteCode, 
+                        null, 
+                        controle.Regels.Count, 
                             0);
                         Output.Info("STOP: " + controlenaam);
 #if !DEBUG

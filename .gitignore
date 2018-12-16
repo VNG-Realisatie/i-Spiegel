@@ -9,3 +9,5 @@
 /bin/*.laccdb
 /src/DemoData.accdb
 /src/ISpiegel.accdb
+/ISpiegel.Providers.FileSystem/bin/Debug
+/ISpiegel.Providers.FileSystem/obj/Debug
