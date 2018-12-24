@@ -74,6 +74,7 @@ namespace ISpiegel
         {
             get
             {
+                if (!row.Table.Columns.Contains(fieldname)) throw new Exception("column with name:" + fieldname + " does not exist!");
                 var value = row[fieldname];
                 string result = bron.Escaper.EscapeValue(value);
                 return result;
