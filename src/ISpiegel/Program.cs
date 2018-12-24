@@ -23,7 +23,7 @@ namespace ISpiegel
             //TODO: 
             //      field xml
             Output.Info("*****************\n***** START *****\n*****************");
-            Output.Info("Using: " + Properties.Settings.Default.output_format + " as output format");
+            //Output.Info("Using: " + Properties.Settings.Default.output_format + " as output format");
 #if !DEBUG
             try
             {
@@ -197,6 +197,7 @@ namespace ISpiegel
 
 
                             bool fullmatch = true;
+                            bool firsterror = true;
                             foreach (string matchername in matchers.Keys)
                             {
                                 if (matchername != primary)
@@ -213,7 +214,8 @@ namespace ISpiegel
                                     if (!a.Equals(r))
                                     {
                                         fullmatch = false;
-                                        reporter.EntryNoMatch(vergelijking, regel, matcher, found, matchername, a, r, matcher);
+                                        reporter.EntryNoMatch(vergelijking, regel, matcher, found, matchername, a, r, matcher, firsterror);
+                                        firsterror = false;
                                     }
                                 }
                             }
