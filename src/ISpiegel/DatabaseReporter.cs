@@ -114,6 +114,8 @@ namespace ISpiegel
 
         public void Stop(string vergelijkingnaam, string analyseapplicatie, string referentieapplicatie, string analysequery, string referentiequery, string analysegemeentecode, string referentiegemeentecode, long analysecount, long referencecount)
         {
+            Output.Info("\t" + ((int)((100.0 / analysecount) * match)) + "% gelijk #" + match + " afwijkend #" + nomatch + " mist #" + missing + "(adding #" + ds.Tables["outputline"].Rows.Count + " outputlines )");
+
             // save the regels
             regeladapter.Update(ds, "outputline");
 
