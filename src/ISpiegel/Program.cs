@@ -257,6 +257,7 @@ namespace ISpiegel
                 adapter.SelectCommand = command;
                 table = new DataTable();
                 adapter.Fill(table);
+                
                 foreach (DataRow checkrow in table.Rows)
                 {
                     string controlenaam = Convert.ToString(checkrow["controlenaam"]);
@@ -264,7 +265,7 @@ namespace ISpiegel
                     string primary = Convert.ToString(checkrow["sleutelkolom"]);
                     string columnname = Convert.ToString(checkrow["controlekolom"]);
                     string checkvalue = Convert.ToString(checkrow["controlewaarde"]);
-
+                    var vergelijking = new Vergelijking(controlenaam, primary, datasourcename, columnname);
                     Output.Info("START: " + controlenaam);
 #if !DEBUG
                     try
@@ -275,12 +276,13 @@ namespace ISpiegel
                     var controle = Databron.GetData(provider, connection, datasourcename); 
 
                     foreach(DataRegel datarow in controle.Regels) {
-                            if (Convert.ToString(datarow[columnname]).Equals(checkvalue))
-                            {
-                                reporter.EntryMatch(null, controlenaam, primary, columnname, checkvalue, datarow);
-                            }
+                        var found = datarow[columnname];
+                        if (Convert.ToString(found).Equals(checkvalue))
+                        {
+                            reporter.EntryMatch(vergelijking, controlenaam, primary, columnname, checkvalue, datarow);
+                        }
                         else {
-                                reporter.EntryInvalid(null, controlenaam, primary, columnname, checkvalue, datarow);
+                                reporter.EntryInvalid(vergelijking, controlenaam, primary, columnname, checkvalue, datarow);
                             }
                         }
 
