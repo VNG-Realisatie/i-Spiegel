@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AlphaFS">
-      <HintPath>..\lib\AlphaFS.2.2.6.0\Lib\Net45\AlphaFS.dll</HintPath>
+      <HintPath>..\..\lib\Net45\AlphaFS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

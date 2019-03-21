@@ -47,7 +47,7 @@ namespace ISpiegel
 
             var connection = new ISpiegel.Provider.FileSystem.Connection();
             DbProviderFactory datasource_factory = null;
-            if (datasource_provider.Equals("ISpiegel.Provider.FileSystem"))
+            if (datasource_provider.Equals("ISpiegel.Providers.FileSystem"))
             {
                 datasource_factory = new ISpiegel.Provider.FileSystem.Factory();
             }

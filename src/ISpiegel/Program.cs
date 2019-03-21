@@ -24,6 +24,14 @@ namespace ISpiegel
             //      field xml
             Output.Info("*****************\n***** START *****\n*****************");
             //Output.Info("Using: " + Properties.Settings.Default.output_format + " as output format");
+
+            string filter = null;
+            if (args.Count() > 0)
+            {
+                filter = args[0];
+                Output.Info("Filter op vergelijking: '" + filter + "'");
+            }
+
 #if !DEBUG
             try
             {
@@ -37,7 +45,13 @@ namespace ISpiegel
 
                 #region COMPARE
                 var command = provider.CreateCommand();
-                command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "vergelijking WHERE actief = -1 ORDER BY vergelijkingnaam";
+                if(filter == null) { 
+                    command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "vergelijking WHERE actief = -1 ORDER BY vergelijkingnaam";
+                }
+                else
+                {
+                    command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "vergelijking WHERE vergelijkingnaam LIKE '" + filter + "'";
+                }
                 command.Connection = connection;
                 var adapter = provider.CreateDataAdapter();
                 adapter.SelectCommand = command;
@@ -251,7 +265,13 @@ namespace ISpiegel
 
                 command = provider.CreateCommand();
                 // "small detail", in access boolean: true = false and visaversa
-                command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "controle WHERE actief = -1 ORDER BY controlenaam";
+                if(filter == null) { 
+                    command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "controle WHERE actief = -1 ORDER BY controlenaam";
+                }
+                else
+                {
+                    command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "controle WHERE controlenaam LIKE '" + filter +  "'";
+                }
                 command.Connection = connection;
                 adapter = provider.CreateDataAdapter();
                 adapter.SelectCommand = command;
