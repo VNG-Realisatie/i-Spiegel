@@ -1,0 +1,773 @@
+<report xmlns="http://developer.cognos.com/schemas/report/14.3/"           expressionLocale="nl-nl" useStyleVersion="10"><!--RSU-SPC-0093 De rapportspecificatie is geüpgraded van " http://developer.cognos.com/schemas/report/11.0/" in " http://developer.cognos.com/schemas/report/14.3/" op 2018- 11- 6. 13:58:0-->
+				<modelPath>/content/folder[@name=&apos;Bronnen&apos;]/folder[@name=&apos;Modellen&apos;]/package[@name=&apos;iSpiegel&apos;]/model[@name=&apos;model&apos;]</modelPath>
+				<drillBehavior/>
+				
+				<layouts>
+					<layout>
+						<reportPages>
+							<page name="Ontwerpdocumentatie">
+			<pageBody>
+				<contents><block>
+			<contents><textItem><dataSource><staticValue>Dit is een dummy-pagina voor ontwerpdocumentatie. Deze pagina wordt nooit getoond.</staticValue></dataSource></textItem></contents>
+		<style><CSS value="padding:3px 5px 3px 5px;background-color:#666699;color:white;font-size:12pt;text-align:center;border:1pt solid #9999CC"/></style></block><block>
+			<contents><textItem><dataSource><staticValue>Documentatie buiten rapportages heeft de neiging om over het hoofd te worden gezien, niet onderhouden en is wellicht niet altijd voor iedereen toegankelijk. Daarom is gekozen voor het bij elkaar houden van rapport en documentatie in het rapport op een pagina die nooit worden getoond aan de eindgebruiker. Op deze ontwerpdocumentatiepagina staan tekst objecten met daarin informatie over het rapport die iedere ontwikkelaar moet weten of delen. Tips op basis waarvan deze pagina is ontstaan (bron: https://www.linkedin.com/pulse/cognos-bi-report-design-standards-christina-o-shea) staan hieronder. Andere bronnen zijn http://www.johndaniel.com/index.php/a-report-developers-guide-to-sanity/. Helemaal onderaan staat hoe een verborgen pagina te creëren.</staticValue></dataSource></textItem></contents>
+		</block><block>
+			<contents><textItem><dataSource><staticValue>Wijzigingshistorie</staticValue></dataSource></textItem></contents>
+		<style><CSS value="padding:3px 5px 3px 5px;font-size:12pt;text-align:center;background-color:#666699;color:white;border:1pt solid #9999CC"/></style></block><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;background-color:white;color:black;border:1pt solid #9999CC"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Datum</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;width:100px;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wie</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wat &amp; waarom gewijzigd</staticValue></dataSource><style><CSS value="background-color:#FFFFCC"/></style></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>25-09-2018</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Hans ten Have</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Initieel ontwerp.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>08-10-2018</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Hans ten Have</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Querie en prompt voor trend toegevoegd waardoor de trend variabel kan worden vergeleken; standaard is 1 maand. Voor de trendweergave de query Details_MaandX toegevoegd waarna de resultaten uit DetailsHuidigeMaand zijn &apos;verhuisd&apos; naar query &apos;Details&apos;, aangevuld met de trendberekening uit query Details_MaandX. Variabelen S_Trend en S_PercentageGroep toegevoegd en gebruikt om percentage en trend grafisch weer te kunnen geven. Zie variabelen voor standaarden. Documentatie uitgebreid.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Datum</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wie</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wat &amp; waarom gewijzigd</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Datum</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wie</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wat &amp; waarom gewijzigd</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Datum</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wie</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wat &amp; waarom gewijzigd</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Datum</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wie</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wat &amp; waarom gewijzigd</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Datum</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wie</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wat &amp; waarom gewijzigd</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Datum</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wie</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wat &amp; waarom gewijzigd</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Datum</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wie</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wat &amp; waarom gewijzigd</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Datum</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wie</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Wat &amp; waarom gewijzigd</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow></tableRows></table><block>
+			<contents/>
+		</block><block>
+			<contents><textItem><dataSource><staticValue>Ontwerpdocumentatie</staticValue></dataSource></textItem></contents>
+		<style><CSS value="padding:3px 5px 3px 5px;background-color:#666699;color:white;font-size:12pt;text-align:center;border:1pt solid #9999CC"/></style></block><block>
+			<contents><textItem><dataSource><staticValue>De beste documentatie is kort en krachtig, bevat geen overbodige (=overduidelijke) zaken en geeft vaker antwoordt op de vraag waarom iets is gedaan dan wat is gedaan. Om te voorkomen dat documentatie verouderd is het verstandig te focussen op algemene informatie die iemand de juiste richting geeft. Dit onderdeel beschrijft ideeën voor het maken van effectieve documentatie. Dit is bedoeld als meer technische documentatie voor rapport ontwikkelaars in tegenstelling tot de gebruikersdocumentatie. Het hiernavolgende overzicht is een algemene richtlijn voor te beschrijven onderdelen.</staticValue></dataSource></textItem></contents>
+		</block><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;background-color:white;color:black;width:100%;border:1pt solid #9999CC"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Wat</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Toelichting</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Beschrijving</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Overzicht</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Deze sectie is een van de weinige die altijd ingevuld moet worden. Beschrijf globaal het doel van het rapport, hoe het gebruikt wordt en alle algemene van belang zijnde opmerkingen voor zover niet genoemd in de gebruikersdocumentatie.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Om het overzicht voor management informatie te behouden worden de vergelijkingen van de iSpiegel geclusterd naar de kop vóór de 2e punt = Applicatiesoort &amp; Onderwerp (bv. WOZ.Persoon)</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Pagina&apos;s</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Beschrijf alle ongebruikelijke zaken aangaande pagina&apos;s het in rapport. Inclusief, maar niet uitsluitend, pagina sets, alternatieve lay-out, instellingen eigenschappen of paginering.Vermijd opnoemen van de rapport-pagina&apos;s in de verkenner.
+Als een rapport een standaard lay-out bevat overeenkomstig de meeste andere rapporten en geen pagina&apos;s bevat die ongewoon zijn of niet onmiddellijk duidelijk, dan is er niets mis mee om aan te geven dat er niets te vertellen is.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue/></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Prompts / parameters</staticValue></dataSource><style><CSS value="width:50px;background-color:#FFFFCC;color:black"/></style></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Beschrijf alles wat het beschrijven waard is over prompt-pagina&apos;s inclusief, maar niet beperkt tot, het doel van HTML-objecten, subtiele verschillen tussen prompt pagina&apos;s voor verschillende pagina sets, elke parameter die wordt gebruikt op een manier die niet onmiddelijk duidelijk is bij het bekijken van de filters. Vermijd het opnoemen van de promptpaginag&apos;s en parameters.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue/></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Variabelen</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Namen van variabelen behoren helder weer te geven wat hun doel is. Overweeg het opnemen van notities van elke benodigde complexe expressie voor het definiëren van de variabele of elk niet overduidelijk (voor de hand liggend) gebruik van de variabele.Vermijd het simpelweg opnoemen van de variabelen behalve als het wenselijk is om ook te benoemen hoe ze worden gebruikt of waarom ze nodig zijn.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue/></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Voorwaardelijke formattering</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Als conditioneel formatteren wordt gebruikt in het rapport beschrijf dan kort wat de condities en formatering zijn, bijvoorbeeld verkopen boven € 10.000 worden weergegeven in groen en verliezen boven € 10.000 in rood.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue/></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Queries</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Beschrijf alle ongewone zaken aangaande data items in een query, zoals wanneer een expressie wordt gebruikt om een of meer packages-items te transformeren in iets specifieks voor dit rapport. Elke complexe expressie van filters of query items is het waard beschreven te worden als het niet overduidelijk is waarom het nodig is of wat het probeert te bereiken. Als meerdere query&apos;s worden gebruikt is wellicht een korte uitleg  toepasselijk, in het bijzonder als query&apos;s in de rapport specificatie worden gejoined of aan elkaar gerelateerd.</staticValue></dataSource><style><CSS value="width:300px"/></style></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue/></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Opties / instellingen</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Alle pagina-instellingen die belangrijk zijn voor succesvolle verwerking zijn het waard beschreven te worden. Beschrijf eigenschap instellingen van pagina&apos;s, query&apos;s, etc. in hun eigen secties. Deze sectie is meer van toepassing voor instellingen van het Report Studio menu, bijvoorbeeld &apos;Rapport bevat een uitgebreide lijst van elementen en is alleen bedoeld voor CSV output. De Run opties zijn ingesteld op CSV output. Het rapport is niet erg bruikbaar voor andere output formaten.&apos;</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue/></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Layout component referenties</staticValue></dataSource><style><CSS value="width:50px"/></style></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Als deze worden gebruikt maar worden overschreven in het rapport dan is het belangrijk om deze te documenteren omdat de sjabloon lay-out later gewijzigd zou kunnen worden en deze wijzigingen dan niet geldig zijn voor dit rapport.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue/></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Bursting</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:50px;background-color:#FFFFCC;color:black;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>De output van een rapport wordt vaak in zijn geheel of opgesplitst in secties verspreid naar een of meer gebruikers. Als output op deze wijze wordt gedistribueerd dan horen de opsplitsingswijze (&apos;burst control breaks&apos;) te worden opgenomen in de documentatie omdat dit niet altijd helder is vanuit het rapport of de query&apos;s.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;width:300px"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue/></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow></tableRows></table><block>
+			<contents/>
+		</block><block>
+			<contents><textItem><dataSource><staticValue>Ontwerpafspraken</staticValue></dataSource></textItem></contents>
+		<style><CSS value="padding:3px 5px 3px 5px;background-color:#666699;color:white;font-size:12pt;text-align:center;border:1pt solid #9999CC"/></style></block><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;background-color:white;color:black;font-size:10pt;border:1pt solid #9999CC"/></style><tableRows><tableRow><tableCells><tableCell colSpan="2"><contents><textItem><dataSource><staticValue>Naamgevingsconventies voor objecten</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:11pt;text-align:center;border:1pt solid #9999CC"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Query&apos;s</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Altijd hernoemen naar doel van de query - nooit laten staan als Query1, Query2, etc. Het doel van iedere query wordt hiermee direct duidelijk.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:10pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Pagina&apos;s</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Idem</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:10pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Meervoudige prompt pagina&apos;s</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Alleen aanmaken bij de noodzaak van verschillende prompts voor verschillende omstandigheden, wat niet vaak het geval is. Hernoem prompt pagina&apos;s wanneer meervoudige prompt pagina&apos;s bestaan om het verschil tussen beiden aan te geven. Wanneer slechts 1 prompt pagina bestaat is hernoemen zinvol maar niet verplicht.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:10pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Variabelen</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Vooraf laten gaan door &apos;v_&apos; om ze eenvoudig identificeerbaar te maken en een zinvolle naam om het doel van de variabele expressie aan te geven.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:10pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Parameters</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Vooraf laten gaan door &apos;p_&apos; om ze makkelijk herkenbaar te maken. De rest van de naam overeen laten komen met de naam van de prompt control dat de parameter gebruikt.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:10pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Lay-out component referenties</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Indien gebruikt vooraf laten gaan door &apos;l_&apos; en voorzien van zinvolle namen zodat ze eenvoudig geidentificeerd kunnen worden in een rapport, bijvoorbeeld als een lay-out component referentie een rapport titel is gebruik dan &apos;l_rapportTitel&apos;.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:10pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Rapport componenten</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Als er meerdere rapport componenten zoals lijsten, kruistabellen, grafieken, etc. zijn op een enkele pagina geef ze dan unieke namen en als zij allemaal een aparte query gebruiken hernoem dan de query overeenkomstig om de rapport component te kunnen identificeren waarnaar de query verwijst.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:10pt"/></style></tableCell></tableCells></tableRow></tableRows></table><block>
+			<contents/>
+		</block><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;background-color:white;color:black;font-size:10pt;border:1pt solid #9999CC"/></style><tableRows><tableRow><tableCells><tableCell colSpan="2"><contents><textItem><dataSource><staticValue>Documentatie in query</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:11pt;text-align:center;border:1pt solid #9999CC"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Commentaar in expressie</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;font-size:10pt"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Neem documentatie (commentaar) statements op in data items en expressies</staticValue></dataSource><style><CSS value="font-style:italic"/></style></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Maak waar zinvol veelvuldig gebruik van de commentaar optie. De meeste namen van data in een package zijn zelf-documenterend (bv. [Plaats], [Straat], etc.). Zelf gemaakte querieberekeningen echter, speciaal die met geneste functies, kunnen verwarrend of onhelder zijn voor iedereen behalve de ontwerper. Zelfs de oorspronkelijke ontwerper kan de details van een rapport structuur vergeten. Complexe expressies (querieberekeningen) mogen briljant zijn tijdens het ontwerpen maar weken of maanden later verwarrend en hard te ontcijferen, zelfs voor degene die ze bedacht heeft.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Gebruik makend van de ingebouwde Cognos macro syntax en speciale commentaar tekens kun je elk data item of zelf gemaakte berekening van commentaar voorzien. Gebruik hiervoor het open en sluit teken (#), gevolgd door commentaar tussen de tekens &apos;/*&apos; en &apos;*/&apos;. Commentaar kan zo lang zijn als nodig en meerdere regels beslaan.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow></tableRows></table></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Algemeen ontwerp commentaar in query</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Voorzie de query van algemene documentatie door het opnemen van een dummy-expressie specifiek voor dit doeleind.</staticValue></dataSource><style><CSS value="font-style:italic"/></style></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Je doet door de tekst in de querieberekening tussen enkele apostrophs (&apos;) te plaaten.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow></tableRows></table></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Scheid data in een query door secties.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Maak aparte secties aan in het gegevensitems paneel voor het scheiden van te tonen data en data die alleen gebruikt wordt voor filters, prompts etc.</staticValue></dataSource><style><CSS value="font-style:italic"/></style></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Complexe rapporten hebben vaak meerdere data items die wellicht door de ontwerper(s) verschillende zelf-gemaakte berekeningen bevatten. Het aanpassen of de-buggen van een rapport na de initiële bouw kan verwarrend zijn wanneer er veel ongelijksoortige items willekeurig verspreid staan in de query.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Als je alle gerelateerde items sorteert in het Gegevensverkenner paneel worden additionele wijzigingen van het rapport makkelijker omdat de data items overzichtelijke gerangschikt zijn.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>De techniek is gelijk aan die van het vorige punt, alleen zet je de naam van de documentatie in de naam van het item in plaats van in de inhoud.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Je doet dit als volgt:</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>1. Sleep een queryberekening object van het Toolbox paneel naar het Gegevensitems paneel.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>2. Geef het item een naam overeenkomst de door jouw gewenste sectie.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>3. Open het gegevensitem en plaats een spatie, omringd door enkele quotes (dus &apos; &apos;) om duidelijk te maken dat er geen commentaar is in het gegevensitem. Dit is noodzakelijk omdat een queryberekening niet leeg mag zijn.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>4. Herhaal indien nodig voor extra secties.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>5. Sleep alle gerelateerde data items onder de voor hen van toepassing zijnde sectie naam.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>6. Als een item meerdere keren gebruikt wordt (bv. zowel bij getoonde data als in een filter of een prompt) neem het dan de 2e (etc.) keer op als berekening met als inhoud de 1e. Hiermee voorkom je verschillen in data gebruikt voor presentatie en voor filtering.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Zie de standaard query van dit rapport voor een voorbeeld.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow></tableRows></table></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Analoog: scheid filters in een query door secties.</staticValue></dataSource></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#FFFFCC;color:black;font-size:10pt;border:1pt solid #9999CC"/></style></tableCell><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Maak (analoog aan het voorgaande punt) aparte secties aan in het paneel Detailfilters voor het scheiden van filters.</staticValue></dataSource><style><CSS value="font-style:italic"/></style></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>De techniek is gelijk aan die van het algemeen ontwerp. Achterliggende gedachte is hier dat je tijdens het gebruik een filter wel eens wijzigt van &apos;verplicht&apos; naar &apos;optioneel&apos; of &apos;uitgeschakeld&apos; en dan later niet meer weet hoe het filter oorspronkelijk gebruikt werd. Op deze wijze is altijd helder wat de oorspronkelijke toepassing was.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Je doet dit als volgt:</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>1. Sleep een filter object van het Toolbox paneel naar het Detailfilters paneel.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>2. Zet als in houd in het filter #/* --- [Sectienaam] --- /*#.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>3. Zet de eigenschap &apos;Gebruik&apos; op uitgeschakeld.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Zie de standaard query van dit rapport voor een voorbeeld.</staticValue></dataSource></textItem></contents><style><CSS value="font-size:11pt"/></style></tableCell></tableCells></tableRow></tableRows></table></contents><style><CSS value="padding:3px 5px 3px 5px;font-size:11pt"/></style></tableCell></tableCells></tableRow></tableRows></table><block>
+			<contents/>
+		</block><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Ceëren verborgen pagina.</staticValue></dataSource><style><CSS value="font-size:11pt;font-weight:bold"/></style></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>- Creeër een Boolean Variabele &apos;v_weergevenDocumentatiePagina&apos; die altijd resulteert in &apos;Nee&apos; om de weergave van de pagina te controleren. De expressie voor deze variabele kan alles zijn dat nooit waar wordt zoals &apos;ReportName()&lt;&gt;Reportname&apos;. Hier is gekozen voor de expressie &apos;0=1&apos;.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>- Neem een rapportpagina op (deze dus) die de informatie bevat.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>- Stel de weergave variabele voor de pagina in op de eerder gemaakte variabele &apos;v_weergevenDocumentatiePagina&apos; (Paginaverkenner &gt; eigenschappen pagina &gt; variabele weergeven onder de 1e subkop &apos;voorwaardelijk&apos;) verzeker je ervan dat dat deze alleen wordt weergegeven als de variabele resulteert in &apos;Ja&apos;. Omdat de expressie voor deze variabele nooit resulteert in ja, wordt de pagina nooit weergegeven maar is wel direct beschikbaar voor ontwerpers om te lezen of de documentatie te onderhouden.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>- Maak er, zo mogelijk, één enkele pagina van waarbij de tekst wordt gescheiden door kopjes</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>- Markeer bijzonder bruikbare of belangrijke informatie door het gebruik van een afwijkende font kleur.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="pb"/>
+					</defaultStyles>
+				<CSS value="font-size:10pt"/></style>
+			</pageBody>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pg"/>
+				</defaultStyles>
+			</style>
+		<conditionalRender refVariable="S_WeergevenDocumentatiePagina"><renderFor refVariableValue="1"/></conditionalRender></page><page name="Pagina1"><style><defaultStyles><defaultStyle refStyle="pg"/></defaultStyles></style>
+								<pageBody><style><defaultStyles><defaultStyle refStyle="pb"/></defaultStyles></style>
+									<contents>
+										
+									<table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;background-color:white;color:black;font-size:8pt;border:1pt solid #9999CC"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Beschrijving rapport</staticValue></dataSource><style><CSS value="font-size:12pt"/></style></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#666699;color:white;border:1pt solid #9999CC"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Overzicht resultaten vergelijkingen iSpiegel geagregeerd per systeem, per de 1e van de maand. Om inzicht te krijgen in de verhoudingen staan onder de percentages voor de laatste vergelijking de aantallen waarop deze gebaseerd zijn. Voor het verkrijgen van meer inzicht in de samenstellende vergelijkingen kan worden doorgeklikt naar de onderliggende rapportages voor een specifieke vergelijking (klik op label van de vergelijking) of alle vergelijkingen (klik op de tabelkop &apos;Vergelijking&apos;).
+Let op: hierbij wordt automatisch de laatste vergelijkingsset van de maand opgehaald. De hier genoemde percentages en aantallen kunnen daardoor inmiddels veranderd zijn.</staticValue></dataSource><style><CSS value="font-size:11pt"/></style></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow></tableRows></table><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell colSpan="2"><contents><textItem><dataSource><staticValue>Voortschrijdend percentage overeenkomende gegevens.</staticValue></dataSource><style><CSS value="font-size:12pt"/></style></textItem></contents><style><CSS value="background-color:#666699;color:white;text-align:center"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><crosstab horizontalPagination="true" name="Kruistabel2" refQuery="Q_Verloop">
+			<crosstabCorner>
+				<contents><textItem><dataSource><dataItemLabel refDataItem="PercentageGroep"/></dataSource></textItem></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="xm"/>
+					</defaultStyles>
+				</style>
+			</crosstabCorner>
+			
+			
+			<noDataHandler>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue>Geen gegevens beschikbaar</staticValue>
+								</dataSource>
+								<style>
+									<CSS value="padding:10px 18px;"/>
+								</style>
+							</textItem>
+						</contents>
+					</block>
+				</contents>
+			</noDataHandler>
+			<style>
+				<CSS value="border-collapse:collapse;margin-bottom:10px"/>
+				<defaultStyles>
+					<defaultStyle refStyle="xt"/>
+				</defaultStyles>
+			</style>
+		<crosstabRows><crosstabNode><crosstabNodeMembers><crosstabNodeMember edgeLocation="e3" refDataItem="Vergelijking"><style><defaultStyles><defaultStyle refStyle="ml"/></defaultStyles></style><contents><textItem><dataSource><memberCaption/></dataSource></textItem></contents><sortList><sortItem refDataItem="Vergelijking"/></sortList></crosstabNodeMember></crosstabNodeMembers></crosstabNode></crosstabRows><crosstabFactCell><contents><textItem><dataSource><cellValue/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="mv"/></defaultStyles></style></crosstabFactCell><defaultMeasure refDataItem="PercentageGroep"/><crosstabColumns><crosstabNode><crosstabNestedNodes><crosstabNode><crosstabNodeMembers><crosstabNodeMember edgeLocation="e2" refDataItem="Char_Maand"><style><defaultStyles><defaultStyle refStyle="ml"/></defaultStyles></style><contents><textItem><dataSource><memberCaption/></dataSource></textItem></contents><sortList><sortItem refDataItem="Char_YYYYMM"/></sortList></crosstabNodeMember></crosstabNodeMembers></crosstabNode></crosstabNestedNodes><crosstabNodeMembers><crosstabNodeMember edgeLocation="e1" refDataItem="Char_Jaar"><style><defaultStyles><defaultStyle refStyle="ml"/></defaultStyles></style><contents><textItem><dataSource><memberCaption/></dataSource></textItem></contents><sortList><sortItem refDataItem="Char_Jaar"/></sortList></crosstabNodeMember></crosstabNodeMembers></crosstabNode></crosstabColumns><crosstabIntersections><crosstabIntersection column="e2" row="e3"><style><dataFormat><numberFormat decimalSize="2"/></dataFormat></style></crosstabIntersection></crosstabIntersections></crosstab></contents></tableCell><tableCell><contents><v2_combinationChart maxHotspots="10000" name="Combinatiediagram2" refQuery="Q_Verloop">
+														<v2_combinationTypeTooltips/>
+														<v2_legend>
+															<v2_legendPosition>
+																<v2_legendPreset/>
+															</v2_legendPosition>
+															<v2_legendTitle refQuery="Q_Verloop">
+																<v2_chartTextContents>
+																	<v2_automaticText/>
+																</v2_chartTextContents>
+																<style>
+																	<defaultStyles>
+																		<defaultStyle refStyle="lx"/>
+																	</defaultStyles>
+																</style>
+															</v2_legendTitle>
+															<style>
+																<defaultStyles>
+																	<defaultStyle refStyle="lg"/>
+																</defaultStyles>
+															</style>
+														</v2_legend>
+														<v2_commonAxis>
+															<v2_ordinalAxis>
+																<v2_axisTitle refQuery="Q_Verloop">
+																	<v2_chartTextContents>
+																		
+																	<v2_chartTextItems><v2_chartTextItem><dataSource><staticValue>Maand</staticValue></dataSource></v2_chartTextItem></v2_chartTextItems></v2_chartTextContents>
+																	<style>
+																		<defaultStyles>
+																			<defaultStyle refStyle="at"/>
+																		</defaultStyles>
+																	</style>
+																</v2_axisTitle>
+																<v2_axisLine lineWeight="0"/>
+																<v2_axisLabels>
+																	<style>
+																		<defaultStyles>
+																			<defaultStyle refStyle="al"/>
+																		</defaultStyles>
+																	</style>
+																</v2_axisLabels>
+															</v2_ordinalAxis>
+														<chartNodes><chartNode><chartNodeMembers><chartNodeMember refDataItem="Char_Jaar"><chartContents><chartTextItem><dataSource><memberCaption/></dataSource></chartTextItem></chartContents><sortList><sortItem refDataItem="Char_Jaar"/></sortList></chartNodeMember></chartNodeMembers><chartNestedNodes><chartNode><chartNodeMembers><chartNodeMember refDataItem="Char_Maand"><chartContents><chartTextItem><dataSource><memberCaption/></dataSource></chartTextItem></chartContents><sortList><sortItem refDataItem="Char_YYYYMM"/></sortList></chartNodeMember></chartNodeMembers></chartNode></chartNestedNodes></chartNode></chartNodes></v2_commonAxis>
+														<v2_topLeftAxis>
+															<v2_combinationChartTypes>
+																<v2_line lineDisplayType="lineAndMarkers">
+																	<v2_linePalette markerSize="5pt">
+																		
+																	<v2_linePaletteEntries><v2_linePaletteEntry lineWeight="2px">
+																				<v2_lineFill defaultColor="#8599D3">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#8599D3"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#5876AE"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#8599D3"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#5876AE"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#E3AE6C">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#E3AE6C"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#CD854E"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#E3AE6C"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#CD854E"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#839862">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#839862"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#6C7F56"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#839862"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#6C7F56"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#B7C873">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#B7C873"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#AFB885"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#B7C873"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#AFB885"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#8484A8">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#8484A8"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#525E7E"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#8484A8"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#525E7E"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#C0CCED">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#C0CCED"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#B0C2E5"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#C0CCED"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#B0C2E5"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#8C5580">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#8C5580"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#794067"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#8C5580"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#794067"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#C789BC">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#C789BC"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#BB72BC"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#C789BC"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#BB72BC"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#D5BAEF">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#D5BAEF"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#C29FD1"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#D5BAEF"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#C29FD1"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#83683F">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#83683F"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#604926"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#83683F"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#604926"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#DCB05A">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#DCB05A"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#C09C52"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#DCB05A"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#C09C52"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#F4DF9E">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#F4DF9E"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#E4CF87"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#F4DF9E"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#E4CF87"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#5F8A8C">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#5F8A8C"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#537579"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#5F8A8C"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#537579"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#96C4B2">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#96C4B2"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#89B0A0"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#96C4B2"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#89B0A0"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#CBE8E7">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#CBE8E7"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#BDD6D5"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#CBE8E7"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#BDD6D5"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#AE6564">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#AE6564"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#875352"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#AE6564"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#875352"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#D88C6F">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#D88C6F"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#C47D61"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#D88C6F"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#C47D61"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#E3C9B0">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#E3C9B0"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#D2B2A5"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#E3C9B0"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#D2B2A5"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#848484">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#848484"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#555555"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#848484"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#555555"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#a4a4a4">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#a4a4a4"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#909090"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#a4a4a4"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#909090"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry><v2_linePaletteEntry>
+																				<v2_lineFill defaultColor="#C7C7C7">
+																					<v2_linearGradient>
+																						<v2_gradientColor gradientColor="#C7C7C7"/>
+																						<v2_gradientColor colorPosition="100" gradientColor="#c1c1c1"/>
+																					</v2_linearGradient>
+																				</v2_lineFill>
+																				<v2_pointPaletteEntry>
+																					<v2_fillEffect>
+																						<v2_linearGradient>
+																							<v2_gradientColor gradientColor="#C7C7C7"/>
+																							<v2_gradientColor colorPosition="100" gradientColor="#c1c1c1"/>
+																						</v2_linearGradient>
+																					</v2_fillEffect>
+																				</v2_pointPaletteEntry>
+																			</v2_linePaletteEntry></v2_linePaletteEntries></v2_linePalette>
+																	<!-- v2_linePaletteRef ref=&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;gDefaultLine&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;/ -->
+																<chartNodes><chartNode><chartNodeMembers><chartNodeMember refDataItem="Vergelijking"><chartContents><chartTextItem><dataSource><memberCaption/></dataSource></chartTextItem></chartContents></chartNodeMember></chartNodeMembers></chartNode></chartNodes></v2_line>
+															</v2_combinationChartTypes>
+															<v2_axis>
+																<v2_axisTitle refQuery="Q_Verloop">
+																	<v2_chartTextContents>
+																		<v2_automaticText/>
+																	</v2_chartTextContents>
+																	<style>
+																		<defaultStyles>
+																			<defaultStyle refStyle="at"/>
+																		</defaultStyles>
+																	</style>
+																</v2_axisTitle>
+																<v2_axisLine lineWeight="0"/>
+																<v2_axisRange>
+																	
+																<v2_specifiedRange includeZeroForAutoScale="false" max="99" min="80" scaleInterval="5"/></v2_axisRange>
+																<v2_axisLabels>
+																	<style>
+																		<defaultStyles>
+																			<defaultStyle refStyle="al"/>
+																		</defaultStyles>
+																	</style>
+																</v2_axisLabels>
+																<v2_majorGridlines lineColor="#CCCCCC" lineWeight="0"/>
+																<v2_majorBackgroundColors>
+																	<v2_firstBackgroundColor color="#D2D2D2" transparency="50"/>
+																	<v2_secondBackgroundColor color="#E2E2E2" transparency="50"/>
+																</v2_majorBackgroundColors>
+															</v2_axis>
+														</v2_topLeftAxis>
+														<style>
+															<defaultStyles>
+																<defaultStyle refStyle="ch"/>
+															</defaultStyles>
+														</style>
+														<noDataHandler>
+															<contents>
+																<block>
+																	<contents>
+																		<textItem>
+																			<dataSource>
+																				<staticValue>Geen gegevens beschikbaar</staticValue>
+																			</dataSource>
+																			<style>
+																				<CSS value="padding:10px 18px;"/>
+																			</style>
+																		</textItem>
+																	</contents>
+																</block>
+															</contents>
+														</noDataHandler>
+														<v2_defaultChartMeasure refDataItem="PercentageGroep"/><XMLAttributes><XMLAttribute name="titlesExpanded" output="no" value="true"/></XMLAttributes></v2_combinationChart>
+												</contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>  Legenda</staticValue></dataSource><style><CSS value="font-size:12pt"/></style></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Aantallen huidige maand  -  %TrendMaand en Trend t.o.v. </staticValue></dataSource></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;margin-right:20px;margin-bottom:20px"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Afkorting</staticValue></dataSource></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Betekenis</staticValue></dataSource></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>BOR_BEGR</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Beheer Openbare Ruimte - Begraafplaats</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>BRP</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Basis Registratie Personen</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>FIN</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Financiëel systeem</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>GD</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Gegevens Distributie</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>SD_BO</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Sociaal Domein - Back-Office</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>SD_Regie</staticValue></dataSource></textItem></contents><style><CSS value="font-style:italic"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Sociaal Domein - Regie 
+(in ontwikkeling)</staticValue></dataSource><style><CSS value="font-style:italic"/></style></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>WOZ</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Waarde Onroerende Zaken</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow></tableRows></table></contents></tableCell><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;margin-right:20px"/></style><tableRows><tableRow><tableCells><tableCell colSpan="2"><contents><textItem><dataSource><staticValue>Huidige maand</staticValue></dataSource></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>98 - 100 %</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>  </staticValue></dataSource><style><CSS value="font-size:8pt;width:3px;background-color:lime;border:1pt solid black"/></style></textItem></contents><style><CSS value="text-align:center"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>95 - 98 %</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>  </staticValue></dataSource><style><CSS value="font-size:8pt;width:3px;border:1pt solid black"/></style></textItem></contents><style><CSS value="text-align:center"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>90 - 95 %</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>  </staticValue></dataSource><style><CSS value="font-size:8pt;width:3px;background-color:#FF9900;border:1pt solid black"/></style></textItem></contents><style><CSS value="text-align:center"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>&lt; 90 %</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>  </staticValue></dataSource><style><CSS value="font-size:8pt;width:3px;background-color:red;border:1pt solid black"/></style></textItem></contents><style><CSS value="text-align:center"/></style></tableCell></tableCells></tableRow></tableRows></table></contents><style><CSS value="vertical-align:top"/></style></tableCell><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;margin-right:20px"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Marge</staticValue></dataSource></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Trend  </staticValue></dataSource></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>&gt;= 1%</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><image>
+			<dataSource>
+				<staticValue>http://w-p-asr-0069/ibmcognos/samples/images/Centric/Rondje_7_sm.gif</staticValue>
+			</dataSource>
+		</image></contents><style><CSS value="text-align:center"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>tussen -1% 
+en 1%</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><image>
+			<dataSource>
+				<staticValue>http://w-p-asr-0069/ibmcognos/samples/images/Centric/Rondje_5_sm.gif</staticValue>
+			</dataSource>
+		</image></contents><style><CSS value="text-align:center"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>&lt;= -1%</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><image>
+			<dataSource>
+				<staticValue>http://w-p-asr-0069/ibmcognos/samples/images/Centric/Rondje_3_sm.gif</staticValue>
+			</dataSource>
+		</image></contents><style><CSS value="text-align:center"/></style></tableCell></tableCells></tableRow></tableRows></table></contents><style><CSS value="vertical-align:top"/></style></tableCell></tableCells></tableRow></tableRows></table><promptButton type="back">
+			<contents><textItem><dataSource><staticValue>&lt; Terug naar toelichting</staticValue></dataSource></textItem></contents>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="bp"/>
+				</defaultStyles>
+			<CSS value="background-color:yellow"/></style>
+		</promptButton></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Percentage en aantallen d.d. </staticValue></dataSource></textItem><singleton name="Singleton2" refQuery="Q_Details_MaandHuidig">
+			<contents><textItem><dataSource><dataItemValue refDataItem="1e van de huidige maand"/></dataSource><style><dataFormat><dateFormat displayOrder="DMY" pattern="d MMM yyyy"/></dataFormat></style></textItem></contents>
+		</singleton><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem><textItem><dataSource><staticValue> %Trendmaand van en %Trend ten opzichte</staticValue></dataSource><style><CSS value="background-color:silver"/></style></textItem><selectValue autoSubmit="true" parameter="P_MaandX" rowsPerPage="50" refQuery="PQ_TrendMaand"><useItem refDataItem="MaandX"><displayItem refDataItem="MaandJaar"/></useItem><sortList><sortItem refDataItem="Char_YYYYMMDD" sortOrder="descending"/></sortList></selectValue><list horizontalPagination="true" name="Lijst1" refQuery="Q_Details">
+			
+			
+			
+			<noDataHandler>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue>Geen gegevens beschikbaar</staticValue>
+								</dataSource>
+								<style>
+									<CSS value="padding:10px 18px;"/>
+								</style>
+							</textItem>
+						</contents>
+					</block>
+				</contents>
+			</noDataHandler>
+			<style>
+				<CSS value="border-collapse:collapse"/>
+				<defaultStyles>
+					<defaultStyle refStyle="ls"/>
+				</defaultStyles>
+			</style>
+		<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><HTMLItem>
+			<dataSource>
+				<staticValue>&lt;span title=&quot;Tonen ALLE samenstellende vergelijking&quot; &gt;</staticValue>
+			</dataSource>
+		</HTMLItem><textItem><dataSource><dataItemLabel refDataItem="Vergelijking"/></dataSource><style><defaultStyles><defaultStyle refStyle="hy"/></defaultStyles></style><reportDrills><reportDrill name="Definitie voor doordrillen1"><drillLabel><dataSource><staticValue/></dataSource></drillLabel><drillTarget showInNewWindow="true"><reportPath path="/content/folder[@name=&apos;Bronnen&apos;]/folder[@name=&apos;Rapporten&apos;]/folder[@name=&apos;Gegevensbeheer&apos;]/folder[@name=&apos;NF - iSpiegel&apos;]/folder[@name=&apos;Productie&apos;]/report[@name=&apos;2 Output&apos;]"><XMLAttributes><XMLAttribute output="no" name="ReportName" value="Output"/><XMLAttribute output="no" name="class" value="report"/></XMLAttributes></reportPath></drillTarget></reportDrill></reportDrills></textItem><HTMLItem>
+			<dataSource>
+				<staticValue>&lt;/span&gt;</staticValue>
+			</dataSource>
+		</HTMLItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="vertical-align:middle"/></style><contents><HTMLItem>
+			<dataSource>
+				
+			<reportExpression>&apos;&lt;span title=&quot;&apos; +  &quot;Tonen samenstellende vergelijkingen&amp;nbsp;&quot; + [Vergelijking] + &apos;&quot;&gt;&apos;</reportExpression></dataSource>
+		</HTMLItem><textItem><dataSource><dataItemValue refDataItem="Vergelijking"/></dataSource><style><defaultStyles><defaultStyle refStyle="hy"/></defaultStyles></style><reportDrills><reportDrill name="Definitie voor doordrillen1"><drillLabel><dataSource><staticValue/></dataSource></drillLabel><drillTarget showInNewWindow="true"><reportPath path="/content/folder[@name=&apos;Bronnen&apos;]/folder[@name=&apos;Rapporten&apos;]/folder[@name=&apos;Gegevensbeheer&apos;]/folder[@name=&apos;NF - iSpiegel&apos;]/folder[@name=&apos;Productie&apos;]/report[@name=&apos;2 Output&apos;]"><XMLAttributes><XMLAttribute output="no" name="ReportName" value="Output"/><XMLAttribute output="no" name="class" value="report"/></XMLAttributes></reportPath><drillLinks><drillLink><drillTargetContext><parameterContext parameter="P_Vergelijking"/></drillTargetContext><drillSourceContext><dataItemContext refDataItem="Vergelijking"/></drillSourceContext></drillLink><drillLink><drillTargetContext><parameterContext parameter="P_TrendDatum"/></drillTargetContext><drillSourceContext><dataItemContext refDataItem="Week-4"/></drillSourceContext></drillLink></drillLinks></drillTarget></reportDrill></reportDrills></textItem><HTMLItem>
+			<dataSource>
+				<staticValue>&lt;/span&gt;</staticValue>
+			</dataSource>
+		</HTMLItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="PercentageGroep"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><dataFormat><numberFormat decimalSize="2"/></dataFormat><CSS value="vertical-align:middle"/></style><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><dataItemValue refDataItem="PercentageGroep"/></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>  </staticValue></dataSource><style><CSS value="font-size:8pt;width:3px;border:1pt solid black"/></style><conditionalStyles><conditionalStyleCases refVariable="S_PercentageGroep"><conditionalStyle refVariableValue="goed"><CSS value="background-color:lime"/></conditionalStyle><conditionalStyle refVariableValue="redelijk"/><conditionalStyle refVariableValue="matig"><CSS value="background-color:#FF9900"/></conditionalStyle><conditionalStyle refVariableValue="slecht"><CSS value="background-color:red"/></conditionalStyle></conditionalStyleCases><conditionalStyleDefault/></conditionalStyles></textItem></contents><style><CSS value="text-align:right"/></style></tableCell></tableCells></tableRow></tableRows></table></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="background-color:gray"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="PercentageMaandXGroep"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><dataFormat><numberFormat decimalSize="2"/></dataFormat><CSS value="vertical-align:middle"/></style><contents><textItem><dataSource><dataItemValue refDataItem="PercentageMaandXGroep"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="background-color:gray"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Trend"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><dataFormat><numberFormat decimalSize="2"/></dataFormat><CSS value="vertical-align:middle"/></style><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><dataItemValue refDataItem="Trend"/></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><image>
+			<dataSource>
+				<staticValue/>
+			</dataSource>
+		<conditionalDataSources refVariable="S_Trend"><conditionalDataSource refVariableValue="goed"><staticValue>http://w-p-asr-0226/afbeeldingen/Centric/Rondje_7_sm.gif</staticValue></conditionalDataSource><conditionalDataSource refVariableValue="slecht"><staticValue>http://w-p-asr-0226/afbeeldingen/Centric/Rondje_3_sm.gif</staticValue></conditionalDataSource><conditionalDataSource refVariableValue="neutraal"><staticValue>http://w-p-asr-0226/afbeeldingen/Centric/Rondje_5_sm.gif</staticValue></conditionalDataSource></conditionalDataSources></image></contents></tableCell></tableCells></tableRow></tableRows></table></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="AnalyseaantalGroep"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><dataFormat><numberFormat groupDelimiter="." useGrouping="true"/></dataFormat><CSS value="vertical-align:middle"/></style><contents><textItem><dataSource><dataItemValue refDataItem="AnalyseaantalGroep"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="GelijkaantalGroep"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><dataFormat><numberFormat groupDelimiter="." useGrouping="true"/></dataFormat><CSS value="vertical-align:middle"/></style><contents><textItem><dataSource><dataItemValue refDataItem="GelijkaantalGroep"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="UitvalTotaalaantalGroep"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><dataFormat><numberFormat groupDelimiter="." useGrouping="true"/></dataFormat><CSS value="vertical-align:middle"/></style><contents><textItem><dataSource><dataItemValue refDataItem="UitvalTotaalaantalGroep"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="font-style:italic"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="AfwijkingaantalGroep"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="font-style:italic;vertical-align:middle"/><dataFormat><numberFormat groupDelimiter="." useGrouping="true"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="AfwijkingaantalGroep"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="font-style:italic"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="NietgevondenaantalGroep"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="font-style:italic;vertical-align:middle"/><dataFormat><numberFormat groupDelimiter="." useGrouping="true"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="NietgevondenaantalGroep"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns></list></contents></tableCell></tableCells></tableRow></tableRows></table><block>
+			<contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents>
+		</block></contents>
+								</pageBody>
+								<pageHeader>
+									<contents>
+										<block><style><defaultStyles><defaultStyle refStyle="ta"/></defaultStyles></style>
+											<contents>
+												
+											<textItem><dataSource><reportExpression>ReportName()</reportExpression></dataSource></textItem></contents>
+										</block>
+									</contents>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="ph"/>
+										</defaultStyles>
+										
+									</style>
+								</pageHeader>
+								<pageFooter>
+									<contents>
+										<table>
+											<tableRows>
+												<tableRow>
+													<tableCells>
+														<tableCell>
+															<contents>
+																<date>
+																	<style>
+																		<dataFormat>
+																			<dateFormat/>
+																		</dataFormat>
+																	</style>
+																</date>
+															</contents>
+															<style>
+																<CSS value="vertical-align:top;text-align:left;width:25%"/>
+															</style>
+														</tableCell>
+														<tableCell>
+															<contents>
+																<pageNumber/>
+															</contents>
+															<style>
+																<CSS value="vertical-align:top;text-align:center;width:50%"/>
+															</style>
+														</tableCell>
+														<tableCell>
+															<contents>
+																<time>
+																	<style>
+																		<dataFormat>
+																			<timeFormat/>
+																		</dataFormat>
+																	</style>
+																</time>
+															</contents>
+															<style>
+																<CSS value="vertical-align:top;text-align:right;width:25%"/>
+															</style>
+														</tableCell>
+													</tableCells>
+												</tableRow>
+											</tableRows>
+											<style>
+												<defaultStyles>
+													<defaultStyle refStyle="tb"/>
+												</defaultStyles>
+												<CSS value="border-collapse:collapse;width:100%"/>
+											</style>
+										</table>
+									</contents>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="pf"/>
+										</defaultStyles>
+										<CSS value="padding-top:10px"/>
+									</style>
+								</pageFooter>
+							</page>
+						</reportPages>
+					<promptPages><page name="Promptpagina1">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							
+						<textItem><dataSource><reportExpression>ReportName()</reportExpression></dataSource></textItem></contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;background-color:white;color:black;font-size:8pt;border:1pt solid #9999CC"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>iSpiegel -wat is het en waarom doen we het?</staticValue></dataSource><style><CSS value="font-size:12pt"/></style></textItem></contents><style><CSS value="padding:3px 5px 3px 5px;background-color:#666699;color:white;border:1pt solid #9999CC"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>In het kader van &apos;eenmalig vastleggen, meervoudig gebruiken&apos; zijn er bij de overheid diverse basisregistraties in gebruik. Een aantal daarvan (BGT, BAG, BRP) worden beheerd door gemeenten. In theorie komen gegevens in afnemende systemen overeen met die in aanleverende systemen. De praktijk leert dat dit niet altijd het geval is. Wettelijk zijn wij verplicht om ervoor te zorgen dat data (doorgaans adres-, bedrijfs-  en persoonsgegevens) overeenkomt met die in de basisregistraties. Dit om te voorkomen dat we overleden personen aanschrijven of post naar een foutief adres te sturen. Voor die noodzakelijke controle is de iSpiegel ontworpen.
+
+Schematisch ziet de keten er als volgt uit:</staticValue></dataSource><style><CSS value="font-size:11pt"/></style></textItem></contents><style><CSS value="padding:3px 5px 3px 5px"/></style></tableCell></tableCells></tableRow></tableRows></table><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;margin-bottom:20px"/></style><tableRows><tableRow><tableCells><tableCell><contents><image>
+			<dataSource>
+				<staticValue>http://w-p-asr-0226/afbeeldingen/iSpiegel/Schets_dataflow.jpg</staticValue>
+			</dataSource>
+		</image></contents></tableCell><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;margin-bottom:20px"/></style><tableRows><tableRow><tableCells><tableCell colSpan="2"><contents><textItem><dataSource><staticValue>  Legenda</staticValue></dataSource><style><CSS value="font-size:12pt"/></style></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Afkorting</staticValue></dataSource></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue>Betekenis</staticValue></dataSource></textItem></contents><style><CSS value="background-color:#666699;color:white"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>BAG</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Basisregistratie Adressen &amp; Gebouwen</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>BGT</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Basisregistratie Grootschalige Topografie</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>BOR_BEGR</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Beheer Openbare Ruimte - Begraafplaats</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>BRP</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Basis Registratie Personen</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>FIN</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Financiëel systeem</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>GD</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Gegevens Distributie</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>NHR</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Nieuw HandelsRegister (Basisregistratie Handelsregister)</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>SD_BO</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Sociaal Domein - Back-Office</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>SD_Regie</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Sociaal Domein - Regie</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>WOZ</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Basisregistratie Waarde Onroerende Zaken</staticValue></dataSource></textItem></contents><style><CSS value="text-indent:3px"/></style></tableCell></tableCells></tableRow></tableRows></table><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;background-color:white;color:black;font-size:8pt;margin-bottom:20px;border:1pt solid #9999CC"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Voor gegevens die gekoppeld zijn met een aanleverend systeem vergelijkt de iSpiegel de gekoppelde gegevens in het afnemende systeem met die in het aanleverende systeem (bijvoorbeeld adressen in de BRP met adressen in de BAG en personen in het financiëel systeem met personen in het gegevensdistributiesysteem). 
+
+Gesignaleerd wordt of gegevens in het afnemende systeem gelijk zijn aan, afwijkend van of niet vindbaar in het aanleverende systeem. De resultaten worden geaggregeerd per systeem.
+
+Om te zien of de datakwaliteit toe- of afneemt is voorzien in de weergave van de trend t.o.v. een van de voorgaande maanden.
+
+Vanuit het overzicht kan worden doorgeklikt naar de samenstellende gegevens (lees: per gemeente).</staticValue></dataSource><style><CSS value="font-size:11pt"/></style></textItem></contents></tableCell></tableCells></tableRow></tableRows></table></contents></tableCell></tableCells></tableRow></tableRows></table><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Klik de maand voor trend vergelijking met de huidige maand aan.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Na aanklikken wordt automatisch doorgestart naar de rapportage.</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow></tableRows></table></contents></tableCell><tableCell><contents><selectValue autoSubmit="true" parameter="P_MaandX" selectValueUI="radioGroup" rowsPerPage="50" refQuery="PQ_TrendMaand"><useItem refDataItem="MaandX"><displayItem refDataItem="MaandJaar"/></useItem><sortList><sortItem refDataItem="Char_YYYYMMDD" sortOrder="descending"/></sortList><defaultSelections><defaultSimpleSelection>-1</defaultSimpleSelection></defaultSelections></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					
+					
+					
+					
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				</style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page></promptPages></layout>
+				</layouts>
+			<XMLAttributes><XMLAttribute name="RS_CreateExtendedDataItems" output="no" value="true"/><XMLAttribute name="listSeparator" output="no" value=";"/><XMLAttribute name="RS_modelModificationTime" output="no" value="2019-01-08T10:23:31.537Z"/></XMLAttributes><reportName>1 Dashboard</reportName><reportVariables><reportVariable name="S_WeergevenDocumentatiePagina" type="boolean">
+			<reportExpression>0=1</reportExpression>
+			<variableValues>
+				<variableValue value="1"/>
+			</variableValues>
+		</reportVariable><reportVariable name="S_Trend" type="string">
+			<reportExpression>if ([Q_Details].[Trend] &gt;= 1) then (&apos;goed&apos;)
+else if ([Q_Details].[Trend] &lt;= -1) then (&apos;slecht&apos;)
+else (&apos;neutraal&apos;)
+</reportExpression>
+		<variableValues><variableValue value="goed"/><variableValue value="slecht"/><variableValue value="neutraal"/></variableValues></reportVariable><reportVariable name="S_PercentageGroep" type="string">
+			<reportExpression>if ([Q_Details].[PercentageGroep] between 98 and 100) then (&apos;goed&apos;)
+else if ([Q_Details].[PercentageGroep] between 95 and 98) then (&apos;redelijk&apos;)
+else if ([Q_Details].[PercentageGroep] between 90 and 95) then (&apos;matig&apos;)
+else (&apos;slecht&apos;)
+</reportExpression>
+		<variableValues><variableValue value="goed"/><variableValue value="redelijk"/><variableValue value="matig"/><variableValue value="slecht"/></variableValues></reportVariable></reportVariables><queries><query name="Q_Verloop">
+						<source>
+							<model/>
+						</source>
+						<selection><dataItem name="*** Documentatie Query ***"><expression>&apos;Documentatie query&apos;</expression></dataItem><dataItem name="--- Data uit package ---"><expression>&apos; &apos;</expression></dataItem><dataItem name="--- Prompt waarden ---"><expression>&apos;&apos;</expression></dataItem><dataItem name="--- Berekende waarden (numeriek) ---"><expression>&apos; &apos;</expression></dataItem><dataItem label="Percentage" name="PercentageGroep"><expression>(total([iSpiegel].[Output].[Gelijkaantal] for [Vergelijking];[Char_YYYYMMDD]) / total([iSpiegel].[Output].[Analyseaantal] for [Vergelijking];[Char_YYYYMMDD])) * 100
+</expression></dataItem><dataItem aggregate="total" label="Gelijkaantal" name="GelijkaantalGroep"><expression>total( [iSpiegel].[Output].[Gelijkaantal] for [Vergelijking]; [Char_YYYYMMDD] )
+</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem aggregate="total" label="Analyseaantal" name="AnalyseaantalGroep"><expression>total( [iSpiegel].[Output].[Analyseaantal] for [Vergelijking]; [Char_YYYYMMDD] )
+</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem label="Bevindingaantal" name="BevindingaantalGroep"><expression>[AfwijkingaantalGroep] + [NietgevondenaantalGroep]</expression></dataItem><dataItem aggregate="total" label="Afwijkingaantal" name="AfwijkingaantalGroep"><expression>total( [iSpiegel].[Output].[Afwijkingaantal] for [Vergelijking]; [Char_YYYYMMDD] )
+</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem aggregate="total" label="Nietgevondenaantal" name="NietgevondenaantalGroep"><expression>total( [iSpiegel].[Output].[Nietgevondenaantal] for [Vergelijking]; [Char_YYYYMMDD] )
+</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem name="--- Geconverteerde waarden (tekst) ---"><expression>&apos; &apos;</expression></dataItem><dataItem aggregate="none" name="Vergelijking" rollupAggregate="none" sort="ascending"><expression>substring( [iSpiegel].[Output].[Vergelijkingnaam]; 1; position (&apos;-&apos;; [iSpiegel].[Output].[Vergelijkingnaam]) - 1 )</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="identifier"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Char_DD-MM-YYYY" rollupAggregate="none"><expression>to_char([iSpiegel].[Output].[Tijdstip]; &apos;DD-MM-YYYY&apos;)</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="identifier"/></XMLAttributes></dataItem><dataItem name="Char_YYYYMMDD" sort="descending"><expression>to_char([iSpiegel].[Output].[Tijdstip]; &apos;YYYYMMDD&apos;)</expression></dataItem><dataItem aggregate="none" name="Char_Jaar" rollupAggregate="none"><expression>to_char([iSpiegel].[Output].[Tijdstip]; &apos;YYYY&apos;)</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="identifier"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Char_Maand" rollupAggregate="none"><expression>to_char([iSpiegel].[Output].[Tijdstip]; &apos;Mon&apos;)</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="identifier"/></XMLAttributes></dataItem><dataItem name="--- Filterwaarden ---"><expression>&apos; &apos;</expression></dataItem><dataItem aggregate="none" name="Tijdstip" rollupAggregate="none"><expression>[iSpiegel].[Output].[Tijdstip]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="identifier"/></XMLAttributes></dataItem><dataItem name="--- Sorteerwaarden ---"><expression>&apos; &apos;</expression></dataItem><dataItem aggregate="none" name="Char_YYYYMM" rollupAggregate="none"><expression>to_char([iSpiegel].[Output].[Tijdstip]; &apos;YYYY&apos;) + to_char([iSpiegel].[Output].[Tijdstip]; &apos;MM&apos;)</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="identifier"/></XMLAttributes></dataItem></selection>
+					<detailFilters><detailFilter use="prohibited"><filterExpression>#/* ---------- VERPLICHT ---------- */#</filterExpression></detailFilter><detailFilter><filterExpression>#/* Alleen de metingen van de 1e van de maand */#
+to_char([iSpiegel].[Output].[Tijdstip]; &apos;DD&apos;) = 1</filterExpression></detailFilter><detailFilter><filterExpression>#/* Beperken tot de laatste 12 maanden */#
+[Char_YYYYMMDD] &gt;to_char( _add_months (current_date; -12); &apos;YYYYMMDD&apos;)</filterExpression></detailFilter><detailFilter><filterExpression>[iSpiegel].[Vergelijking].[Rapporttype] = 1</filterExpression></detailFilter><detailFilter use="prohibited"><filterExpression>#/* ---------- OPTIONEEL ---------- */#</filterExpression></detailFilter><detailFilter use="prohibited"><filterExpression>#/* ---------- UITGESCHAKELD ---------- */#</filterExpression></detailFilter><detailFilter use="prohibited"><filterExpression>#/* ---------- TEST FILTERS ---------- */#</filterExpression></detailFilter></detailFilters><queryHints><localCache value="true"/></queryHints></query><query name="Q_Details_MaandHuidig">
+			<source>
+				
+			<queryRef refQuery="Q_Verloop"/></source>
+			<selection><dataItem name="Vergelijking"><expression>[Q_Verloop].[Vergelijking]</expression></dataItem><dataItem name="PercentageGroep"><expression>[Q_Verloop].[PercentageGroep]</expression></dataItem><dataItem name="AnalyseaantalGroep"><expression>[Q_Verloop].[AnalyseaantalGroep]</expression></dataItem><dataItem name="GelijkaantalGroep"><expression>[Q_Verloop].[GelijkaantalGroep]</expression></dataItem><dataItem name="UitvalTotaalaantalGroep"><expression>[Q_Verloop].[BevindingaantalGroep]</expression></dataItem><dataItem name="AfwijkingaantalGroep"><expression>[Q_Verloop].[AfwijkingaantalGroep]</expression></dataItem><dataItem name="NietgevondenaantalGroep"><expression>[Q_Verloop].[NietgevondenaantalGroep]</expression></dataItem><dataItem aggregate="none" name="Datum_YYYYMMDD"><expression>cast( [Q_Verloop].[Char_YYYYMMDD]; integer)</expression></dataItem><dataItem name="Tijdstip"><expression>cast( [Q_Verloop].[Tijdstip]; date)</expression></dataItem><dataItem name="1e van de huidige maand"><expression>cast( _first_of_month (current_date); date)</expression></dataItem></selection>
+		<queryHints><localCache value="true"/></queryHints><detailFilters><detailFilter><filterExpression>[Tijdstip] = [1e van de huidige maand]</filterExpression></detailFilter></detailFilters></query><query name="Q_Details_MaandX">
+			<source>
+				
+			<queryRef refQuery="Q_Verloop"/></source>
+			<selection><dataItem name="Vergelijking"><expression>[Q_Verloop].[Vergelijking]</expression></dataItem><dataItem label="%Trend" name="PercentageMaandXGroep"><expression>[Q_Verloop].[PercentageGroep]</expression></dataItem><dataItem name="GelijkaantalGroep"><expression>[Q_Verloop].[GelijkaantalGroep]</expression></dataItem><dataItem name="AnalyseaantalGroep"><expression>[Q_Verloop].[AnalyseaantalGroep]</expression></dataItem><dataItem name="UitvalTotaalaantalGroep"><expression>[Q_Verloop].[BevindingaantalGroep]</expression></dataItem><dataItem name="AfwijkingaantalGroep"><expression>[Q_Verloop].[AfwijkingaantalGroep]</expression></dataItem><dataItem name="NietgevondenaantalGroep"><expression>[Q_Verloop].[NietgevondenaantalGroep]</expression></dataItem><dataItem aggregate="none" name="Datum_YYYYMMDD"><expression>cast( [Q_Verloop].[Char_YYYYMMDD]; integer)</expression></dataItem><dataItem name="Tijdstip"><expression>cast( [Q_Verloop].[Tijdstip]; date)</expression></dataItem><dataItem name="1e van MaandX"><expression>cast( _first_of_month (_add_months(current_date; ?P_MaandX?)); date)</expression></dataItem></selection>
+		<queryHints><localCache value="true"/></queryHints><detailFilters><detailFilter><filterExpression>[Tijdstip] = [1e van MaandX]</filterExpression></detailFilter></detailFilters></query><query name="Q_Details">
+			<source>
+				
+			<joinOperation>
+			<joinOperands>
+				<joinOperand cardinality="0:1"><queryRef refQuery="Q_Details_MaandHuidig"/></joinOperand>
+				<joinOperand cardinality="0:1"><queryRef refQuery="Q_Details_MaandX"/></joinOperand>
+			</joinOperands>
+			<joinFilter>
+				<filterExpression>[Q_Details_MaandHuidig].[Vergelijking] = [Q_Details_MaandX].[Vergelijking]</filterExpression>
+			</joinFilter>
+		</joinOperation></source>
+			<selection><dataItem name="Vergelijking"><expression>[Q_Details_MaandHuidig].[Vergelijking]</expression></dataItem><dataItem name="PercentageGroep"><expression>[Q_Details_MaandHuidig].[PercentageGroep]</expression></dataItem><dataItem label="%Trendmaand" name="PercentageMaandXGroep"><expression>[Q_Details_MaandX].[PercentageMaandXGroep]</expression></dataItem><dataItem name="Trend"><expression>[Q_Details_MaandHuidig].[PercentageGroep] - [Q_Details_MaandX].[PercentageMaandXGroep]</expression></dataItem><dataItem name="AnalyseaantalGroep"><expression>[Q_Details_MaandHuidig].[AnalyseaantalGroep]</expression></dataItem><dataItem name="GelijkaantalGroep"><expression>[Q_Details_MaandHuidig].[GelijkaantalGroep]</expression></dataItem><dataItem name="UitvalTotaalaantalGroep"><expression>[Q_Details_MaandHuidig].[UitvalTotaalaantalGroep]</expression></dataItem><dataItem name="AfwijkingaantalGroep"><expression>[Q_Details_MaandHuidig].[AfwijkingaantalGroep]</expression></dataItem><dataItem name="NietgevondenaantalGroep"><expression>[Q_Details_MaandHuidig].[NietgevondenaantalGroep]</expression></dataItem><dataItem name="--- Dummy-waarde voor doordrillen ----"><expression>&apos;&apos;</expression></dataItem><dataItem name="Week-4"><expression>_week_of_year ( current_date ) - 4</expression></dataItem></selection>
+		</query><query name="PQ_TrendMaand">
+			<source>
+				
+			<queryRef refQuery="Q_Verloop"/></source>
+			<selection><dataItem name="--- Data uit package ---"><expression>[Q_Verloop].[--- Data uit package ---]</expression></dataItem><dataItem name="Tijdstip"><expression>cast( [Q_Verloop].[Tijdstip]; date )</expression></dataItem><dataItem name="--- Prompt waarden ---"><expression>[Q_Verloop].[--- Prompt waarden ---]</expression></dataItem><dataItem name="MaandJaar"><expression>[Q_Verloop].[Char_Maand] + &apos; &apos; + [Q_Verloop].[Char_Jaar]</expression></dataItem><dataItem name="MaandX"><expression>_months_between( [Q_Verloop].[Tijdstip]; current_date)</expression></dataItem><dataItem name="--- Sorteerwaarden ---"><expression>[Q_Verloop].[--- Sorteerwaarden ---]</expression></dataItem><dataItem name="Char_YYYYMMDD" sort="descending"><expression>[Q_Verloop].[Char_YYYYMMDD]</expression></dataItem></selection>
+		<detailFilters><detailFilter><filterExpression>maximum ([Tijdstip] ) &lt; _add_months (current_date; -1)</filterExpression></detailFilter></detailFilters></query></queries></report>

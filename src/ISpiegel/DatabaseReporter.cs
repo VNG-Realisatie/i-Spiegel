@@ -143,12 +143,11 @@ namespace ISpiegel
 
             if (Properties.Settings.Default.influxdb_url != "")
             {
-
                 // dimensions
-                String ResultLine = "referentieapplicatie=" + (referentieapplicatie == null ? "" : referentieapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
-                ResultLine += "analyseapplicatie=" + (analyseapplicatie == null ? "" : analyseapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
-                ResultLine += "referentiegemeentecode=" + (referentiegemeentecode == null ? "" : referentiegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
-                ResultLine += "analysegemeentecode=" + (analysegemeentecode == null ? "" : analysegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + " ";
+                String ResultLine = "referentieapplicatie=" + (referentieapplicatie == null ? "GEEN" : referentieapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
+                ResultLine += "analyseapplicatie=" + (analyseapplicatie == null ? "GEEN" : analyseapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
+                ResultLine += "referentiegemeentecode=" + (referentiegemeentecode == null ? "GEEN" : referentiegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
+                ResultLine += "analysegemeentecode=" + (analysegemeentecode == null ? "GEEN" : analysegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + " ";
                 // values
                 ResultLine += "referentieaantal=" + referencecount + ",";
                 ResultLine += "analyseaantal=" + analysecount + ",";
@@ -180,7 +179,6 @@ namespace ISpiegel
                     Output.Warn("Sending the data to: " + Properties.Settings.Default.influxdb_url, ex);
                 }
             }
-
         }
 
         private string CreateRowXml(string vergelijking)

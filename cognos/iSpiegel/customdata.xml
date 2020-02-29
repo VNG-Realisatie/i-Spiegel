@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<bmtcustomdata><namespace name="visuals"><object name="[]"><property name="BMTFW_Layout_Version">long:1</property><property name="BMTFW_Layout"><![CDATA[string:[iSpiegel]
+	view=0,0
+	zoom=1.000000
+[]
+	Notation=4
+	ShowGrid=1
+	Snap=1
+	font=Arial
+	lod=33
+	tc=0
+	viewStyle=2
+[iSpiegel].[Controle]
+	dx=126,136
+	expanded=t
+	parent=iSpiegel
+	x=786,35
+[iSpiegel].[Databron]
+	dx=126,136
+	expanded=t
+	parent=iSpiegel
+	x=952,35
+[iSpiegel].[Output]
+	dx=193,370
+	expanded=t
+	parent=iSpiegel
+	x=10,111
+[iSpiegel].[Outputline_org]
+	dx=182,262
+	expanded=t
+	parent=iSpiegel
+	x=250,12
+[iSpiegel].[Vergelijking]
+	dx=181,136
+	expanded=t
+	parent=iSpiegel
+	x=253,368
+[iSpiegel].[Outputline]
+	dx=177,298
+	expanded=t
+	parent=iSpiegel
+	x=459,11
+]]></property></object></namespace></bmtcustomdata>
