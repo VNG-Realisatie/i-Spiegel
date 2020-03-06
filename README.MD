@@ -1,6 +1,6 @@
-# Gegevensvergelijker
+# I-spiegel 3.0
 
-##  I-spiegel 3.0. 
+##  Gegevens vergelijken - waarom?. 
 Binnen de gemeente hebben we te maken met veel persoons- en adresgegevens. Deze gegevens worden door de hele organisatie verspreid. Dit leidt tot vele processen en veel afnemende applicaties, die hier gebruik van maken. Het is van belang dat de gegevens binnen de ketens kloppen. Dus van begin tot eind. Om grip te krijgen op de kwaliteit kun je gebruik maken van de Gegevensvergelijker, oftewel de i-Spiegel 3.0. Hiermee vergelijk je de gegevens uit verschillende systemen met elkaar, dus de gegevens van de afnemende applicaties met de gegevens uit de bron. 
 
 Afwijkingen kunnen ontstaan door allerlei oorzaken, bijvoorbeeld als gevolg van een update in de keten, onvoldoende beheer, verkeerde werkwijzen, stilstaande (technische) processen etc. De gegevensvergelijker kan leiden tot verbeteringen  in je gemeentelijke processen en werkinstructies. Ook stimuleert dit het contact tussen functioneel beheerders binnen een organisatie. 
@@ -50,27 +50,27 @@ Na downloaden en uitpakken zijn er 5 directories aangemaakt, te weten:
 #### bin : bevat de daadwerkelijke tool 
 1. Gegevensvergelijker.exe : Deze tool start de SQL-queries op zoals deze in de database gedefinieerd staan.
 2. Gegevensvergelijker.accdb
-	- GGV_DATASOURCE  : in veld QUERY van tabel GGV_DATASOURCE (zie punt 5 van [Installatie] voor inrichting).
-	- GGV_COMPARE : In tabel GGV_COMPARE wordt in veld CONFIG vastgelegd welke 2 databronnen met elkaar vergeleken moeten worden worden en wat de matching criteria zijn per te vergelijken entry (zie punt 5 van [Installatie] voor inrichting).
-	- GGV_CHECK : Tabel GGV_CHECK heeft als doel om controles te doen, de uitkomst van de regel wordt gecontroleerd tegen de referentie waarde.
-	- GGV_OUTPUT : Het resultaat van de vergelijkingen wordt weggeschreven in de tabellen GGV_OUTPUT (globaal resultaat query) en
-	- GGV_OUTPUTLINE (detailresultaten query's).
-3.  gegevensvergelijker.exe.config : De verbinding met de database staat in gegevensvergelijker.exe.config (zie punt 2 onder [Installatie] voor inrichting).
-4.  SAMPLE.ACCB bevat dummy-voorbeeld data die geraadpleegd wordt vanuit GEGEVENSVERGELIJKER.ACCB om de werking van de datavergelijker te demonstreren. Deze bevat de volgende tabellen:
+	- ISPIEGEL_DATABRON  : in veld QUERY van tabel ISPIEGEL_DATASOURCE (zie punt 5 van [Installatie] voor inrichting).
+	- ISPIEGEL_VERGELIJKING : In tabel ISPIEGEL_VERGELIJING wordt in veld CONFIG vastgelegd welke 2 databronnen met elkaar vergeleken moeten worden worden en wat de matching criteria zijn per te vergelijken entry (zie punt 5 van [Installatie] voor inrichting).
+	- ISPIEGEL_CONTROLE : Tabel ISPIEGEL_CHECK heeft als doel om controles te doen, de uitkomst van de regel wordt gecontroleerd tegen de referentie waarde.
+	- ISPIEGEL_OUTPUT : Het resultaat van de vergelijkingen wordt weggeschreven in de tabellen ISPIEGEL_OUTPUT (globaal resultaat query) en
+	- ISPIEGEL_OUTPUTLINE (detailresultaten query's).
+3.  gegevensvergelijker.exe.config : De verbinding met de database staat in iSPIEGEL.exe.config (zie punt 2 onder [Installatie] voor inrichting).
+4.  SAMPLE.ACCB bevat dummy-voorbeeld data die geraadpleegd wordt vanuit ISPIEGEL.ACCB om de werking van de datavergelijker te demonstreren. Deze bevat de volgende tabellen:
 	- OC voorbeeld afnemersgegevens
 	- R7.1 deel BAG-data verblijfsobjecten Bolsward (= voorbeeld bron-datat)
 	- SIMPEL_ADRES voorbeeld aan object gekoppeld adresgegeven
 	- SIMPEL_CHECK 
 	- SIMPEL_PERSOON voorbeeld aan adres gekoppeld persoon	
-Met de gegevensvergelijker worden de volgende gegevens met elkaar vergeleken:
+Met de ISPIEGEL worden de volgende gegevens met elkaar vergeleken:
 	- De data in OC wordt afgezet tegen bronbestand R7.1 definitie in 'C-Datakwaliteit BAG GBA')
 	- De data in simpel_persoon wordt afgezet tegen bronbestand simpel_adres (definitie in 'SIMPEL_VERGELIJK')
 5. bin\data  In de directory bin\data (niet te verwarren met de data-directory op het zelfde niveau als de bin-directory) worden tijdens draaien van de tool de resultaten van de query's weggeschreven. 
 
 Per vergelijking wordt een directory met de naam van de vergelijking aangemaakt (in het gegeven voorbeeld de mappen
-'C-Datakwaliteit BAG - GBA' en 'SIMPEL_VERGELIJK' zoals aangegeven in tabel GGV_COMPARE). 
+'C-Datakwaliteit BAG - GBA' en 'SIMPEL_VERGELIJK' zoals aangegeven in tabel ISPIEGEL_VERGELIJKING). 
 Daarbinnen 2 .csv-bestanden (namen gelijk aan de query's) met daarin de resultaten van de bevragingen.
-Bij een 2e (en volgende) keer draaien worden de resultaten toegevoegd aan de tabellen GGV_OUTPUNT EN GGV_OUTPUTLINE; de .csv's worden echter overschreven.
+Bij een 2e (en volgende) keer draaien worden de resultaten toegevoegd aan de tabellen ISPIEGEL_OUTPUNT EN ISPIEGEL_OUTPUTLINE; de .csv's worden echter overschreven.
 	
 #### data : bevat de .sql's waarmee de benodigde tabellen aangemaakt kunnen worden indien wordt gekozen voor het opsalaan in een eigen database - zie [installatie]
 bevat de .xlsx-en waarin voorbeelddata staat voor de inrichting van de database (dit geldt voor zowel de meegeleverde Access-database als een zelf 
@@ -86,8 +86,8 @@ Bevat de resultaten van de verschillende gemeenten tot nu toe
 broncode van de applicatie
 
 ## Installatie
-    1.	De bestanden uit de directory: https://github.com/EduardWitteveen/GegevensVergelijker/tree/master/bin moeten worden geplaatst in een aparte directory
-    2.	Voor de koppeling naar de database waarin de data terecht komt, moet het configuratie bestand 'GegevensVergelijker.exe.config' (een xml bestand in map 'bin')
+    1.	De bestanden uit de directory: https://github.com/VNG-Realisatie/tree/master/bin moeten worden geplaatst in een aparte directory
+    2.	Voor de koppeling naar de database waarin de data terecht komt, moet het configuratie bestand 'Ispiegel.exe.config' (een xml bestand in map 'bin')
     	worden aangepast.
     	Dit zijn de volgende onderdelen:
     	  a.	De database provider (leverancier en benaderingswijze database, te vinden onder de regel '<setting name="databaseprovider" serializeAs="String">'.
@@ -100,25 +100,25 @@ broncode van de applicatie
     			vi.	System.Data.SqlServerCe.3.5	(Microsoft SQL Server)
     			vii.	…
     	  b.	De connectiestring (= vindplaats en inloggegevens GGV-database waarin de definities staan en de resultaten worden opgeslagen), 
-    			te vinden na '<add name="GegevensVergelijker.Properties.Settings.databaseconnection" connectionString='
+    			te vinden na '<add name="Ispiegel.Properties.Settings.databaseconnection" connectionString='
     			Zet achter 'Provider=' ....
     			Zet achter 'Data Source=' de vindplaats van de database.
     			zie https://www.connectionstrings.com/ voor connect-strings van specifieke databases.
     	  c.	De rest van de configuratie (inrichting e-mail voor notificatie na afloop draaien gegevensvergelijker)
     	  
     ------------ Optioneel ------------------------------------------------------------------------------------------------------------
-    --- Indien gebruik wordt gemaakt van een andere database dan de standaard meegeleverde Access database Gegevensvergelijker.accdb --
+    --- Indien gebruik wordt gemaakt van een andere database dan de standaard meegeleverde Access database ispiegel.accdb --
     
     Het is niet noodzakelijk om de access database (Gegevensvergelijker.accdb) te vervangen door een ander, maar vanuit de organisatie is dit meestal gewenst.
-    3.	Creeer de database structuur door het uitvoeren van de https://github.com/EduardWitteveen/GegevensVergelijker/tree/master/data/*.sql in de gebruikte database.
+    3.	Creeer de database structuur door het uitvoeren van de https://github.com/VNG-Realisatie/tree/master/data/*.sql in de gebruikte database.
     ------------ Einde optioneel 
 
 ## Inrichting
-1. Vul de database (tabellen GGV_DATASOURCE, GGV_COMPARE en GGV_CHECK) met de data uit de https://github.com/EduardWitteveen/GegevensVergelijker/tree/master/data/*.xlsx bestanden voor die databronnen die je wilt vergelijken.
+1. Vul de database (tabellen GGV_DATASOURCE, GGV_COMPARE en GGV_CHECK) met de data uit de https://github.com/VNG-Realisatie/tree/master/data/*.xlsx bestanden voor die databronnen die je wilt vergelijken.
 2. Localiseer de inrichting door aanpassen van dezelfde tabellen aan de lokale situatie:
-	- 	Tabel: GGV_COMPARE      « vergelijking tussen 2 databronnen, gespecificeerd in een stukje xml
-	- 	Tabel: GGV_DATASOURCE 	« databron van bv. bag-adressen, gba-adressen, gba-personen e.d.
-	- 	Tabel: GGV_CHECK        « conditionele test op een datasource	
+	- 	Tabel: ISPIEGEL_CONTROLE	« vergelijking tussen 2 databronnen, gespecificeerd in een stukje xml
+	- 	Tabel: ISPIEGEL_DATABRON	« databron van bv. bag-adressen, gba-adressen, gba-personen e.d.
+	- 	Tabel: ISPIEGEL_VERGELIJKING	« conditionele test op een datasource	
 
 Zie apart document doc/inrichting.xlsx voor een uitgebreidere beschrijving van de database en een toelichting op wat waar ingericht cq. aangepast moet worden.
 
@@ -127,8 +127,8 @@ Zie apart document doc/inrichting.xlsx voor een uitgebreidere beschrijving van d
 - Start op de commandprompt de GegevensVergelijker.exe op en kijk of alles succesvol verloopt. 
 - Anders krijg je een email en een waarschuwing op de commandline wat er fout gaat.
 - De resultaten zijn in de database te vinden in de volgende tabellen:
-	- GGV_OUTPUT              « totalen
-	- GGV_OUTPUTLINE          « details
+	- ISPIEGEL_OUTPUT              « totalen
+	- ISPIEGEL_OUTPUTLINE          « details
 
 
 bron van deze tekst is het bestand: readme.md
