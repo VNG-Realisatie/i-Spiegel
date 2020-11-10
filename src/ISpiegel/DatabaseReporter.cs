@@ -56,7 +56,7 @@ namespace ISpiegel
             regeladapter.DeleteCommand = builder.GetDeleteCommand();
         }
 
-        public void Start(string vergelijkingnaam, string referentiename, string analysename, string configuration, string referencesql, string analysesql)
+        public void Start(string vergelijkingnaam, string referentiename, string analysename, string configuration, string referencesql, string analysesql, string rapporttype)
         {
             // get our next id
             DbCommand command = connection.CreateCommand();
@@ -73,6 +73,7 @@ namespace ISpiegel
             koprow["tijdstip"] = DateTime.Now;
             koprow["vergelijkingnaam"] = vergelijkingnaam;
             koprow["configuratie"] = configuration;
+            koprow["rapporttype"] = rapporttype;
             koprow["referentienaam"] = referentiename;
             koprow["analysenaam"] = analysename;
             koprow["referentiequery"] = referencesql;

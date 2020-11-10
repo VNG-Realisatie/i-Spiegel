@@ -40,6 +40,7 @@ namespace ISpiegel
                 var provider = DbProviderFactories.GetFactory(Properties.Settings.Default.databaseprovider);
                 var connection = provider.CreateConnection();
                 connection.ConnectionString = Properties.Settings.Default.databaseconnection.Replace("${WORKING_DIRECTORY}", System.IO.Directory.GetCurrentDirectory());
+                Output.Info("ISpiegel connection:" + connection.ConnectionString);
                 // If error.message == The 'Microsoft.ACE.OLEDB.12.0' provider is not registered on the local machine. ==> are we debugging in 32-bits (x86) mode?
                 connection.Open();
 
@@ -59,7 +60,7 @@ namespace ISpiegel
                 adapter.Fill(table);
                 foreach (DataRow comparerow in table.Rows)
                 {
-                    var vergelijking = new Vergelijking(Convert.ToString(comparerow["vergelijkingnaam"]), Convert.ToString(comparerow["veldtoewijzing"]), Convert.ToString(comparerow["referentiedatabronnaam"]), Convert.ToString(comparerow["analysedatabronnaam"]));
+                    var vergelijking = new Vergelijking(Convert.ToString(comparerow["vergelijkingnaam"]), Convert.ToString(comparerow["veldtoewijzing"]), Convert.ToString(comparerow["referentiedatabronnaam"]), Convert.ToString(comparerow["analysedatabronnaam"]), Convert.ToString(comparerow["rapporttype"]));
                     Output.Info("START: " + vergelijking.Naam);
 #if !DEBUG
                     try
@@ -78,7 +79,8 @@ namespace ISpiegel
                             vergelijking.AnalyseDatabronNaam,
                             vergelijking.VeldToewijzing,
                             null,
-                            null
+                            null,
+                            vergelijking.Rapporttype
                             );
 
                         // create the data sources
@@ -285,14 +287,15 @@ namespace ISpiegel
                     string primary = Convert.ToString(checkrow["sleutelkolom"]);
                     string columnname = Convert.ToString(checkrow["controlekolom"]);
                     string checkvalue = Convert.ToString(checkrow["controlewaarde"]);
-                    var vergelijking = new Vergelijking(controlenaam, primary, datasourcename, columnname);
+                    string rapportype = Convert.ToString(checkrow["rapportype"]);
+                    var vergelijking = new Vergelijking(controlenaam, primary, datasourcename, columnname, rapportype);
                     Output.Info("START: " + controlenaam);
 #if !DEBUG
                     try
                     {
 #endif
                         DatabaseReporter reporter = new DatabaseReporter(provider, connection);
-                        reporter.Start(controlenaam, null, datasourcename, columnname + "='" + checkvalue + "'", null, datasourcename);
+                        reporter.Start(controlenaam, null, datasourcename, columnname + "='" + checkvalue + "'", null, datasourcename, rapportype);
                     var controle = Databron.GetData(provider, connection, datasourcename); 
 
                     foreach(DataRegel datarow in controle.Regels) {

@@ -12,12 +12,14 @@ namespace ISpiegel
         public string VeldToewijzing;
         public string ReferentieDatabronNaam;
         public string AnalyseDatabronNaam;
+        public string Rapporttype;
 
-        public Vergelijking(string naam, string veldtoewijzing, string referentiedatabronnaam, string analysedatabronnaam) {
+        public Vergelijking(string naam, string veldtoewijzing, string referentiedatabronnaam, string analysedatabronnaam, string rapporttype) {
             this.Naam = naam;
             this.VeldToewijzing = veldtoewijzing;
             this.ReferentieDatabronNaam = referentiedatabronnaam;
             this.AnalyseDatabronNaam = analysedatabronnaam;
+            this.Rapporttype = rapporttype;
         }
 
         public Databron Reference {
