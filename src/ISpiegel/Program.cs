@@ -248,7 +248,7 @@ namespace ISpiegel
                                 analysis.ReferentieQuery,
                                 reference.GemeenteCode,
                                 analysis.GemeenteCode,
-                            analysis.Count, 
+                                analysis.Count, 
                                 reference.Count);
 
 
