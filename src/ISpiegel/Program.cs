@@ -287,15 +287,15 @@ namespace ISpiegel
                     string primary = Convert.ToString(checkrow["sleutelkolom"]);
                     string columnname = Convert.ToString(checkrow["controlekolom"]);
                     string checkvalue = Convert.ToString(checkrow["controlewaarde"]);
-                    string rapportype = Convert.ToString(checkrow["rapportype"]);
-                    var vergelijking = new Vergelijking(controlenaam, primary, datasourcename, columnname, rapportype);
+                    string rapporttype = Convert.ToString(checkrow["rapporttype"]);
+                    var vergelijking = new Vergelijking(controlenaam, primary, datasourcename, columnname, rapporttype);
                     Output.Info("START: " + controlenaam);
 #if !DEBUG
                     try
                     {
 #endif
                         DatabaseReporter reporter = new DatabaseReporter(provider, connection);
-                        reporter.Start(controlenaam, null, datasourcename, columnname + "='" + checkvalue + "'", null, datasourcename, rapportype);
+                        reporter.Start(controlenaam, null, datasourcename, columnname + "='" + checkvalue + "'", null, datasourcename, rapporttype);
                     var controle = Databron.GetData(provider, connection, datasourcename); 
 
                     foreach(DataRegel datarow in controle.Regels) {
