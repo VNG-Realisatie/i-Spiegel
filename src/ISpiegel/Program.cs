@@ -47,7 +47,7 @@ namespace ISpiegel
                 #region COMPARE
                 var command = provider.CreateCommand();
                 if(filter == null) { 
-                    command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "vergelijking WHERE actief = -1 ORDER BY vergelijkingnaam";
+                    command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "vergelijking WHERE NOT actief = 0 ORDER BY vergelijkingnaam";
                 }
                 else
                 {
