@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISpiegel.Provider.FileSystem
 {
     public class Command : DbCommand
     {
         private string commandtekst;
-        public override string CommandText {
-            get {
+        public override string CommandText
+        {
+            get
+            {
                 return commandtekst;
             }
             set
@@ -21,13 +19,15 @@ namespace ISpiegel.Provider.FileSystem
             }
         }
         internal Connection connection;
-        protected override DbConnection DbConnection {
-            get {
+        protected override DbConnection DbConnection
+        {
+            get
+            {
                 return connection;
             }
             set
             {
-                connection = (Connection) value;
+                connection = (Connection)value;
             }
         }
         protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)

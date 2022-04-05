@@ -16,7 +16,8 @@ namespace ISpiegel.Provider.FileSystem
         {
             // alle filenames in lowercase!
             this.Name = directory.FullName.ToLower();
-            try { 
+            try
+            {
                 this.FileCount = directory.GetFiles().Length;
             }
             catch (System.IO.DirectoryNotFoundException dnfe)
@@ -47,7 +48,7 @@ namespace ISpiegel.Provider.FileSystem
             this.Name = Convert.ToString(reader["Name"]);
             this.FileCount = Convert.ToInt32(reader["FileCount"]);
             this.DateCreate = Convert.ToDateTime(reader["DateCreate"]);
-            this.DateWrite = Convert.ToDateTime( reader["DateWrite"]);
+            this.DateWrite = Convert.ToDateTime(reader["DateWrite"]);
             this.DateAccess = Convert.ToDateTime(reader["DateAccess"]);
         }
 

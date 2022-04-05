@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISpiegel.Provider.FileSystem
 {
@@ -13,11 +9,14 @@ namespace ISpiegel.Provider.FileSystem
         private string connectionstring;
         private System.IO.DirectoryInfo path;
 
-        public override string ConnectionString {
-            get {
+        public override string ConnectionString
+        {
+            get
+            {
                 return connectionstring;
             }
-            set {
+            set
+            {
                 connectionstring = value;
             }
         }
@@ -34,7 +33,7 @@ namespace ISpiegel.Provider.FileSystem
         public override void Open()
         {
             state = ConnectionState.Open;
-    }
+        }
 
         public override void Close()
         {

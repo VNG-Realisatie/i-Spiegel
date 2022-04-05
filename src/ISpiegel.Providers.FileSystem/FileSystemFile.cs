@@ -38,10 +38,10 @@ namespace ISpiegel.Provider.FileSystem
             catch (System.Security.Principal.IdentityNotMappedException ex)
             {
 
-                if(sid != null) this.Owner = sid.ToString();
+                if (sid != null) this.Owner = sid.ToString();
                 else this.Owner = "unknown";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.Owner = "error:" + ex.ToString();
             }

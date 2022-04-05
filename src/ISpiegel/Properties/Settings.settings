@@ -17,9 +17,6 @@
     <Setting Name="databaseprovider" Type="System.String" Scope="Application">
       <Value Profile="(Default)">System.Data.OleDb</Value>
     </Setting>
-    <Setting Name="influxdb_url" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://84.81.153.226/write?db=ispiegel</Value>
-    </Setting>
     <Setting Name="databaseprefix" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ISPIEGEL_</Value>
     </Setting>
@@ -36,11 +33,14 @@
     <Setting Name="output_format" Type="System.String" Scope="Application">
       <Value Profile="(Default)">html</Value>
     </Setting>
-    <Setting Name="influxdb_auth" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">demo:demo</Value>
-    </Setting>
     <Setting Name="escape_logging" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="influxdb_url" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://digimelden.nl/write?db=ispiegel</Value>
+    </Setting>
+    <Setting Name="influxdb_auth" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ispiegel:ispiegel</Value>
     </Setting>
   </Settings>
 </SettingsFile>

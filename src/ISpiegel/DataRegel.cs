@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISpiegel
 {
@@ -35,17 +33,19 @@ namespace ISpiegel
             return result.ToArray();
         }
 
-        public string[] FieldNames {
+        public string[] FieldNames
+        {
             get
             {
                 return ToStringArray(bron.Columns);
             }
         }
-        public string[] FieldValues {
+        public string[] FieldValues
+        {
             get
-            {                
+            {
                 List<string> result = new List<string>();
-                foreach(string fieldname in FieldNames)
+                foreach (string fieldname in FieldNames)
                 {
                     result.Add(this[fieldname]);
                 }

@@ -2,9 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISpiegel.Provider.FileSystem
 {
@@ -53,16 +50,16 @@ namespace ISpiegel.Provider.FileSystem
         {
             this.creator = creator;
 
-            
+
 
             foundfiles = new List<Alphaleonis.Win32.Filesystem.FileInfo>();
             founddirectories = new List<Alphaleonis.Win32.Filesystem.DirectoryInfo>();
 
             // onze dir root
             founddirectories.Add(new Alphaleonis.Win32.Filesystem.DirectoryInfo(creator.CommandText));
-    }
+        }
 
-    bool closed = false;
+        bool closed = false;
         public override bool IsClosed
         {
             get
@@ -71,7 +68,8 @@ namespace ISpiegel.Provider.FileSystem
             }
         }
 
-        public override int FieldCount {
+        public override int FieldCount
+        {
             get
             {
                 return 9;
@@ -142,18 +140,22 @@ namespace ISpiegel.Provider.FileSystem
 
             }
         }
-        
+
 
         public override bool Read()
         {
             // no more files, fetch some more
-            while(foundfiles.Count == 0 && founddirectories.Count != 0) {
+            while (foundfiles.Count == 0 && founddirectories.Count != 0)
+            {
                 var currentdir = founddirectories[0];
                 founddirectories.RemoveAt(0);
-                try {
+                try
+                {
                     foundfiles.AddRange(currentdir.GetFiles());
-                } catch (Exception ex) { System.Diagnostics.Debug.WriteLine("exception for getFiles() for:" + currentdir.FullName + " exception:" + ex ); }
-                try {
+                }
+                catch (Exception ex) { System.Diagnostics.Debug.WriteLine("exception for getFiles() for:" + currentdir.FullName + " exception:" + ex); }
+                try
+                {
                     founddirectories.AddRange(currentdir.GetDirectories());
                 }
                 catch (Exception ex) { System.Diagnostics.Debug.WriteLine("exception for getDirectories() for:" + currentdir.FullName + " exception:" + ex); }
@@ -189,7 +191,7 @@ namespace ISpiegel.Provider.FileSystem
             try
             {
                 user = System.IO.File.GetAccessControl(currentfile.FullName).GetOwner(typeof(System.Security.Principal.NTAccount)).ToString();
-            } 
+            }
             catch (Exception ex) { }
             values[8] = user;
 
@@ -216,7 +218,7 @@ namespace ISpiegel.Provider.FileSystem
         public override object this[string name] => throw new NotImplementedException();
 
         public override int Depth => throw new NotImplementedException();
-        
+
 
         public override bool HasRows => throw new NotImplementedException();
 
@@ -296,7 +298,7 @@ namespace ISpiegel.Provider.FileSystem
         public override long GetInt64(int ordinal)
         {
             throw new NotImplementedException();
-        }        
+        }
 
         public override int GetOrdinal(string name)
         {

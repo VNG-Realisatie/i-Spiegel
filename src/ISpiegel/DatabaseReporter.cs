@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
 using System.Text;
 
 namespace ISpiegel
@@ -22,7 +20,8 @@ namespace ISpiegel
 
         private System.Diagnostics.Stopwatch watch;
 
-        public DatabaseReporter(DbProviderFactory factory, DbConnection connection) {
+        public DatabaseReporter(DbProviderFactory factory, DbConnection connection)
+        {
             this.connection = connection;
 
             watch = System.Diagnostics.Stopwatch.StartNew();
@@ -84,7 +83,7 @@ namespace ISpiegel
             koprow["analysegemeentecode"] = "";
             koprow["percentage"] = 0;
             koprow["referentieaantal"] = 0;
-            koprow["analyseaantal"] = 0;          
+            koprow["analyseaantal"] = 0;
             koprow["gelijkaantal"] = 0;
             koprow["afwijkingaantal"] = 0;
             koprow["nietgevondenaantal"] = 0;
@@ -161,7 +160,7 @@ namespace ISpiegel
                 var postdata = "ispiegel,";
                 postdata += "vergelijking=" + vergelijkingnaam.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") + ",";
                 postdata += ResultLine;
-                var  client = new ShootAndForgetWebClient();
+                var client = new ShootAndForgetWebClient();
                 if (Properties.Settings.Default.influxdb_auth != "")
                 {
 
@@ -197,33 +196,33 @@ namespace ISpiegel
             if (Properties.Settings.Default.output_format == "html")
             {
             */
-                var table = doc.CreateElement("table");
-                var tablename = doc.CreateAttribute("name");
-                tablename.Value = vergelijking.ToLower();
-                table.Attributes.Append(tablename);
-                doc.AppendChild(table);
+            var table = doc.CreateElement("table");
+            var tablename = doc.CreateAttribute("name");
+            tablename.Value = vergelijking.ToLower();
+            table.Attributes.Append(tablename);
+            doc.AppendChild(table);
 
-                for (int i = 0; i < fieldnames.Length; i++)
+            for (int i = 0; i < fieldnames.Length; i++)
+            {
+                var tr = doc.CreateElement("tr");
+                table.AppendChild(tr);
+
+                var tdname = doc.CreateElement("td");
+                tdname.InnerText = fieldnames[i].ToLower();
+                tr.AppendChild(tdname);
+
+                var tdvalue = doc.CreateElement("td");
+                if (fieldvalues[i] == null || Convert.ToString(fieldvalues[i]).Length == 0)
                 {
-                    var tr = doc.CreateElement("tr");
-                    table.AppendChild(tr);
-
-                    var tdname = doc.CreateElement("td");
-                    tdname.InnerText = fieldnames[i].ToLower();
-                    tr.AppendChild(tdname);
-
-                    var tdvalue = doc.CreateElement("td");
-                    if (fieldvalues[i] == null || Convert.ToString(fieldvalues[i]).Length == 0)
-                    {
-                        // we moeten er iets in hebben staan om de uitlijning altijd goed te houden
-                        tdvalue.InnerXml = "&nbsp;";
-                    }
-                    else
-                    {
-                        tdvalue.InnerText = fieldvalues[i];
-                    }
-                    tr.AppendChild(tdvalue);
+                    // we moeten er iets in hebben staan om de uitlijning altijd goed te houden
+                    tdvalue.InnerXml = "&nbsp;";
                 }
+                else
+                {
+                    tdvalue.InnerText = fieldvalues[i];
+                }
+                tr.AppendChild(tdvalue);
+            }
             /*
             }
             else {                 
@@ -268,7 +267,8 @@ namespace ISpiegel
 
         public void EntryMatch(Vergelijking vergelijking, string matcher, string sleutelcolumname, string checkcolumnname, string checkvalue, DataRegel found)
         {
-            if (Properties.Settings.Default.output_everything) { 
+            if (Properties.Settings.Default.output_everything)
+            {
                 DataRow row = ds.Tables["outputline"].NewRow();
                 row["outputid"] = koprow["outputid"];
                 row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
@@ -383,10 +383,11 @@ namespace ISpiegel
             row["analysesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
             row["referentiesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
             row["analyseveldwaarde"] = string.Join(", ", analyse.fieldvalues);
-            row["referentieveldwaarde"] = string.Join(", ", reference.fieldvalues);  
+            row["referentieveldwaarde"] = string.Join(", ", reference.fieldvalues);
 
             ds.Tables["outputline"].Rows.Add(row);
-            if(countaserror) {
+            if (countaserror)
+            {
                 nomatch++;
             }
         }

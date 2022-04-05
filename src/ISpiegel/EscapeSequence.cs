@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ISpiegel
 {
@@ -10,7 +8,7 @@ namespace ISpiegel
     {
         List<string> vanEscapedArray = new List<string>();
         List<string> naarEscapedArray = new List<string>();
-        
+
 
         public EscapeSequence()
         {
@@ -38,7 +36,7 @@ namespace ISpiegel
         }
 
         public String EscapeValue(object databasevalue)
-        {            
+        {
             if (databasevalue == DBNull.Value) return null;
             var unescaped = Convert.ToString(databasevalue);
 
@@ -57,7 +55,7 @@ namespace ISpiegel
                         var van = vanEscapedArray[j];
                         var naar = naarEscapedArray[j];
                         var huidige = unescaped.Substring(i);
-                        if (huidige.StartsWith(van,StringComparison.Ordinal))
+                        if (huidige.StartsWith(van, StringComparison.Ordinal))
                         {
                             builder.Append(naar);
                             escaped = true;
@@ -73,7 +71,8 @@ namespace ISpiegel
                     }
 
                     // niets gevonden, gewoon copieren
-                    if (!escaped) {
+                    if (!escaped)
+                    {
                         builder.Append(unescaped[i]);
                         i++;
                     }
@@ -83,7 +82,7 @@ namespace ISpiegel
                 {
                     //System.Diagnostics.Debug.WriteLine("Escaped string, from: '" + unescaped + "' to '" + result + "'");
                     //if (ISpiegel.Properties.Settings.Default.escape_logging) Console.WriteLine("Escaped string, from: '" + unescaped + "' to '" + result + "'");
-                }                
+                }
                 return result;
             }
             else return unescaped;

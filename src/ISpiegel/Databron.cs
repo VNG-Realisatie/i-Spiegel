@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISpiegel
 {
@@ -37,12 +34,12 @@ namespace ISpiegel
             // make backwards compatible
             if (table.Columns.Contains("escapesequence"))
             {
-                escapesequence  = Convert.ToString(table.Rows[0]["escapesequence"]);
+                escapesequence = Convert.ToString(table.Rows[0]["escapesequence"]);
             }
             else
             {
                 Output.Warn("!!! Column 'escapesequence' not defined in databron, using NO escapers anywhere !!!");
-            }            
+            }
             EscapeSequence escaper = new EscapeSequence(escapesequence);
 
             var connection = new ISpiegel.Provider.FileSystem.Connection();
@@ -89,7 +86,6 @@ namespace ISpiegel
             }
         }
 
-
         internal Databron(DataTable data, string databronnaam, string applicatienaam, string referentiequery, string gemeentecode, EscapeSequence escaper)
         {
             this.data = data;
@@ -102,13 +98,16 @@ namespace ISpiegel
 
         public int Count
         {
-            get {
+            get
+            {
                 return data.Rows.Count;
             }
         }
 
-        public DataColumnCollection Columns {
-            get {
+        public DataColumnCollection Columns
+        {
+            get
+            {
                 return data.Columns;
             }
         }
@@ -164,18 +163,18 @@ namespace ISpiegel
                 return gemeentecode;
             }
         }
-/*
-        public RegistratieItem GetFieldValues(DataRow row, string[] fieldnames)
-        {
-            string[] fieldvalues = new string[fieldnames.Count()];
-            for (int i = 0; i < fieldnames.Count(); i++)
-            {
-                var value = row[fieldnames[i]];
-                fieldvalues[i] = escaper.GetFieldValue(value);
-            }
-            return new RegistratieItem(fieldnames, fieldvalues);
-        }
-*/
+        /*
+                public RegistratieItem GetFieldValues(DataRow row, string[] fieldnames)
+                {
+                    string[] fieldvalues = new string[fieldnames.Count()];
+                    for (int i = 0; i < fieldnames.Count(); i++)
+                    {
+                        var value = row[fieldnames[i]];
+                        fieldvalues[i] = escaper.GetFieldValue(value);
+                    }
+                    return new RegistratieItem(fieldnames, fieldvalues);
+                }
+        */
         public SortedDictionary<RegistratieItem, DataRegel> GetSortedList(string[] fieldnames)
         {
             SortedDictionary<RegistratieItem, DataRegel> result = new SortedDictionary<RegistratieItem, DataRegel>();

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ISpiegel
+﻿namespace ISpiegel
 {
     public class Vergelijking
     {
@@ -14,7 +8,8 @@ namespace ISpiegel
         public string AnalyseDatabronNaam;
         public string Rapporttype;
 
-        public Vergelijking(string naam, string veldtoewijzing, string referentiedatabronnaam, string analysedatabronnaam, string rapporttype) {
+        public Vergelijking(string naam, string veldtoewijzing, string referentiedatabronnaam, string analysedatabronnaam, string rapporttype)
+        {
             this.Naam = naam;
             this.VeldToewijzing = veldtoewijzing;
             this.ReferentieDatabronNaam = referentiedatabronnaam;
@@ -22,11 +17,13 @@ namespace ISpiegel
             this.Rapporttype = rapporttype;
         }
 
-        public Databron Reference {
+        public Databron Reference
+        {
             get;
             internal set;
         }
-        public Databron Analysis {
+        public Databron Analysis
+        {
             get;
             internal set;
         }
