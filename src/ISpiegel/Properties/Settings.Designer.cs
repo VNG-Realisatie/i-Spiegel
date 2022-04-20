@@ -132,5 +132,14 @@ namespace ISpiegel.Properties {
                 return ((string)(this["influxdb_auth"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool output_nomatch_reportall {
+            get {
+                return ((bool)(this["output_nomatch_reportall"]));
+            }
+        }
     }
 }

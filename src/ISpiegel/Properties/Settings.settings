@@ -42,5 +42,8 @@
     <Setting Name="influxdb_auth" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ispiegel:ispiegel</Value>
     </Setting>
+    <Setting Name="output_nomatch_reportall" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -313,16 +313,7 @@ namespace ISpiegel
                     }
                 }
 
-                reporter.Stop(
-                    controlenaam,
-                controle.ApplicatieNaam,
-                    null,
-                    controle.ReferentieQuery,
-                    null,
-                controle.GemeenteCode,
-                null,
-                controle.Regels.Count,
-                    0);
+                reporter.Stop(controlenaam, controle.ApplicatieNaam, null, controle.ReferentieQuery, null, controle.GemeenteCode, null, controle.Regels.Count, 0);
                 Output.Info("STOP: " + controlenaam);
 #if !DEBUG
                     }

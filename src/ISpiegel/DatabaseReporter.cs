@@ -118,7 +118,7 @@ namespace ISpiegel
 
             // save the regels
             regeladapter.Update(ds, "outputline");
-
+ 
             // update the koprow
             koprow["referentieapplicatie"] = referentieapplicatie;
             koprow["analyseapplicatie"] = analyseapplicatie;
@@ -262,7 +262,11 @@ namespace ISpiegel
             stream.Flush();
             stream.Position = 0;
             var reader = new System.IO.StreamReader(stream);
-            return reader.ReadToEnd();
+            string result = reader.ReadToEnd();
+            reader.Close();
+            writer.Close();
+
+            return result;
         }
 
         public void EntryMatch(Vergelijking vergelijking, string matcher, string sleutelcolumname, string checkcolumnname, string checkvalue, DataRegel found)
@@ -292,8 +296,8 @@ namespace ISpiegel
                 row["analyseveldwaarde"] = string.Join(", ", found.FieldValues);
                 row["referentieveldwaarde"] = DBNull.Value;
 
-
                 ds.Tables["outputline"].Rows.Add(row);
+
             }
             match++;
         }
@@ -331,7 +335,6 @@ namespace ISpiegel
             row["referentieveldwaarde"] = DBNull.Value;
 
             ds.Tables["outputline"].Rows.Add(row);
-
             nomatch++;
         }
 
@@ -366,26 +369,28 @@ namespace ISpiegel
 
         public void EntryNoMatch(Vergelijking vergelijking, DataRegel searchrow, RegistratieItem searchitem, DataRegel found, string matcher, RegistratieItem analyse, RegistratieItem reference, RegistratieItem sleutel, bool countaserror)
         {
-            DataRow row = ds.Tables["outputline"].NewRow();
-            row["outputid"] = koprow["outputid"];
-            row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
-            row["status"] = "NO MATCH";
+            if(countaserror || Properties.Settings.Default.output_nomatch_reportall) { 
+                DataRow row = ds.Tables["outputline"].NewRow();
+                row["outputid"] = koprow["outputid"];
+                row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
+                row["status"] = "NO MATCH";
 
-            row["controle"] = matcher;
-            row["sleutel"] = CreateRowXml(vergelijking.Naam, sleutel.fieldnames, sleutel.fieldvalues);
-            row["analysewaarde"] = CreateRowXml(matcher, analyse.fieldnames, analyse.fieldvalues);
-            row["referentiewaarde"] = CreateRowXml(matcher, reference.fieldnames, reference.fieldvalues);
-            //row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
-            //row["referentieregel"] = CreateRowXml(vergelijking.Reference.DatabronNaam, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
-            row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, searchrow.FieldNames, searchrow.FieldValues);
-            row["referentieregel"] = CreateRowXml(vergelijking.Reference.DatabronNaam, found.FieldNames, found.FieldValues);
+                row["controle"] = matcher;
+                row["sleutel"] = CreateRowXml(vergelijking.Naam, sleutel.fieldnames, sleutel.fieldvalues);
+                row["analysewaarde"] = CreateRowXml(matcher, analyse.fieldnames, analyse.fieldvalues);
+                row["referentiewaarde"] = CreateRowXml(matcher, reference.fieldnames, reference.fieldvalues);
+                //row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
+                //row["referentieregel"] = CreateRowXml(vergelijking.Reference.DatabronNaam, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
+                row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, searchrow.FieldNames, searchrow.FieldValues);
+                row["referentieregel"] = CreateRowXml(vergelijking.Reference.DatabronNaam, found.FieldNames, found.FieldValues);
 
-            row["analysesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
-            row["referentiesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
-            row["analyseveldwaarde"] = string.Join(", ", analyse.fieldvalues);
-            row["referentieveldwaarde"] = string.Join(", ", reference.fieldvalues);
+                row["analysesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
+                row["referentiesleutelwaarde"] = string.Join(", ", sleutel.fieldvalues);
+                row["analyseveldwaarde"] = string.Join(", ", analyse.fieldvalues);
+                row["referentieveldwaarde"] = string.Join(", ", reference.fieldvalues);
 
-            ds.Tables["outputline"].Rows.Add(row);
+                ds.Tables["outputline"].Rows.Add(row);
+            }
             if (countaserror)
             {
                 nomatch++;
@@ -415,7 +420,6 @@ namespace ISpiegel
             row["referentieveldwaarde"] = string.Join(", ", DBNull.Value);
 
             ds.Tables["outputline"].Rows.Add(row);
-
             missing++;
         }
     }
