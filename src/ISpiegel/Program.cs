@@ -20,10 +20,8 @@ namespace ISpiegel
             System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
 
-            //TODO: 
-            //      field xml
             Output.Info("*****************\n***** START *****\n*****************");
-            //Output.Info("Using: " + Properties.Settings.Default.output_format + " as output format");
+            Output.Info("Using: " + Properties.Settings.Default.output_format + " as output format");
 
             string filter = null;
             if (args.Count() > 0)
@@ -32,14 +30,12 @@ namespace ISpiegel
                 Output.Info("Filter op vergelijking: '" + filter + "'");
             }
 
-#if !DEBUG
             try
             {
-#endif
-
                 var provider = DbProviderFactories.GetFactory(Properties.Settings.Default.databaseprovider);
                 var connection = provider.CreateConnection();
                 connection.ConnectionString = Properties.Settings.Default.databaseconnection.Replace("${WORKING_DIRECTORY}", System.IO.Directory.GetCurrentDirectory());
+                System.Diagnostics.Debug.WriteLine("ISpiegel.Databron::GetData > Main:" + connection.ConnectionString);
                 Output.Info("ISpiegel connection:" + connection.ConnectionString);
                 // If error.message == The 'Microsoft.ACE.OLEDB.12.0' provider is not registered on the local machine. ==> are we debugging in 32-bits (x86) mode?
                 connection.Open();
@@ -57,15 +53,16 @@ namespace ISpiegel
                 var adapter = provider.CreateDataAdapter();
                 adapter.SelectCommand = command;
                 var table = new DataTable();
+                System.Diagnostics.Debug.WriteLine("ISpiegel.Program::Main > Starting query:" + adapter.SelectCommand.CommandText);
                 adapter.Fill(table);
+                System.Diagnostics.Debug.WriteLine("ISpiegel.Program::Main > Finished query:" + adapter.SelectCommand.CommandText);
+
                 foreach (DataRow comparerow in table.Rows)
                 {
                     var vergelijking = new Vergelijking(Convert.ToString(comparerow["vergelijkingnaam"]), Convert.ToString(comparerow["veldtoewijzing"]), Convert.ToString(comparerow["referentiedatabronnaam"]), Convert.ToString(comparerow["analysedatabronnaam"]), Convert.ToString(comparerow["rapporttype"]));
                     Output.Info("START: " + vergelijking.Naam);
-#if !DEBUG
                     try
                     {
-#endif
                         // what shall we do with the console reporter?
                         DatabaseReporter reporter = new DatabaseReporter(provider, connection);
 
@@ -85,16 +82,22 @@ namespace ISpiegel
 
                         // create the data sources
                         Output.Info("\t[" + vergelijking.ReferentieDatabronNaam + "] data will be loaded");
+
+                        var stopwatch = new System.Diagnostics.Stopwatch();
+                        stopwatch.Start();
                         var reference = Databron.GetData(provider, connection, vergelijking.ReferentieDatabronNaam);
                         vergelijking.Reference = reference;
-                        //RegistratieSource reference = new RegistratieSource(referencetable);
-                        Output.Info("\t[" + vergelijking.ReferentieDatabronNaam + "] data loaded (#" + reference.Count + ")");
+                        stopwatch.Stop();
+                        Output.Info("\t[" + vergelijking.ReferentieDatabronNaam + "] data loaded (#" + reference.Count + " in " + (int)stopwatch.Elapsed.TotalSeconds + " seconds)");
 
                         Output.Info("\t[" + vergelijking.AnalyseDatabronNaam + "] data will be loaded");
-                        var analysis = Databron.GetData(provider, connection, vergelijking.AnalyseDatabronNaam);
+                        stopwatch = new System.Diagnostics.Stopwatch();
+                        stopwatch.Start();
+                        var analysis = Databron.GetData(provider, connection, vergelijking.AnalyseDatabronNaam);                        
                         vergelijking.Analysis = analysis;
-                        //RegistratieSource analysis = new RegistratieSource(analysetable);
-                        Output.Info("\t[" + vergelijking.AnalyseDatabronNaam + "] data loaded (#" + analysis.Count + ")");
+
+                        stopwatch.Stop();
+                        Output.Info("\t[" + vergelijking.AnalyseDatabronNaam + "] data loaded (#" + analysis.Count + " in " + (int)stopwatch.Elapsed.TotalSeconds + " seconds)");
 
                         // check the columns (better error messages!)
                         #region matching
@@ -120,49 +123,6 @@ namespace ISpiegel
 
                         // export into csv, so we can use i-spiegel
                         #region export csv
-                        /*
-                        {
-                            DirectoryInfo exportdirectory = new DirectoryInfo("data");
-                            if (!exportdirectory.Exists) exportdirectory.Create();
-                            exportdirectory = new DirectoryInfo("data\\" + comparename);
-                            if (!exportdirectory.Exists) exportdirectory.Create();
-
-                            List<string> n = new List<string>();
-                            List<string> r = new List<string>();
-                            List<string> a = new List<string>();
-                            foreach (XPathNavigator field in compareconfig.Select("//field"))
-                            {
-                                n.Add(field.SelectSingleNode("@name").Value);
-                                if (field.SelectSingleNode("@reference-field") != null)
-                                {
-                                    r.Add(field.SelectSingleNode("@reference-field").Value);
-                                }
-                                else
-                                {
-                                    r.Add(null);
-                                }
-                                if (field.SelectSingleNode("@analysis-field") != null)
-                                {
-                                    a.Add(field.SelectSingleNode("@analysis-field").Value);
-                                }
-                                else
-                                {
-                                    a.Add(null);
-                                }
-                            }
-                            Output.Info("\tSTART: exporting the data");
-                            try
-                            {
-                                reference.Export(r, n, exportdirectory, compareconfig.SelectSingleNode("@reference").Value);
-                                analysis.Export(a, n, exportdirectory, compareconfig.SelectSingleNode("@analysis").Value);
-
-                                Output.Info("\tSTOP: exporting the data");
-                            }
-                            catch(Exception ex) {
-                                Output.Warn("\tERROR: exporting the data", ex);
-                            }
-                        }
-                        */
                         #endregion
 
                         // matches
@@ -181,7 +141,7 @@ namespace ISpiegel
                             List<string>[] ra = new List<string>[2];
                             ra[0] = r;
                             ra[1] = a;
-                            if (matchers.ContainsKey(name)) throw new Exception("match with id:" + name + " does already exist!");
+                            if (matchers.ContainsKey(name)) throw new ISpiegelException("match with id:" + name + " does already exist!");
                             matchers.Add(name, ra);
                         }
                         #endregion
@@ -221,8 +181,6 @@ namespace ISpiegel
                                     string[] analysisfields = matchers[matchername][1].ToArray();
                                     string[] referencefields = matchers[matchername][0].ToArray();
 
-                                    // RegistratieItem a = analysis.GetFieldValues(row, analysisfields);
-                                    // RegistratieItem r = reference.GetFieldValues(found, referencefields);
                                     RegistratieItem a = regel.GetFieldValues(analysisfields);
                                     RegistratieItem r = found.GetFieldValues(referencefields);
 
@@ -253,13 +211,11 @@ namespace ISpiegel
 
 
                         Output.Info("STOP: " + vergelijking.Naam);
-#if !DEBUG
                     }
                     catch (Exception ex)
                     {
                         Output.Warn("ERROR PROCESSING: " + vergelijking.Naam, ex);
                     }
-#endif
                 }
                 #endregion COMPARE
 
@@ -278,8 +234,10 @@ namespace ISpiegel
                 adapter = provider.CreateDataAdapter();
                 adapter.SelectCommand = command;
                 table = new DataTable();
+                System.Diagnostics.Debug.WriteLine("ISpiegel.Program::Main > Starting query:" + adapter.SelectCommand.CommandText);
                 adapter.Fill(table);
-                
+                System.Diagnostics.Debug.WriteLine("ISpiegel.Program::Main > Starting query:" + adapter.SelectCommand.CommandText);     
+
                 foreach (DataRow checkrow in table.Rows)
                 {
                     string controlenaam = Convert.ToString(checkrow["controlenaam"]);
@@ -290,15 +248,13 @@ namespace ISpiegel
                     string rapporttype = Convert.ToString(checkrow["rapporttype"]);
                     var vergelijking = new Vergelijking(controlenaam, primary, datasourcename, columnname, rapporttype);
                     Output.Info("START: " + controlenaam);
-#if !DEBUG
                     try
                     {
-#endif
                         DatabaseReporter reporter = new DatabaseReporter(provider, connection);
                         reporter.Start(controlenaam, null, datasourcename, columnname + "='" + checkvalue + "'", null, datasourcename, rapporttype);
-                    var controle = Databron.GetData(provider, connection, datasourcename); 
+                        var controle = Databron.GetData(provider, connection, datasourcename); 
 
-                    foreach(DataRegel datarow in controle.Regels) {
+                        foreach(DataRegel datarow in controle.Regels) {
                         var found = datarow[columnname];
                         if (Convert.ToString(found).Equals(checkvalue))
                         {
@@ -311,34 +267,30 @@ namespace ISpiegel
 
                         reporter.Stop(
                             controlenaam,
-                        controle.ApplicatieNaam, 
+                            controle.ApplicatieNaam, 
                             null,
                             controle.ReferentieQuery,
                             null,
-                        controle.GemeenteCode, 
-                        null, 
-                        controle.Regels.Count, 
+                            controle.GemeenteCode, 
+                            null, 
+                            controle.Regels.Count, 
                             0);
                         Output.Info("STOP: " + controlenaam);
-#if !DEBUG
                     }
                     catch (Exception ex)
                     {
                         Output.Warn("ERROR PROCESSING: " + controlenaam, ex);
                     }
-#endif
                 }
                 #endregion CHECK            
 
                 connection.Close();
                 Output.Info("*****************\n***** STOP ******\n*****************");
-#if !DEBUG
             }
             catch (Exception ex)
             {
                 Output.Error("*****************\n***** ERROR ******\n*****************", ex);
             }
-#endif
             if (Properties.Settings.Default.email_smtp.Length > 0)
             {
                 System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();

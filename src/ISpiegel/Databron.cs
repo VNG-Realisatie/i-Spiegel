@@ -9,24 +9,23 @@ namespace ISpiegel
     {
         public static Databron GetData(DbProviderFactory configprovider, DbConnection configconnection, String datasourcename)
         {
-
-            // const string sql = "SELECT * FROM SOME_TABLE WHERE Name = @name";
-            // cmd.CommandText = sql;
-            // cmd.Parameters.AddWithValue("@name", name);
-
-
             var command = configprovider.CreateCommand();
-            // TODO: parameter
             command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "databron WHERE databronnaam LIKE '" + datasourcename + "'";
             command.Connection = configconnection;
             var adapter = configprovider.CreateDataAdapter();
             adapter.SelectCommand = command;
             var table = new DataTable();
+
+            System.Diagnostics.Debug.WriteLine("ISpiegel.Databron::GetData > Starting query:" + adapter.SelectCommand.CommandText);
             adapter.Fill(table);
-            if (table.Rows.Count != 1) throw new Exception("Kon de datasource met naam:" + datasourcename + " niet vinden!");
+            System.Diagnostics.Debug.WriteLine("ISpiegel.Databron::GetData > Finished query:" + adapter.SelectCommand.CommandText);
+
+            if (table.Rows.Count != 1) throw new ISpiegelException("Kon de datasource met naam: '" + datasourcename + "' niet vinden!");
+
 
             String datasource_provider = Convert.ToString(table.Rows[0]["provider"]);
             String datasource_connectionstring = Convert.ToString(table.Rows[0]["connectionstring"]);
+            System.Diagnostics.Debug.WriteLine("ISpiegel.Databron::GetData > Connectionstring:" + datasource_connectionstring);
             String datasource_query = Convert.ToString(table.Rows[0]["query"]);
             String applicatie = Convert.ToString(table.Rows[0]["applicatienaam"]);
             String gemeentecode = Convert.ToString(table.Rows[0]["gemeentecode"]);
@@ -44,9 +43,13 @@ namespace ISpiegel
 
             var connection = new ISpiegel.Provider.FileSystem.Connection();
             DbProviderFactory datasource_factory = null;
-            if (datasource_provider.Equals("ISpiegel.Providers.FileSystem"))
+            if (datasource_provider.ToLower().Equals("ispiegel.providers.filesystem"))
             {
                 datasource_factory = new ISpiegel.Provider.FileSystem.Factory();
+            }
+            else if (datasource_provider.ToLower().Equals("ispiegel.providers.odata"))
+            {
+                datasource_factory = new ISpiegel.Provider.OData.Factory();
             }
             else
             {
@@ -54,6 +57,7 @@ namespace ISpiegel
             }
             var datasource_connection = datasource_factory.CreateConnection();
             datasource_connection.ConnectionString = datasource_connectionstring.Replace("${WORKING_DIRECTORY}", System.IO.Directory.GetCurrentDirectory());
+            System.Diagnostics.Debug.WriteLine("ISpiegel.Databron::GetData > Connectionstring:" + datasource_connection.ConnectionString);
             datasource_connection.Open();
             var datasource_command = datasource_factory.CreateCommand();
             datasource_command.CommandText = datasource_query;
@@ -61,14 +65,11 @@ namespace ISpiegel
             var datasource_adapter = datasource_factory.CreateDataAdapter();
             datasource_adapter.SelectCommand = datasource_command;
             var datasource_table = new DataTable();
+            System.Diagnostics.Debug.WriteLine("ISpiegel.Databron::GetData > Starting query:" + datasource_adapter.SelectCommand.CommandText);
             datasource_adapter.Fill(datasource_table);
+            System.Diagnostics.Debug.WriteLine("ISpiegel.Databron::GetData > Finished query:" + datasource_adapter.SelectCommand.CommandText);
+
             datasource_connection.Close();
-
-            // datasource_table.ExtendedProperties.Add("databronnaam", datasourcename);
-            // datasource_table.ExtendedProperties.Add("applicatienaam", applicatie);
-            // datasource_table.ExtendedProperties.Add("referentiequery", datasource_query);
-            // datasource_table.ExtendedProperties.Add("gemeentecode", gemeentecode);
-
             return new Databron(datasource_table, datasourcename, applicatie, datasource_query, gemeentecode, escaper);
         }
 
@@ -112,14 +113,6 @@ namespace ISpiegel
             }
         }
 
-        /*
-        public DataRowCollection Rows {
-            get
-            {
-                return data.Rows;
-            }
-        }
-        */
         public List<DataRegel> Regels
         {
             get
@@ -163,18 +156,7 @@ namespace ISpiegel
                 return gemeentecode;
             }
         }
-        /*
-                public RegistratieItem GetFieldValues(DataRow row, string[] fieldnames)
-                {
-                    string[] fieldvalues = new string[fieldnames.Count()];
-                    for (int i = 0; i < fieldnames.Count(); i++)
-                    {
-                        var value = row[fieldnames[i]];
-                        fieldvalues[i] = escaper.GetFieldValue(value);
-                    }
-                    return new RegistratieItem(fieldnames, fieldvalues);
-                }
-        */
+
         public SortedDictionary<RegistratieItem, DataRegel> GetSortedList(string[] fieldnames)
         {
             SortedDictionary<RegistratieItem, DataRegel> result = new SortedDictionary<RegistratieItem, DataRegel>();
@@ -191,7 +173,7 @@ namespace ISpiegel
 
         public void Export(List<string> fields, List<string> names, System.IO.DirectoryInfo exportdirectory, string filename)
         {
-            if (fields.Count != names.Count) throw new Exception("count mismatch!");
+            if (fields.Count != names.Count) throw new ISpiegelException("count mismatch!");
             filename = System.IO.Path.Combine(exportdirectory.FullName, filename + ".csv");
             System.IO.StreamWriter writer = new System.IO.StreamWriter(filename, false);
 

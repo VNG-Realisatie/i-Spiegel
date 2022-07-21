@@ -8,8 +8,6 @@ namespace ISpiegel
     {
         List<string> vanEscapedArray = new List<string>();
         List<string> naarEscapedArray = new List<string>();
-
-
         public EscapeSequence()
         {
 
@@ -59,8 +57,6 @@ namespace ISpiegel
                         {
                             builder.Append(naar);
                             escaped = true;
-
-                            // if(ISpiegel.Properties.Settings.Default.escape_logging) Console.WriteLine("\tEscaping character, match on: '" + van + "'-->'" + naar + "' on pos:" + i + " in string: '" + unescaped + "' current new string: '" + builder + "'");
 
                             i += van.Length;
 

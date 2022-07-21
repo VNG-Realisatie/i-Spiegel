@@ -10,7 +10,6 @@ namespace ISpiegel
         private DataRow row;
         private Databron bron;
 
-
         private string[] ToStringArray(DataColumnCollection columns)
         {
             var result = new List<string>();
@@ -74,7 +73,7 @@ namespace ISpiegel
         {
             get
             {
-                if (!row.Table.Columns.Contains(fieldname)) throw new Exception("column with name:" + fieldname + " does not exist!");
+                if (!row.Table.Columns.Contains(fieldname)) throw new ISpiegelException("column with name:" + fieldname + " does not exist!");
                 var value = row[fieldname];
                 string result = bron.Escaper.EscapeValue(value);
                 return result;

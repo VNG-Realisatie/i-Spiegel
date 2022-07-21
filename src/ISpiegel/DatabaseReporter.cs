@@ -27,7 +27,7 @@ namespace ISpiegel
             watch = System.Diagnostics.Stopwatch.StartNew();
 
             DbCommand command = factory.CreateCommand();
-            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "output";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "output WHERE 1 = 2";
             command.Connection = connection;
 
             kopadapter = factory.CreateDataAdapter();
@@ -42,7 +42,7 @@ namespace ISpiegel
             kopadapter.DeleteCommand = builder.GetDeleteCommand();
 
             command = factory.CreateCommand();
-            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "outputline";
+            command.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "outputline WHERE 1 = 2";
             command.Connection = connection;
 
             regeladapter = factory.CreateDataAdapter();
@@ -65,7 +65,10 @@ namespace ISpiegel
             outputid++;
 
             ds = new DataSet();
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Start > Starting query:" + kopadapter.SelectCommand.CommandText);
             kopadapter.Fill(ds, "output");
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Start > Starting query:" + kopadapter.SelectCommand.CommandText);
+
             koprow = ds.Tables["output"].NewRow();
 
             koprow["outputid"] = outputid;
@@ -91,10 +94,14 @@ namespace ISpiegel
             koprow["looptijd"] = watch.Elapsed.TotalSeconds;
 
             ds.Tables["output"].Rows.Add(koprow);
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Start > Starting query:" + kopadapter.InsertCommand.CommandText);
             kopadapter.Update(ds, "output");
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Start > Finished query:" + kopadapter.InsertCommand.CommandText);
 
             regeladapter.SelectCommand.CommandText = "SELECT * FROM " + Properties.Settings.Default.databaseprefix + "outputline WHERE outputid = " + outputid;
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Start > Starting query:" + regeladapter.SelectCommand.CommandText);
             regeladapter.Fill(ds, "outputline");
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Start > Finished query:" + kopadapter.SelectCommand.CommandText);
 
             match = 0;
             nomatch = 0;
@@ -117,8 +124,14 @@ namespace ISpiegel
             Output.Info("\t" + ((int)((100.0 / analysecount) * match)) + "% gelijk #" + match + " afwijkend #" + nomatch + " mist #" + missing + "(adding #" + ds.Tables["outputline"].Rows.Count + " outputlines )");
 
             // save the regels
+            var stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Stop > Starting query:" + regeladapter.InsertCommand.CommandText);
             regeladapter.Update(ds, "outputline");
- 
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Stop > Starting query:" + regeladapter.InsertCommand.CommandText);
+            stopwatch.Stop();
+            Output.Info("\toutputlines weggeschreven in " + (int)stopwatch.Elapsed.TotalSeconds + " seconds)");
+
             // update the koprow
             koprow["referentieapplicatie"] = referentieapplicatie;
             koprow["analyseapplicatie"] = analyseapplicatie;
@@ -139,7 +152,10 @@ namespace ISpiegel
             koprow["looptijd"] = watch.Elapsed.TotalSeconds;
             //ds.Tables["output"].Rows[0]. koprow
             //koprow.SetModified();
+
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Stop > Starting query:" + kopadapter.SelectCommand.CommandText);
             kopadapter.Update(ds, "output");
+            System.Diagnostics.Debug.WriteLine("ISpiegel.DatabaseReporter::Stop > Finished query:" + kopadapter.SelectCommand.CommandText);
 
             if (Properties.Settings.Default.influxdb_url != "")
             {
@@ -192,10 +208,6 @@ namespace ISpiegel
         private string CreateRowXml(string vergelijking, string[] fieldnames, string[] fieldvalues)
         {
             var doc = new System.Xml.XmlDocument();
-            /*
-            if (Properties.Settings.Default.output_format == "html")
-            {
-            */
             var table = doc.CreateElement("table");
             var tablename = doc.CreateAttribute("name");
             tablename.Value = vergelijking.ToLower();
@@ -223,37 +235,6 @@ namespace ISpiegel
                 }
                 tr.AppendChild(tdvalue);
             }
-            /*
-            }
-            else {                 
-                var rootnode = doc.CreateElement(System.Xml.XmlConvert.EncodeName(vergelijking).ToLower());
-                if (fieldnames.Length > 0)
-                {
-                    for(int i=0; i < fieldnames.Length; i++)
-                    {
-                        var element = doc.CreateElement(System.Xml.XmlConvert.EncodeName(fieldnames[i]).ToLower());
-                        if(fieldvalues[i] == null || Convert.ToString(fieldvalues[i]).Length == 0)
-                        {
-                            var nil = doc.CreateAttribute("nil", "xsi", "http://w3.org/2001/XMLSchema-instance");
-                            nil.Value = Convert.ToString(true);
-                            element.Attributes.Append(nil);
-                        }
-                        else
-                        {
-                            element.InnerText = fieldvalues[i];
-                        }
-                        rootnode.AppendChild(element);
-                    }
-                }
-                else
-                {
-                    var nil = doc.CreateAttribute("nil", "xsi", "http://w3.org/2001/XMLSchema-instance");
-                    nil.Value = Convert.ToString(true);
-                    rootnode.Attributes.Append(nil);                    
-                }
-                doc.AppendChild(rootnode);
-            }
-            */
             var stream = new System.IO.MemoryStream();
             var writer = new System.Xml.XmlTextWriter(stream, Encoding.Unicode);
             writer.Formatting = System.Xml.Formatting.Indented;
@@ -277,10 +258,6 @@ namespace ISpiegel
                 row["outputid"] = koprow["outputid"];
                 row["regelnummer"] = ds.Tables["outputline"].Rows.Count + 1;
                 row["status"] = "VALID";
-                //            row["melding"] = "check:" + checkname + " found:" + found[columnname] + " expected:" + checkvalue;
-                //            row["referentieregel"] = RegistratieSource.ToString(found);
-                //            //row["analyseregel"] = RegistratieSource.ToString(searchrow);
-                //            ds.Tables["outputline"].Rows.Add(row);
 
                 row["controle"] = matcher;
                 row["sleutel"] = CreateRowXml(vergelijking.Naam, sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
@@ -310,23 +287,11 @@ namespace ISpiegel
             row["status"] = "INVALID";
 
 
-            //            row["melding"] = "check:" + checkname + " found:" + found[columnname] + " expected:" + checkvalue;
-            //            row["referentieregel"] = RegistratieSource.ToString(found);
-            //            //row["analyseregel"] = RegistratieSource.ToString(searchrow);
-            //            ds.Tables["outputline"].Rows.Add(row);
-
-
             row["controle"] = matcher;
-            //row["sleutel"] = RegistratieSource.ToFieldXml(sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
-            //row["analysewaarde"] = RegistratieSource.ToFieldXml(checkcolumnname, checkvalue);
             row["sleutel"] = CreateRowXml(vergelijking.Naam, sleutelcolumname, Convert.ToString(found[sleutelcolumname]));
             row["analysewaarde"] = CreateRowXml(vergelijking.Naam, checkcolumnname, checkvalue);
             row["referentiewaarde"] = DBNull.Value;
-            //row["referentiewaarde"] = CreateRowXml(vergelijking);
-            //row["analyseregel"] = RegistratieSource.ToFieldXml(found);
-            //row["analyseregel"] = CreateRowXml(vergelijking.Naam, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
             row["analyseregel"] = CreateRowXml(vergelijking.Naam, found.FieldNames, found.FieldValues);
-            //row["referentieregel"] = CreateRowXml(vergelijking);
             row["referentieregel"] = DBNull.Value;
 
             row["analysesleutelwaarde"] = sleutelcolumname;
@@ -352,8 +317,6 @@ namespace ISpiegel
                 row["sleutel"] = CreateRowXml(vergelijking.Naam, sleutel.fieldnames, sleutel.fieldvalues);
                 row["analysewaarde"] = CreateRowXml(vergelijking.Naam);
                 row["referentiewaarde"] = CreateRowXml(vergelijking.Naam);
-                //row["analyseregel"] = CreateRowXml(vergelijking.Naam, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
-                //row["referentieregel"] = CreateRowXml(vergelijking.Naam, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
                 row["analyseregel"] = CreateRowXml(vergelijking.Naam, searchrow.FieldNames, searchrow.FieldValues);
                 row["referentieregel"] = CreateRowXml(vergelijking.Naam, found.FieldNames, found.FieldValues);
 
@@ -379,8 +342,6 @@ namespace ISpiegel
                 row["sleutel"] = CreateRowXml(vergelijking.Naam, sleutel.fieldnames, sleutel.fieldvalues);
                 row["analysewaarde"] = CreateRowXml(matcher, analyse.fieldnames, analyse.fieldvalues);
                 row["referentiewaarde"] = CreateRowXml(matcher, reference.fieldnames, reference.fieldvalues);
-                //row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
-                //row["referentieregel"] = CreateRowXml(vergelijking.Reference.DatabronNaam, ToStringArray(found.Table.Columns), ToStringArray(found.ItemArray));
                 row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, searchrow.FieldNames, searchrow.FieldValues);
                 row["referentieregel"] = CreateRowXml(vergelijking.Reference.DatabronNaam, found.FieldNames, found.FieldValues);
 
@@ -409,7 +370,6 @@ namespace ISpiegel
             row["sleutel"] = CreateRowXml(vergelijking.Naam, searchitem.fieldnames, searchitem.fieldvalues);
             row["analysewaarde"] = CreateRowXml(matcher, searchitem.fieldnames, searchitem.fieldvalues);
             row["referentiewaarde"] = DBNull.Value;
-            //row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, ToStringArray(searchrow.Table.Columns), ToStringArray(searchrow.ItemArray));
             row["analyseregel"] = CreateRowXml(vergelijking.Analysis.DatabronNaam, searchrow.FieldNames, searchrow.FieldValues);
             row["referentieregel"] = DBNull.Value;
 
