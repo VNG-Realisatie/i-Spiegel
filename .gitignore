@@ -6,3 +6,9 @@
 /src/ISpiegel/bin
 /src/ISpiegel/obj
 /src/packages/
+/src/ISpiegel.Providers.OData/bin/Debug
+/src/ISpiegel.Providers.OData/bin/Release
+/src/ISpiegel.Providers.OData/obj/Debug
+/src/ISpiegel.Providers.OData/obj/Release
+/src/ISpiegel/*.laccdb
+/src.backup/.vs/ISpiegel/v16/*.suo
