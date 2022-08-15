@@ -162,7 +162,8 @@ namespace ISpiegel
                 var percentage = (100.0 / analysecount) * match;
                 var point = InfluxDB.Client.Writes.PointData
                   .Measurement("ispiegel")
-                  .Tag("referentieapplicatie", referentieapplicatie == null ? "GEEN" : referentieapplicatie)                  
+                  .Tag("vergelijkingnaam", vergelijkingnaam == null ? "GEEN" : vergelijkingnaam)
+                  .Tag("referentieapplicatie", referentieapplicatie == null ? "GEEN" : referentieapplicatie)
                   .Tag("analyseapplicatie", analyseapplicatie == null ? "GEEN" : analyseapplicatie)
                   .Tag("referentiegemeentecode", referentiegemeentecode == null ? "GEEN" : referentiegemeentecode)
                   .Tag("analysegemeentecode", analysegemeentecode == null ? "GEEN" : analysegemeentecode)
