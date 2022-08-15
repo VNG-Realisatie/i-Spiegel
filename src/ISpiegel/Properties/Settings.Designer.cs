@@ -70,7 +70,7 @@ namespace ISpiegel.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://digimelden.nl/write?db=ispiegel")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://digimelden.nl")]
         public string influxdb_url {
             get {
                 return ((string)(this["influxdb_url"]));
@@ -79,10 +79,11 @@ namespace ISpiegel.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ispiegel:ispiegel")]
-        public string influxdb_auth {
+        [global::System.Configuration.DefaultSettingValueAttribute("D0Z5GATXQItQ-RwbE5J4hZj-jCspHGkiyCtG1Maxf4wT1oIvNAbNDhJm2ImoD9V0MiLlVoyLfK9khoutb" +
+            "5EElQ==")]
+        public string influxdb_token {
             get {
-                return ((string)(this["influxdb_auth"]));
+                return ((string)(this["influxdb_token"]));
             }
         }
         
@@ -139,6 +140,24 @@ namespace ISpiegel.Properties {
         public string databaseprovider {
             get {
                 return ((string)(this["databaseprovider"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ispiegel")]
+        public string influxdb_bucket {
+            get {
+                return ((string)(this["influxdb_bucket"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ispiegel")]
+        public string influxdb_org {
+            get {
+                return ((string)(this["influxdb_org"]));
             }
         }
     }

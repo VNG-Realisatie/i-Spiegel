@@ -18,10 +18,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="influxdb_url" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://digimelden.nl/write?db=ispiegel</Value>
+      <Value Profile="(Default)">http://digimelden.nl</Value>
     </Setting>
-    <Setting Name="influxdb_auth" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ispiegel:ispiegel</Value>
+    <Setting Name="influxdb_token" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">D0Z5GATXQItQ-RwbE5J4hZj-jCspHGkiyCtG1Maxf4wT1oIvNAbNDhJm2ImoD9V0MiLlVoyLfK9khoutb5EElQ==</Value>
     </Setting>
     <Setting Name="output_nomatch_reportall" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
@@ -44,6 +44,12 @@
     </Setting>
     <Setting Name="databaseprovider" Type="System.String" Scope="Application">
       <Value Profile="(Default)">System.Data.OleDb</Value>
+    </Setting>
+    <Setting Name="influxdb_bucket" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ispiegel</Value>
+    </Setting>
+    <Setting Name="influxdb_org" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ispiegel</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -159,36 +159,34 @@ namespace ISpiegel
 
             if (Properties.Settings.Default.influxdb_url != "")
             {
-                // dimensions
-                String ResultLine = "referentieapplicatie=" + (referentieapplicatie == null ? "GEEN" : referentieapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
-                ResultLine += "analyseapplicatie=" + (analyseapplicatie == null ? "GEEN" : analyseapplicatie.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
-                ResultLine += "referentiegemeentecode=" + (referentiegemeentecode == null ? "GEEN" : referentiegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + ",";
-                ResultLine += "analysegemeentecode=" + (analysegemeentecode == null ? "GEEN" : analysegemeentecode.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=")) + " ";
-                // values
-                ResultLine += "referentieaantal=" + referencecount + ",";
-                ResultLine += "analyseaantal=" + analysecount + ",";
-                ResultLine += "gelijkaantal=" + match + ",";
-                ResultLine += "afwijkingaantal=" + nomatch + ",";
-                ResultLine += "nietgevondenaantal=" + missing + ",";
-                //ResultLine += "ongeldigaantal=" + invalid + ",";
-                ResultLine += "percentage=" + Math.Round((100.0 / analysecount) * match, 2);
+                var percentage = (100.0 / analysecount) * match;
+                var point = InfluxDB.Client.Writes.PointData
+                  .Measurement("ispiegel")
+                  .Tag("referentieapplicatie", referentieapplicatie == null ? "GEEN" : referentieapplicatie)                  
+                  .Tag("analyseapplicatie", analyseapplicatie == null ? "GEEN" : analyseapplicatie)
+                  .Tag("referentiegemeentecode", referentiegemeentecode == null ? "GEEN" : referentiegemeentecode)
+                  .Tag("analysegemeentecode", analysegemeentecode == null ? "GEEN" : analysegemeentecode)
+                  .Field("referentieaantal", referencecount)
+                  .Field("analyseaantal", analysecount)
 
-                var postdata = "ispiegel,";
-                postdata += "vergelijking=" + vergelijkingnaam.Replace(" ", "\\ ").Replace(",", "\\,").Replace("=", "\\=") + ",";
-                postdata += ResultLine;
-                var client = new ShootAndForgetWebClient();
-                if (Properties.Settings.Default.influxdb_auth != "")
-                {
+                  .Field("gelijkaantal", match)
+                  .Field("afwijkingaantal", nomatch)
+                  .Field("nietgevondenaantal", missing)
+                  .Field("percentage", percentage)
+                  .Timestamp(DateTime.UtcNow, InfluxDB.Client.Api.Domain.WritePrecision.Ns);
 
-                    // ik wil in één keer de boel versturen, stomme "client.Credentials = new NetworkCredential"!
-                    string credentials = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(Properties.Settings.Default.influxdb_auth));
-                    client.Headers[System.Net.HttpRequestHeader.Authorization] = string.Format("Basic {0}", credentials);
-                }
-                client.Headers[System.Net.HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                Output.Info("\t>>> posting to: " + Properties.Settings.Default.influxdb_url + " the following data:" + postdata);
+                Output.Info("\t>>> posting to: " + Properties.Settings.Default.influxdb_url);
+                Output.Info("\t>>>" + point.ToLineProtocol());
+
                 try
                 {
-                    var response = client.UploadString(Properties.Settings.Default.influxdb_url, postdata);
+                    using (var client = InfluxDB.Client.InfluxDBClientFactory.Create(Properties.Settings.Default.influxdb_url, Properties.Settings.Default.influxdb_token))
+                    {
+                        using (var writeApi = client.GetWriteApi())
+                        {
+                            writeApi.WritePoint(point, Properties.Settings.Default.influxdb_bucket, Properties.Settings.Default.influxdb_org);
+                        }
+                    }
                 }
                 catch (System.Net.WebException ex)
                 {
