@@ -1,3 +1,8 @@
+| Eigenaar | Ingevuld door |
+| --- | --- |
+| Sûd Wes Frieslan | Eduard Witteveen |
+<hr/>
+
 # I-spiegel 3.0
 
 ##  Gegevens vergelijken - waarom?. 
