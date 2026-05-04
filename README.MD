@@ -1,6 +1,6 @@
 | Eigenaar | Ingevuld door |
 | --- | --- |
-| Gemeente Sûd Wes Frieslan | Eduard Witteveen |
+| Gemeente Sûdwest-Frylân | Eduard Witteveen |
 <hr/>
 
 # I-spiegel 3.0
